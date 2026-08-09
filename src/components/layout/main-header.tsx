@@ -127,7 +127,7 @@ function SearchBox({ className }: { className?: string }) {
       <Input
         aria-label="Search catalog"
         placeholder="Search by CAS/catalog/product name..."
-        className="h-10 min-w-0 flex-1 border-0 bg-transparent px-0 text-sm text-[#051a50] shadow-none placeholder:text-[#a3abbd] focus-visible:ring-0! focus-visible:outline-none! focus-visible:shadow-none!"
+        className="h-10 min-w-0 flex-1 border-0 bg-transparent px-0 text-sm text-[#051a50] shadow-none placeholder:text-[#a3abbd] focus-visible:ring-0! focus-visible:ring-offset-0 focus-visible:outline-none! focus-visible:shadow-none!"
       />
       <Button
         type="button"
