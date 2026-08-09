@@ -1,0 +1,4 @@
+interface:
+  display_name: "Axios"
+  short_description: "Chuẩn hóa Client API bằng Axios"
+  default_prompt: "Dùng $axios để triển khai Client API qua axios instance hiện có."

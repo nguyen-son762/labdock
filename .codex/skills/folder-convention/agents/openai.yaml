@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quy ước thư mục"
+  short_description: "Duy trì cấu trúc Feature First"
+  default_prompt: "Dùng $folder-convention để xác định ownership và vị trí file phù hợp."

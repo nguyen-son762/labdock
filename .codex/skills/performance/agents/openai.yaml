@@ -1,0 +1,4 @@
+interface:
+  display_name: "Performance"
+  short_description: "Tối ưu hiệu năng Frontend có đo lường"
+  default_prompt: "Dùng $performance để phân tích và cải thiện hiệu năng luồng này."

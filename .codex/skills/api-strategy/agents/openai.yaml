@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chiến lược API"
+  short_description: "Phân loại Server fetch và Client API"
+  default_prompt: "Dùng $api-strategy để chọn fetch, Axios và React Query phù hợp."

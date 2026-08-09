@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO"
+  short_description: "Tối ưu technical SEO cho Next.js"
+  default_prompt: "Dùng $seo để kiểm tra metadata, canonical và JSON-LD cho route này."

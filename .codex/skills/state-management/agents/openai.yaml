@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quản lý State"
+  short_description: "Chọn đúng nơi sở hữu state"
+  default_prompt: "Dùng $state-management để phân loại và đặt state đúng ranh giới."

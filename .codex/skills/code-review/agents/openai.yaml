@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Review"
+  short_description: "Review thay đổi Frontend theo rủi ro"
+  default_prompt: "Dùng $code-review để review correctness, kiến trúc và regression."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tài liệu kỹ thuật"
+  short_description: "Viết tài liệu kỹ thuật có thể vận hành"
+  default_prompt: "Dùng $documentation để cập nhật tài liệu cho quyết định hoặc tính năng này."

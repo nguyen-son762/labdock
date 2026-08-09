@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debugging"
+  short_description: "Chẩn đoán lỗi theo bằng chứng"
+  default_prompt: "Dùng $debugging để tái hiện, cô lập và xác nhận root cause."

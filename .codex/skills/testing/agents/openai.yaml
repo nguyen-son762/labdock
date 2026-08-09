@@ -1,0 +1,4 @@
+interface:
+  display_name: "Testing"
+  short_description: "Thiết kế test theo mức độ rủi ro"
+  default_prompt: "Dùng $testing để xây dựng Unit Test, Integration Test và E2E Test phù hợp."

@@ -1,0 +1,54 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import type { ReactNode } from "react";
+
+import { BrandMark } from "@/components/shared/brand-mark";
+import { LogoutButton } from "@/features/auth";
+import { AppProviders } from "@/providers/app-providers";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  robots: { index: false, follow: false },
+};
+
+const navigation = [
+  { href: "/dashboard", label: "Tổng quan" },
+  { href: "/dashboard/profile", label: "Hồ sơ" },
+] as const;
+
+export default function DashboardLayout({ children }: { children: ReactNode }) {
+  return (
+    <AppProviders>
+      <div className="min-h-dvh bg-background">
+        <header className="border-b bg-card">
+          <div className="container flex h-16 items-center justify-between">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <BrandMark />
+              <span className="font-semibold">Labdock Portal</span>
+            </Link>
+            <LogoutButton />
+          </div>
+        </header>
+        <div className="container grid gap-8 py-8 md:grid-cols-[13rem_1fr]">
+          <aside>
+            <nav aria-label="Điều hướng Dashboard" className="flex gap-2 overflow-x-auto md:flex-col">
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </aside>
+          <main className="min-w-0">{children}</main>
+        </div>
+      </div>
+    </AppProviders>
+  );
+}

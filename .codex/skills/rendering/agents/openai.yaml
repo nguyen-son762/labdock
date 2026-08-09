@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rendering"
+  short_description: "Chọn Server và Client Component"
+  default_prompt: "Dùng $rendering để tối ưu Server Component, Hydration và Streaming."

@@ -1,0 +1,7 @@
+node_modules/
+.next/
+.codex/
+coverage/
+dist/
+public/
+package-lock.json

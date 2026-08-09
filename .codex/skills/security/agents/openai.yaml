@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security"
+  short_description: "Kiểm soát rủi ro bảo mật Frontend"
+  default_prompt: "Dùng $security để threat model và review thay đổi này."

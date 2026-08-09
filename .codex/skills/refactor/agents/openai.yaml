@@ -1,0 +1,4 @@
+interface:
+  display_name: "Refactor"
+  short_description: "Refactor an toàn không đổi hành vi"
+  default_prompt: "Dùng $refactor để cải thiện cấu trúc mà giữ nguyên hành vi quan sát được."

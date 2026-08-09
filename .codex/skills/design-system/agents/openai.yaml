@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design System"
+  short_description: "Shadcn UI với Iconsax nhất quán"
+  default_prompt: "Dùng $design-system để triển khai UI bằng Shadcn và Iconsax trước khi tạo component mới."

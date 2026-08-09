@@ -1,0 +1,4 @@
+interface:
+  display_name: "React Query"
+  short_description: "Quản lý Server State phía Client"
+  default_prompt: "Dùng $react-query để thiết kế query, mutation và Cache cho luồng này."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Next.js"
+  short_description: "Áp dụng đúng Next.js App Router"
+  default_prompt: "Dùng $nextjs để chọn đúng rendering và data boundary cho route này."

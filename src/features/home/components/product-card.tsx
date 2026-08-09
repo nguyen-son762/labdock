@@ -1,0 +1,111 @@
+import { ArrowRight, BucketSquare, ShoppingCart, Verify } from "iconsax-reactjs";
+import Image from "next/image";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/class-names";
+
+import type { Product } from "../home.types";
+
+type ProductCardProps = {
+  product: Product;
+  featured?: boolean;
+};
+
+export function ProductCard({ product, featured = false }: ProductCardProps) {
+  const outOfStock = product.badge === "Out of stock";
+
+  return (
+    <article
+      className={cn(
+        "group flex min-w-0 flex-col rounded-lg bg-white p-1 shadow-[0_4px_20px_rgba(5,26,80,0.04)]",
+        featured && "ring-2 ring-[#efa33b]",
+      )}
+    >
+      <Link
+        href={`/products/${product.id}`}
+        className="relative block aspect-square overflow-hidden rounded border border-[#ecf0f3] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+      >
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          sizes="(min-width: 1280px) 180px, (min-width: 768px) 30vw, 45vw"
+          className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+        />
+        {product.badge ? (
+          <span
+            className={cn(
+              "absolute left-0 top-0 rounded-br px-1.5 py-0.5 text-[10px] font-medium text-white",
+              outOfStock ? "bg-[#c9ced8]" : "bg-gradient-to-r from-[#efa33b] to-[#e57a00]",
+            )}
+          >
+            {product.badge}
+          </span>
+        ) : null}
+        {product.discount ? (
+          <span className="absolute right-0 top-0 rounded-bl bg-[#dc2626] px-1.5 py-0.5 text-[10px] font-medium text-white">
+            {product.discount}
+          </span>
+        ) : null}
+      </Link>
+
+      <div className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
+        <div className="min-h-[57px]">
+          <p className="text-[10px] leading-4 text-[#73798f]">Laboratory Equipment</p>
+          <Link
+            href={`/products/${product.id}`}
+            className="line-clamp-2 text-xs font-semibold leading-[17px] text-[#051a50] hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+          >
+            {product.name}
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-1 overflow-hidden text-[9px] text-[#5e6375]">
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5">
+            <BucketSquare className="size-3 text-[#1f6db2]" variant="Bold" aria-hidden="true" />
+            {product.volume}
+          </span>
+          <span className="inline-flex min-w-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5">
+            <Verify className="size-3 shrink-0 text-[#3eb584]" variant="Bold" aria-hidden="true" />
+            <span className="truncate">{product.brand}</span>
+          </span>
+        </div>
+
+        <p className="flex min-h-5 items-center gap-1.5 text-sm font-bold text-[#e57a00]">
+          {product.price}
+          {product.originalPrice ? (
+            <span className="text-[9px] font-normal text-[#a3abbd] line-through">{product.originalPrice}</span>
+          ) : null}
+        </p>
+
+        <div className="flex gap-2">
+          <Button
+            asChild
+            size="sm"
+            variant={outOfStock ? "outline" : "brand"}
+            className={cn(
+              "h-8 flex-1 rounded-full px-2 text-xs shadow-none",
+              outOfStock && "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
+            )}
+          >
+            <Link href={`/products/${product.id}`}>
+              {outOfStock ? "Learn more" : "Buy now"}
+              <ArrowRight className="size-3.5" aria-hidden="true" />
+            </Link>
+          </Button>
+          {!outOfStock ? (
+            <Button
+              type="button"
+              size="icon"
+              aria-label={`Add ${product.name} to cart`}
+              className="size-8 shrink-0 rounded-full bg-gradient-to-r from-[#164990] to-[#2f7bc4] shadow-none hover:brightness-110"
+            >
+              <ShoppingCart className="size-3.5" variant="Bold" aria-hidden="true" />
+            </Button>
+          ) : null}
+        </div>
+      </div>
+    </article>
+  );
+}

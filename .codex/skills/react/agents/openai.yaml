@@ -1,0 +1,4 @@
+interface:
+  display_name: "React"
+  short_description: "React 19 với Shadcn và Iconsax"
+  default_prompt: "Dùng $react để thiết kế component React 19 với form Shadcn và icon Iconsax."

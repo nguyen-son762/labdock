@@ -1,0 +1,4 @@
+interface:
+  display_name: "TypeScript"
+  short_description: "Mô hình hóa kiểu dữ liệu an toàn"
+  default_prompt: "Dùng $typescript để thiết kế kiểu strict cho thay đổi này."

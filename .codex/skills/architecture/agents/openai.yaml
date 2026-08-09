@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kiến trúc Frontend"
+  short_description: "Thiết kế kiến trúc Frontend Enterprise"
+  default_prompt: "Dùng $architecture để phân tích và thiết kế kiến trúc cho thay đổi này."

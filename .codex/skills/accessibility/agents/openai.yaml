@@ -1,0 +1,4 @@
+interface:
+  display_name: "Accessibility"
+  short_description: "Xây dựng UI đáp ứng accessibility"
+  default_prompt: "Dùng $accessibility để review keyboard, focus và Screen Reader."

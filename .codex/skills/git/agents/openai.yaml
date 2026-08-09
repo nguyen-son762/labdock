@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Workflow"
+  short_description: "Quản lý thay đổi Git an toàn"
+  default_prompt: "Dùng $git để chuẩn bị thay đổi Git nhỏ gọn và dễ review."
