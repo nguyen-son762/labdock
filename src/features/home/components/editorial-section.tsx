@@ -36,7 +36,14 @@ export function EditorialSection() {
       <div className="container grid gap-5 lg:grid-cols-3">
         {promos.map((promo, index) => (
           <article key={promo.title} className="relative min-h-[300px] overflow-hidden rounded-xl text-white">
-            <Image src={promo.image} alt="" fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover" />
+            <Image
+              src={promo.image}
+              alt=""
+              fill
+              unoptimized
+              sizes="(min-width: 1024px) 33vw, 100vw"
+              className="object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-[#08265f]/95 via-[#0b3472]/45 to-transparent" />
             <div className="relative flex min-h-[300px] flex-col justify-end p-5">
               <span

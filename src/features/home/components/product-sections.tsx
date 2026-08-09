@@ -52,8 +52,8 @@ export function OutstandingProducts() {
             <Box className="size-6" variant="Bulk" aria-hidden="true" /> Outstanding Products
           </h2>
           <div className="relative grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-            {products.map((product, index) => (
-              <ProductCard key={product.id} product={product} featured={index === 0} />
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} appearance="outstanding" />
             ))}
           </div>
           <CarouselControls />
@@ -71,8 +71,8 @@ export function NewProductsSection() {
           New Products &amp; Services
         </h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-          {productGrid.map((product, index) => (
-            <ProductCard key={product.id} product={product} featured={index === 0} />
+          {productGrid.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
         <div className="mt-8 flex justify-center">
@@ -99,7 +99,6 @@ export function PersonalizedProducts() {
               <ProductCard
                 key={`personalized-${product.id}`}
                 product={{ ...product, discount: index === 0 ? product.discount : "-25%" }}
-                featured={index === 0}
               />
             ))}
           </div>

@@ -40,11 +40,12 @@ function PromoCard({ event = false }: { event?: boolean }) {
         src={event ? "/home/event-promo.png" : "/home/hero-promo.png"}
         alt=""
         fill
+        unoptimized
         priority
         sizes={event ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 66vw, 100vw"}
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#08265f]/95 via-[#0b3472]/65 to-transparent" />
+      <div className="absolute inset-0  " />
       <div className="relative flex h-full min-h-[250px] max-w-lg flex-col justify-end p-6 lg:min-h-[300px]">
         <span className="mb-2 w-fit rounded bg-[#e57a00] px-1.5 py-0.5 text-[10px] font-semibold uppercase">
           {event ? "Upcoming event" : "Low stock"}
@@ -82,6 +83,7 @@ export function HeroSection() {
         src="/home/hero-bg.png"
         alt=""
         fill
+        unoptimized
         priority
         sizes="100vw"
         className="object-cover object-top opacity-45 mix-blend-multiply"

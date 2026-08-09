@@ -9,29 +9,38 @@ import type { Product } from "../home.types";
 
 type ProductCardProps = {
   product: Product;
-  featured?: boolean;
+  appearance?: "default" | "outstanding";
 };
 
-export function ProductCard({ product, featured = false }: ProductCardProps) {
+export function ProductCard({ product, appearance = "default" }: ProductCardProps) {
   const outOfStock = product.badge === "Out of stock";
 
   return (
     <article
       className={cn(
-        "group flex min-w-0 flex-col rounded-lg bg-white p-1 shadow-[0_4px_20px_rgba(5,26,80,0.04)]",
-        featured && "ring-2 ring-[#efa33b]",
+        "group relative isolate flex min-w-0 flex-col overflow-hidden rounded-lg bg-[#f5f7f8] p-1 transition-shadow duration-300",
+        "before:absolute before:inset-0 before:z-0 before:bg-gradient-to-t before:from-white before:via-white before:via-[25%] before:to-[#efa33b] before:opacity-0 before:transition-opacity before:duration-300 before:content-['']",
+        "hover:shadow-[0_12px_30px_rgba(239,163,59,0.2)] hover:before:opacity-100",
+        "focus-within:shadow-[0_12px_30px_rgba(239,163,59,0.2)] focus-within:before:opacity-100",
+        appearance === "outstanding" && "bg-white",
       )}
     >
       <Link
         href={`/products/${product.id}`}
-        className="relative block aspect-square overflow-hidden rounded border border-[#ecf0f3] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+        className={cn(
+          "relative z-10 block aspect-square overflow-hidden rounded border border-[#ecf0f3] bg-white transition-[border-color] duration-300",
+          "group-hover:border-2 group-hover:border-[#fcdb97] group-focus-within:border-2 group-focus-within:border-[#fcdb97]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
+          appearance === "outstanding" && "border-2 border-[#fcdb97]",
+        )}
       >
         <Image
           src={product.image}
           alt={product.name}
           fill
+          unoptimized
           sizes="(min-width: 1280px) 180px, (min-width: 768px) 30vw, 45vw"
-          className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+          className="object-contain p-3"
         />
         {product.badge ? (
           <span
@@ -50,7 +59,7 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
         ) : null}
       </Link>
 
-      <div className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
+      <div className="relative z-10 flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
         <div className="min-h-[57px]">
           <p className="text-[10px] leading-4 text-[#73798f]">Laboratory Equipment</p>
           <Link

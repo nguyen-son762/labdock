@@ -70,6 +70,7 @@ export function SocialProofSection() {
                     src={testimonial.image}
                     alt={`${testimonial.name} in a laboratory`}
                     fill
+                    unoptimized
                     sizes="(min-width: 1280px) 290px, (min-width: 640px) 50vw, 100vw"
                     className="object-cover"
                   />

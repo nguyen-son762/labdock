@@ -126,9 +126,8 @@ function SearchBox({ className }: { className?: string }) {
     <div role="search" className={cn("flex h-11 items-center overflow-hidden bg-[#f5f7f8] pl-4 pr-1.5", className)}>
       <Input
         aria-label="Search catalog"
-        readOnly
         placeholder="Search by CAS/catalog/product name..."
-        className="h-10 min-w-0 flex-1 border-0 bg-transparent px-0 text-sm text-[#051a50] shadow-none placeholder:text-[#a3abbd] focus-visible:ring-0"
+        className="h-10 min-w-0 flex-1 border-0 bg-transparent px-0 text-sm text-[#051a50] shadow-none placeholder:text-[#a3abbd] focus-visible:ring-0! focus-visible:outline-none! focus-visible:shadow-none!"
       />
       <Button
         type="button"

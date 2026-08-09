@@ -76,6 +76,7 @@ export function CategoriesSection() {
                 src="/home/category-promo.png"
                 alt="Microscope and laboratory glassware"
                 fill
+                unoptimized
                 sizes="320px"
                 className="object-cover object-center opacity-80"
               />
