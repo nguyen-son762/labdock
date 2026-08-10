@@ -1,11 +1,16 @@
+"use client";
+
 import { ArrowRight, BucketSquare, ShoppingCart, Verify } from "iconsax-reactjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useAddCartItemMutation } from "@/features/checkout";
 import { cn } from "@/lib/class-names";
 
-import type { Product } from "../home.types";
+import type { Product } from "../products.types";
+import { createCartItemFromProduct } from "../utils/product-cart";
 
 type ProductCardProps = {
   product: Product;
@@ -13,7 +18,10 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, appearance = "default" }: ProductCardProps) {
+  const addCartItem = useAddCartItemMutation();
+  const [status, setStatus] = useState("");
   const outOfStock = product.badge === "Out of stock";
+  const productHref = `/products/${product.id}`;
 
   return (
     <article
@@ -26,7 +34,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
       )}
     >
       <Link
-        href={`/products/${product.id}`}
+        href={productHref}
         className={cn(
           "relative z-10 block aspect-square overflow-hidden rounded border border-[#ecf0f3] bg-white transition-[border-color] duration-300",
           "group-hover:border-2 group-hover:border-[#fcdb97] group-focus-within:border-2 group-focus-within:border-[#fcdb97]",
@@ -39,7 +47,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
           alt={product.name}
           fill
           unoptimized
-          sizes="(min-width: 1280px) 180px, (min-width: 768px) 30vw, 45vw"
+          sizes="(min-width: 1280px) 190px, (min-width: 768px) 30vw, 45vw"
           className="object-contain p-3"
         />
         {product.badge ? (
@@ -61,9 +69,9 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
 
       <div className="relative z-10 flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
         <div className="min-h-[57px]">
-          <p className="text-[10px] leading-4 text-[#73798f]">Laboratory Equipment</p>
+          <p className="text-[10px] leading-4 text-[#73798f]">{product.category}</p>
           <Link
-            href={`/products/${product.id}`}
+            href={productHref}
             className="line-clamp-2 text-xs font-semibold leading-[17px] text-[#051a50] hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
           >
             {product.name}
@@ -98,7 +106,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
               outOfStock && "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
             )}
           >
-            <Link href={`/products/${product.id}`}>
+            <Link href={productHref}>
               {outOfStock ? "Learn more" : "Buy now"}
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
@@ -108,12 +116,23 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
               type="button"
               size="icon"
               aria-label={`Add ${product.name} to cart`}
+              disabled={addCartItem.isPending}
+              onClick={() => {
+                setStatus("");
+                addCartItem.mutate(createCartItemFromProduct(product, { quantity: 1, size: product.volume }), {
+                  onSuccess: () => setStatus(`${product.name} added to cart.`),
+                  onError: () => setStatus("We could not update your cart."),
+                });
+              }}
               className="size-8 shrink-0 rounded-full bg-gradient-to-r from-[#164990] to-[#2f7bc4] shadow-none hover:brightness-110"
             >
               <ShoppingCart className="size-3.5" variant="Bold" aria-hidden="true" />
             </Button>
           ) : null}
         </div>
+        <p role="status" className="sr-only">
+          {status}
+        </p>
       </div>
     </article>
   );

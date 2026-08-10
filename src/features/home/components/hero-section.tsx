@@ -27,9 +27,9 @@ const guarantees = [
 const quickActions = [
   { label: "Product", icon: Box, href: "#new-products" },
   { label: "Suppliers", icon: People, href: "#research-leaders" },
-  { label: "RFQ", icon: ClipboardText, href: "#contact-us" },
-  { label: "Orders", icon: ShoppingCart, href: "/dashboard" },
-  { label: "Chat", icon: MessageText, href: "#contact-us" },
+  { label: "RFQ", icon: ClipboardText, href: "/rfqs" },
+  { label: "Orders", icon: ShoppingCart, href: "/orders" },
+  { label: "Chat", icon: MessageText, href: "/contact-us" },
   { label: "News", icon: ReceiptItem, href: "#news" },
 ] as const;
 
@@ -64,7 +64,7 @@ function PromoCard({ event = false }: { event?: boolean }) {
           </p>
         ) : null}
         <Button asChild variant={event ? "default" : "brand"} className="mt-5 h-11 w-fit rounded-full px-5">
-          <Link href={event ? "#contact-us" : "#new-products"}>
+          <Link href={event ? "/contact-us" : "#new-products"}>
             {event ? "Register Now" : "Shop the Collection"}
             <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
               <ArrowRight className="size-4" aria-hidden="true" />

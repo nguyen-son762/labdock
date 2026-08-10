@@ -1,12 +1,16 @@
 import type { ReactNode } from "react";
 
-import { MainHeader } from "@/components/layout/main-header";
+import { AppProviders } from "@/providers/app-providers";
+
+import { AuthHeader } from "./auth-header";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-dvh bg-[var(--auth-background)]">
-      <MainHeader />
-      {children}
-    </div>
+    <AppProviders>
+      <div className="min-h-dvh bg-[var(--auth-background)]">
+        <AuthHeader />
+        {children}
+      </div>
+    </AppProviders>
   );
 }

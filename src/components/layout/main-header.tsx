@@ -19,6 +19,8 @@ import {
 } from "iconsax-reactjs";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,9 +28,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/class-names";
 
 const topLinks = [
-  { label: "Home", icon: Home },
-  { label: "About us", icon: Building },
-  { label: "Contact us", icon: Call },
+  { label: "Home", icon: Home, href: "/" },
+  { label: "About us", icon: Building, href: "/about-us" },
+  { label: "Contact us", icon: Call, href: "/contact-us" },
 ] as const;
 
 const categories = [
@@ -84,18 +86,29 @@ function CategoryPopover({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function AccountSummary() {
+type HeaderAccount = { fullName: string; email: string };
+
+function AccountSummary({ account }: { account?: HeaderAccount }) {
   return (
     <Link
-      href="/login"
+      href={account ? "/profile" : "/login"}
       className="flex h-9 w-[120px] shrink-0 items-center gap-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
     >
       <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/10">
         <ProfileCircle className="size-4" variant="Bold" aria-hidden="true" />
       </span>
       <span className="flex flex-col text-left leading-none">
-        <span className="text-[13px] leading-[17px]">Sign in</span>
-        <strong className="text-sm leading-[18px]">Account</strong>
+        {account ? (
+          <>
+            <strong className="max-w-[76px] truncate text-[13px] leading-[17px]">{account.fullName}</strong>
+            <span className="max-w-[76px] truncate text-xs font-normal leading-[18px]">{account.email}</span>
+          </>
+        ) : (
+          <>
+            <span className="text-[13px] leading-[17px]">Sign in</span>
+            <strong className="text-sm leading-[18px]">Account</strong>
+          </>
+        )}
       </span>
     </Link>
   );
@@ -104,7 +117,7 @@ function AccountSummary() {
 function OrderSummary() {
   return (
     <Link
-      href="/dashboard"
+      href="/cart"
       className="flex h-9 w-[114px] shrink-0 items-center gap-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
     >
       <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-white/10">
@@ -114,7 +127,7 @@ function OrderSummary() {
         </span>
       </span>
       <span className="flex flex-col text-left leading-none">
-        <span className="text-[13px] leading-[17px]">Orders</span>
+        <span className="text-[13px] leading-[17px]">Cart</span>
         <strong className="whitespace-nowrap text-sm leading-[18px]">S$200.00</strong>
       </span>
     </Link>
@@ -142,7 +155,9 @@ function SearchBox({ className }: { className?: string }) {
   );
 }
 
-export function MainHeader() {
+export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; account?: HeaderAccount }) {
+  const pathname = usePathname();
+
   return (
     <header className="relative h-[110px] overflow-visible bg-[#16518f] text-white">
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -152,25 +167,30 @@ export function MainHeader() {
           alt=""
           width={515}
           height={364}
-          className="absolute right-0 top-0 h-[364px] w-[515px] opacity-50 mix-blend-lighten"
+          priority
+          className="absolute right-0 top-0 h-[364px] w-[515px] max-w-none opacity-50 mix-blend-lighten"
         />
         <Image
           src="/auth/pattern.png"
           alt=""
           width={515}
           height={364}
-          className="absolute left-0 top-1/2 h-[364px] w-[515px] -translate-y-1/2 rotate-180 opacity-80 mix-blend-lighten"
+          priority
+          className="absolute left-0 top-1/2 h-[364px] w-[515px] max-w-none -translate-y-1/2 rotate-180 opacity-80 mix-blend-lighten"
         />
       </div>
 
       <div className="relative z-10 mx-auto h-full max-w-[1440px]">
         <div className="flex h-9 items-center justify-between border-b border-white/10 px-5 text-[13px] font-medium sm:px-10 xl:px-20">
           <nav aria-label="Secondary navigation" className="flex items-center gap-4 sm:gap-6">
-            {topLinks.map(({ label, icon: Icon }) => (
+            {topLinks.map(({ label, icon: Icon, href }) => (
               <Link
                 key={label}
-                href={label === "Home" ? "/" : `/#${label.toLowerCase().replaceAll(" ", "-")}`}
-                className="inline-flex h-5 items-center gap-2 transition-opacity hover:opacity-80"
+                href={href}
+                className={cn(
+                  "inline-flex h-5 items-center gap-2 transition-colors hover:text-[#f5a623]",
+                  pathname === href && "text-[#f5a623]",
+                )}
               >
                 <Icon className="size-4" aria-hidden="true" />
                 <span className={cn(label !== "Home" && "hidden sm:inline")}>{label}</span>
@@ -183,12 +203,20 @@ export function MainHeader() {
               info@i-dna.sg
             </span>
             <span className="mx-5 h-5 w-px bg-white/20" aria-hidden="true" />
-            <button type="button" className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80">
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-auto gap-1.5 rounded p-0 font-medium text-white hover:bg-transparent hover:text-white hover:opacity-80"
+            >
               English <ArrowDown className="size-3.5" aria-hidden="true" />
-            </button>
-            <button type="button" className="ml-5 inline-flex items-center gap-1.5 transition-opacity hover:opacity-80">
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="ml-5 h-auto gap-1.5 rounded p-0 font-medium text-white hover:bg-transparent hover:text-white hover:opacity-80"
+            >
               <span aria-hidden="true">🇸🇬</span> SGD <ArrowDown className="size-3.5" aria-hidden="true" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -214,14 +242,14 @@ export function MainHeader() {
             />
           </Link>
 
-          <div className="ml-[71px] hidden h-11 w-[485px] shrink-0 items-stretch gap-px xl:flex">
+          <div className="ml-[71px] hidden h-11 w-[485px] shrink-0 items-stretch gap-px min-[1380px]:flex">
             <CategoryPopover />
             <SearchBox className="w-[350px] rounded-r-full" />
           </div>
 
           <Button
             variant="brand"
-            className="ml-[78px] hidden h-11 shrink-0 justify-start rounded-full py-1.5 pl-1.5 pr-4 shadow-[0_0_25px_rgba(239,163,59,0.3)] xl:flex"
+            className="ml-[78px] hidden h-11 shrink-0 justify-start rounded-full py-1.5 pl-1.5 pr-4 shadow-[0_0_25px_rgba(239,163,59,0.3)] min-[1380px]:flex"
           >
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#efa33b] shadow-[0_0_15px_rgba(229,122,0,0.5)]">
               <Shop className="size-4" aria-hidden="true" />
@@ -232,24 +260,24 @@ export function MainHeader() {
             </span>
           </Button>
 
-          <div className="ml-2.5 hidden items-center gap-2 xl:flex">
-            <AccountSummary />
-            <OrderSummary />
+          <div className="ml-2.5 hidden items-center gap-2 min-[1380px]:flex">
+            <AccountSummary account={account} />
+            {cartContent ?? <OrderSummary />}
           </div>
 
-          <div className="ml-auto flex min-w-0 items-center gap-2 xl:hidden">
+          <div className="ml-auto flex min-w-0 items-center gap-2 min-[1380px]:hidden">
             <SearchBox className="hidden w-[min(42vw,420px)] rounded-full lg:flex" />
             <CategoryPopover compact />
             <Link
-              href="/login"
-              aria-label="Sign in"
+              href={account ? "/profile" : "/login"}
+              aria-label={account ? "My profile" : "Sign in"}
               className="flex size-10 items-center justify-center rounded-full bg-white/10"
             >
               <ProfileCircle className="size-5" variant="Bold" aria-hidden="true" />
             </Link>
             <Link
-              href="/dashboard"
-              aria-label="Orders"
+              href="/cart"
+              aria-label="Cart"
               className="relative flex size-10 items-center justify-center rounded-full bg-white/10"
             >
               <ShoppingCart className="size-5" variant="Bold" aria-hidden="true" />

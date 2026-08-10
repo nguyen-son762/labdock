@@ -7,6 +7,14 @@ export const metadata: Metadata = {
   title: "Laboratory Products & Procurement",
   description:
     "Source verified laboratory equipment, chemicals, reagents and consumables from trusted research suppliers.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Laboratory Products & Procurement",
+    description:
+      "Source verified laboratory equipment, chemicals, reagents and consumables from trusted research suppliers.",
+    url: "/",
+    images: [{ url: "/home/hero-bg.png", alt: "Laboratory products available from Labdock" }],
+  },
 };
 
 const organizationJsonLd = {
@@ -14,6 +22,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: siteConfig.name,
   url: siteConfig.url,
+  logo: `${siteConfig.url}/auth/labdock-wordmark.svg`,
 };
 
 export default function HomePage() {

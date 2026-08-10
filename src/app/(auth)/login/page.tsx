@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/features/auth";
 import { AuthShell } from "@/features/auth/components/auth-shell";
-import { AppProviders } from "@/providers/app-providers";
 
 export const metadata: Metadata = {
   title: "Log in",
@@ -17,9 +16,7 @@ export default function LoginPage() {
         <p className="mt-2 text-base leading-6 text-[var(--auth-muted)]">Welcome back! Please enter your details.</p>
       </div>
       <div className="pt-6 sm:pt-8">
-        <AppProviders>
-          <LoginForm />
-        </AppProviders>
+        <LoginForm />
       </div>
     </AuthShell>
   );

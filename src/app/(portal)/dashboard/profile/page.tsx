@@ -1,9 +1,5 @@
-import type { Metadata } from "next";
-
-import { ProfileScreen } from "@/features/profile";
-
-export const metadata: Metadata = { title: "Hồ sơ" };
+import { redirect } from "next/navigation";
 
 export default function ProfilePage() {
-  return <ProfileScreen />;
+  redirect("/profile");
 }

@@ -16,8 +16,9 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     type: "website",
-    locale: "vi_VN",
+    locale: "en_SG",
     siteName: siteConfig.name,
+    url: "/",
   },
 };
 

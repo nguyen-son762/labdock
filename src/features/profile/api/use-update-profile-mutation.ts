@@ -8,6 +8,7 @@ export function useUpdateProfileMutation() {
 
   return useMutation({
     mutationFn: profileService.updateCurrent,
+    retry: false,
     onSuccess: (user) => {
       queryClient.setQueryData(profileKeys.current(), user);
     },

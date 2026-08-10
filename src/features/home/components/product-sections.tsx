@@ -1,11 +1,8 @@
-import { ArrowLeft, ArrowRight, Box, ProfileCircle } from "iconsax-reactjs";
+import { ArrowRight, Box, ProfileCircle } from "iconsax-reactjs";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/class-names";
-
-import { productGrid, products } from "../data/home-data";
-import { ProductCard } from "./product-card";
+import { ProductCard, ProductCarousel, productGrid, products } from "@/features/products";
 
 function ViewAllProducts() {
   return (
@@ -17,25 +14,6 @@ function ViewAllProducts() {
         </span>
       </Link>
     </Button>
-  );
-}
-
-function CarouselControls({ light = false }: { light?: boolean }) {
-  return (
-    <div className="mt-6 flex items-center justify-center gap-16" aria-hidden="true">
-      <span
-        className={cn(
-          "flex size-8 items-center justify-center rounded-full",
-          light ? "bg-[#164990] text-white" : "bg-white/10 text-white",
-        )}
-      >
-        <ArrowLeft className="size-4" />
-      </span>
-      <span className={cn("h-2 w-9 rounded-full", light ? "bg-[#9fd0f2]" : "bg-white/70")} />
-      <span className="flex size-8 items-center justify-center rounded-full bg-[#f38b00] text-white">
-        <ArrowRight className="size-4" />
-      </span>
-    </div>
   );
 }
 
@@ -51,12 +29,9 @@ export function OutstandingProducts() {
           >
             <Box className="size-6" variant="Bulk" aria-hidden="true" /> Outstanding Products
           </h2>
-          <div className="relative grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} appearance="outstanding" />
-            ))}
+          <div className="relative">
+            <ProductCarousel products={productGrid} label="Outstanding products" appearance="outstanding" tone="dark" />
           </div>
-          <CarouselControls />
         </div>
       </div>
     </section>
@@ -71,8 +46,8 @@ export function NewProductsSection() {
           New Products &amp; Services
         </h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-          {productGrid.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {productGrid.map((product, index) => (
+            <ProductCard key={`${product.id}-${index}`} product={product} />
           ))}
         </div>
         <div className="mt-8 flex justify-center">

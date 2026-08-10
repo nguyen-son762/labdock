@@ -19,7 +19,7 @@ const cards = [
     action: "Sell on Labdock",
     image: "/home/cta-partner.png",
     tone: "from-[#eb6e77] to-[#f39a13]",
-    href: "#contact-us",
+    href: "/contact-us",
   },
 ] as const;
 

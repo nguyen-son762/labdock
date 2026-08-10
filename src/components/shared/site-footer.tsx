@@ -79,7 +79,19 @@ export function SiteFooter() {
               {column.links.map((link) => (
                 <li key={link}>
                   <Link
-                    href={`/#${link.toLowerCase().replaceAll(" ", "-")}`}
+                    href={
+                      link === "News"
+                        ? "/news"
+                        : link === "Terms & Conditions"
+                          ? "/terms-and-conditions"
+                          : link === "Privacy Policy"
+                            ? "/privacy"
+                            : link === "About us"
+                              ? "/about-us"
+                              : link === "Contact us"
+                                ? "/contact-us"
+                                : `/#${link.toLowerCase().replaceAll(" ", "-")}`
+                    }
                     className="hover:text-[#164990] hover:underline"
                   >
                     {link}
