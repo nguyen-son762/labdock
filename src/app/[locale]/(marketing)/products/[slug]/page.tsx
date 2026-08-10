@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
 import { getProductById, ProductDetailScreen, products } from "@/features/products";
+import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 
 type ProductPageProps = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 };
 
 export function generateStaticParams() {
@@ -13,23 +14,28 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const product = getProductById((await params).slug);
+  const { locale, slug } = await params;
+  if (!isAppLocale(locale)) return {};
+  const product = getProductById(slug);
   if (!product) return {};
   return {
     title: `${product.name} ${product.volume} (${product.catalogNumber})`,
     description: product.description,
-    alternates: { canonical: `/products/${product.id}` },
+    alternates: getLocalizedAlternates(`/products/${product.id}`, locale),
     openGraph: {
       title: `${product.name} ${product.volume}`,
       description: product.description,
-      url: `/products/${product.id}`,
+      url: getLocalizedPath(`/products/${product.id}`, locale),
+      locale: locale === "vi" ? "vi_VN" : "en_SG",
       images: [{ url: product.image, alt: product.name }],
     },
   };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const product = getProductById((await params).slug);
+  const { locale, slug } = await params;
+  if (!isAppLocale(locale)) notFound();
+  const product = getProductById(slug);
   if (!product) notFound();
 
   const productJsonLd = {
@@ -44,7 +50,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       "@type": "Offer",
       priceCurrency: product.currency,
       price: product.price.replace(/[^0-9.]/g, ""),
-      url: `${siteConfig.url}/products/${product.id}`,
+      url: `${siteConfig.url}${getLocalizedPath(`/products/${product.id}`, locale)}`,
       availability: product.badge === "Out of stock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
     },
   };

@@ -1,31 +1,47 @@
 import { Facebook, Global, Instagram, Sms, TruckFast, Verify, Whatsapp } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+
+import { Link } from "@/i18n/navigation";
 
 const footerColumns = [
   {
-    title: "Product Categories",
+    titleKey: "productCategories",
     links: [
-      "Chemicals & Reagents",
-      "Laboratory Consumables",
-      "Laboratory Equipment",
-      "Animal Research Housing Systems",
-      "Biotechnology Solutions",
+      { key: "chemicals", href: "/#chemicals-&-reagents" },
+      { key: "consumables", href: "/#laboratory-consumables" },
+      { key: "equipment", href: "/#laboratory-equipment" },
+      { key: "housing", href: "/#animal-research-housing-systems" },
+      { key: "biotechnology", href: "/#biotechnology-solutions" },
     ],
   },
   {
-    title: "Customer Support",
-    links: ["Track Order", "Shipping & Delivery", "Return Policy", "Technical Consultation", "Contact us"],
+    titleKey: "customerSupport",
+    links: [
+      { key: "trackOrder", href: "/orders" },
+      { key: "shipping", href: "/contact-us" },
+      { key: "returns", href: "/contact-us" },
+      { key: "consultation", href: "/contact-us" },
+      { key: "contact", href: "/contact-us" },
+    ],
   },
   {
-    title: "Quick Links",
-    links: ["Terms & Conditions", "Privacy Policy", "Warranty Policy", "About us", "News"],
+    titleKey: "quickLinks",
+    links: [
+      { key: "terms", href: "/terms-and-conditions" },
+      { key: "privacy", href: "/privacy" },
+      { key: "warranty", href: "/terms-and-conditions" },
+      { key: "about", href: "/about-us" },
+      { key: "news", href: "/news" },
+    ],
   },
 ] as const;
 
 const certifications = ["S5G Certified", "CSBE Certified", "ISO Certified"] as const;
 
 export function SiteFooter() {
+  const t = useTranslations("Footer");
+
   return (
     <footer id="contact-us" className="border-t border-[#d9e4ee] bg-white text-[#5e6375]">
       <div className="container grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.45fr_1fr_1fr_0.85fr_0.9fr]">
@@ -44,9 +60,7 @@ export function SiteFooter() {
             />
             <span className="text-2xl font-medium text-[#164990]">LABDOCK</span>
           </Link>
-          <p className="mt-5 max-w-[260px] text-sm leading-6 text-[#051a50]">
-            Simplifying scientific procurement, enhancing research efficiency
-          </p>
+          <p className="mt-5 max-w-[260px] text-sm leading-6 text-[#051a50]">{t("tagline")}</p>
           <div className="mt-5 flex gap-4 text-[#73798f]">
             <Link
               href="#"
@@ -73,28 +87,13 @@ export function SiteFooter() {
         </div>
 
         {footerColumns.map((column) => (
-          <nav key={column.title} aria-label={column.title}>
-            <h2 className="text-sm font-semibold text-[#164990]">{column.title}</h2>
+          <nav key={column.titleKey} aria-label={t(column.titleKey)}>
+            <h2 className="text-sm font-semibold text-[#164990]">{t(column.titleKey)}</h2>
             <ul className="mt-4 space-y-3 text-xs">
               {column.links.map((link) => (
-                <li key={link}>
-                  <Link
-                    href={
-                      link === "News"
-                        ? "/news"
-                        : link === "Terms & Conditions"
-                          ? "/terms-and-conditions"
-                          : link === "Privacy Policy"
-                            ? "/privacy"
-                            : link === "About us"
-                              ? "/about-us"
-                              : link === "Contact us"
-                                ? "/contact-us"
-                                : `/#${link.toLowerCase().replaceAll(" ", "-")}`
-                    }
-                    className="hover:text-[#164990] hover:underline"
-                  >
-                    {link}
+                <li key={link.key}>
+                  <Link href={link.href} className="hover:text-[#164990] hover:underline">
+                    {link.key === "contact" ? t("contact") : t(`links.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -103,7 +102,7 @@ export function SiteFooter() {
         ))}
 
         <div>
-          <h2 className="text-sm font-semibold text-[#164990]">Contact us</h2>
+          <h2 className="text-sm font-semibold text-[#164990]">{t("contact")}</h2>
           <address className="mt-4 space-y-3 text-xs not-italic">
             <a href="mailto:info@i-dna.sg" className="flex items-center gap-2 hover:text-[#164990]">
               <Sms className="size-4 text-[#164990]" variant="Bold" aria-hidden="true" /> info@i-dna.sg
@@ -112,7 +111,7 @@ export function SiteFooter() {
               <Whatsapp className="size-4 text-[#2bb673]" variant="Bold" aria-hidden="true" /> (+65) 96221086
             </a>
           </address>
-          <p className="mt-8 text-xs font-semibold text-[#164990]">Secured your payment with</p>
+          <p className="mt-8 text-xs font-semibold text-[#164990]">{t("payment")}</p>
           <div className="mt-3 flex gap-2" aria-label="Accepted payment methods">
             {["VISA", "PAY NOW", "●●"].map((payment) => (
               <span
@@ -128,7 +127,9 @@ export function SiteFooter() {
 
       <div className="border-t border-[#ecf0f3]">
         <div className="container flex flex-col gap-4 py-5 text-[11px] md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} LABDOCK. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} LABDOCK. {t("rights")}
+          </p>
           <div className="flex flex-wrap gap-4">
             {certifications.map((certification) => (
               <span key={certification} className="inline-flex items-center gap-1.5 text-[#303647]">
@@ -136,7 +137,7 @@ export function SiteFooter() {
               </span>
             ))}
             <span className="inline-flex items-center gap-1.5 text-[#303647]">
-              <TruckFast className="size-4 text-[#164990]" variant="Bold" aria-hidden="true" /> Fast Delivery
+              <TruckFast className="size-4 text-[#164990]" variant="Bold" aria-hidden="true" /> {t("fastDelivery")}
             </span>
           </div>
         </div>

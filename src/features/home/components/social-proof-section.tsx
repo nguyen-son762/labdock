@@ -1,15 +1,18 @@
 import { ServiceGuarantees } from "@/components/shared/service-guarantees";
+import { useTranslations } from "next-intl";
 
 import { partnerNames, testimonials } from "../data/home-data";
 import { TestimonialCarousel } from "./testimonial-carousel";
 
 export function SocialProofSection() {
+  const t = useTranslations("Home");
+
   return (
     <>
       <section id="research-leaders" className="bg-[#f5f8fb] py-16" aria-labelledby="research-leaders-title">
         <div className="container">
           <h2 id="research-leaders-title" className="text-center text-2xl font-semibold text-[#051a50]">
-            Trusted by 500+ Research Leaders
+            {t("trusted")}
           </h2>
 
           <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 lg:grid-cols-6" aria-label="Partners">

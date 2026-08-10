@@ -1,0 +1,163 @@
+{
+  "Metadata": {
+    "siteDescription": "The bio marketplace for verified laboratory equipment, chemicals, reagents and consumables.",
+    "homeTitle": "Laboratory Products & Procurement",
+    "homeDescription": "Source verified laboratory equipment, chemicals, reagents and consumables from trusted research suppliers."
+  },
+  "Header": {
+    "home": "Home",
+    "about": "About us",
+    "contact": "Contact us",
+    "secondaryNavigation": "Secondary navigation",
+    "allCategories": "All Categories",
+    "openCategories": "Open categories",
+    "shopByCategories": "Shop by categories",
+    "productCategories": "Product categories",
+    "categories": {
+      "chemicals": "Chemicals & Reagents",
+      "equipment": "Lab Equipment",
+      "healthcare": "Medical & Healthcare",
+      "consumables": "Lab Consumables"
+    },
+    "signIn": "Sign in",
+    "account": "Account",
+    "profile": "My profile",
+    "cart": "Cart",
+    "searchCatalog": "Search catalog",
+    "searchPlaceholder": "Search by CAS/catalog/product name...",
+    "search": "Search",
+    "sell": "Sell on Labdock",
+    "partner": "Become distributor partner",
+    "language": "Language",
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
+  },
+  "Footer": {
+    "tagline": "Simplifying scientific procurement, enhancing research efficiency",
+    "productCategories": "Product Categories",
+    "customerSupport": "Customer Support",
+    "quickLinks": "Quick Links",
+    "contact": "Contact us",
+    "rights": "All rights reserved.",
+    "payment": "Secured your payment with",
+    "fastDelivery": "Fast Delivery",
+    "links": {
+      "chemicals": "Chemicals & Reagents",
+      "consumables": "Laboratory Consumables",
+      "equipment": "Laboratory Equipment",
+      "housing": "Animal Research Housing Systems",
+      "biotechnology": "Biotechnology Solutions",
+      "trackOrder": "Track Order",
+      "shipping": "Shipping & Delivery",
+      "returns": "Return Policy",
+      "consultation": "Technical Consultation",
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "warranty": "Warranty Policy",
+      "about": "About us",
+      "news": "News"
+    }
+  },
+  "Home": {
+    "heroTitle": "Your Trusted Partner for Laboratory Procurement",
+    "heroDescription": "Explore the new iDNA-Centrifuge series. Efficiency redefined for modern research.",
+    "guarantees": {
+      "verified": "Verified Lab Products",
+      "certified": "ISO Certified",
+      "delivery": "Fast Delivery",
+      "pricing": "Bulk Pricing Available"
+    },
+    "quickActions": {
+      "product": "Product",
+      "suppliers": "Suppliers",
+      "rfq": "RFQ",
+      "orders": "Orders",
+      "chat": "Chat",
+      "news": "News"
+    },
+    "lowStock": "Low stock",
+    "upcomingEvent": "Upcoming event",
+    "chemicalPromo": "High-Purity Chemicals for Uncompromising Research.",
+    "eventPromo": "2025 Biotech Expo, iDNA Live Demonstration",
+    "register": "Register Now",
+    "shopCollection": "Shop the Collection",
+    "outstanding": "Outstanding Products",
+    "newProducts": "New Products & Services",
+    "personalized": "Personalized offer",
+    "viewAll": "View all Products",
+    "topCategories": "Top Categories",
+    "verifiedProducts": "Verified Lab Products",
+    "bestSeller": "Best Seller",
+    "trending": "Trending",
+    "trusted": "Trusted by 500+ Research Leaders",
+    "productCount": "{count} products",
+    "categories": {
+      "molecularBiology": "Molecular Biology Kits",
+      "thermalControl": "Thermal Control",
+      "cellCultureMedia": "Cell Culture Media & Sera",
+      "solvents": "High-Purity Solvents",
+      "liquidHandling": "Liquid Handling",
+      "cellCulturePlastics": "Cell Culture Plastics",
+      "cryogenicStorage": "Cryogenic Storage",
+      "filtration": "Filtration Products",
+      "samplePreparation": "Sample Preparation",
+      "analyticalInstruments": "Analytical Instruments",
+      "ngsLibrary": "NGS Library Prep",
+      "genomeEditing": "Genome Editing"
+    },
+    "cta": {
+      "equipment": {
+        "title": "Advanced Laboratory Equipment",
+        "description": "Upgrade your facility with high-performance instruments and professional after-sales support.",
+        "action": "Shop the Collection"
+      },
+      "partner": {
+        "title": "Become a Distributor Partner",
+        "description": "List your catalog on the bio-marketplace and reach high-intent buyers.",
+        "action": "Sell on Labdock"
+      }
+    },
+    "editorial": {
+      "equipment": {
+        "badge": "Sale off 15%",
+        "title": "Advanced Laboratory Equipment",
+        "description": "Upgrade your facility with high-performance instruments and professional after-sales support.",
+        "action": "Request a Quote"
+      },
+      "chemicals": {
+        "badge": "Trending",
+        "title": "High-Purity Chemicals & Reagents",
+        "description": "Access authentic molecular biology reagents and biotechnological solutions directly from trusted vendors.",
+        "action": "Shop the Collection"
+      },
+      "consumables": {
+        "badge": "Trending",
+        "title": "Premium Lab Consumables",
+        "description": "Stock up on essential glassware and plasticware designed to simplify procurement and enhance efficiency.",
+        "action": "Shop the Collection"
+      }
+    }
+  },
+  "ProductCard": {
+    "learnMore": "Learn more",
+    "buyNow": "Buy now",
+    "addToCart": "Add {name} to cart",
+    "added": "{name} added to cart.",
+    "error": "We could not update your cart.",
+    "outOfStock": "Out of stock",
+    "bestSeller": "Best Seller"
+  },
+  "ServiceGuarantees": {
+    "label": "Labdock service guarantees",
+    "verifiedTitle": "Lab Verified Products",
+    "verifiedDescription": "Ensuring authentic products and high standards.",
+    "documentsTitle": "COA / SDS Available",
+    "documentsDescription": "Standardized technical information for all orders.",
+    "deliveryTitle": "Rapid Delivery",
+    "deliveryDescription": "Fast fulfillment to enhance research efficiency (SG 1-2 days)",
+    "pricingTitle": "Bulk Pricing Available",
+    "pricingDescription": "Scalable procurement solutions for laboratories.",
+    "certifiedTitle": "S5G & CSBE Certified",
+    "certifiedDescription": "Committed to global standards and compliance."
+  }
+}

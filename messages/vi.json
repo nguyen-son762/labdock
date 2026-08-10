@@ -1,0 +1,163 @@
+{
+  "Metadata": {
+    "siteDescription": "Sàn thương mại sinh học cung cấp thiết bị, hóa chất, thuốc thử và vật tư phòng thí nghiệm đã được xác minh.",
+    "homeTitle": "Sản phẩm và giải pháp mua sắm phòng thí nghiệm",
+    "homeDescription": "Tìm kiếm thiết bị, hóa chất, thuốc thử và vật tư phòng thí nghiệm từ các nhà cung cấp nghiên cứu đáng tin cậy."
+  },
+  "Header": {
+    "home": "Trang chủ",
+    "about": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "secondaryNavigation": "Điều hướng phụ",
+    "allCategories": "Tất cả danh mục",
+    "openCategories": "Mở danh mục",
+    "shopByCategories": "Mua theo danh mục",
+    "productCategories": "Danh mục sản phẩm",
+    "categories": {
+      "chemicals": "Hóa chất và thuốc thử",
+      "equipment": "Thiết bị phòng thí nghiệm",
+      "healthcare": "Y tế và chăm sóc sức khỏe",
+      "consumables": "Vật tư phòng thí nghiệm"
+    },
+    "signIn": "Đăng nhập",
+    "account": "Tài khoản",
+    "profile": "Hồ sơ của tôi",
+    "cart": "Giỏ hàng",
+    "searchCatalog": "Tìm kiếm danh mục",
+    "searchPlaceholder": "Tìm theo CAS, mã catalog hoặc tên sản phẩm...",
+    "search": "Tìm kiếm",
+    "sell": "Bán hàng trên Labdock",
+    "partner": "Trở thành đối tác phân phối",
+    "language": "Ngôn ngữ",
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
+  },
+  "Footer": {
+    "tagline": "Đơn giản hóa mua sắm khoa học, nâng cao hiệu quả nghiên cứu",
+    "productCategories": "Danh mục sản phẩm",
+    "customerSupport": "Hỗ trợ khách hàng",
+    "quickLinks": "Liên kết nhanh",
+    "contact": "Liên hệ",
+    "rights": "Đã đăng ký bản quyền.",
+    "payment": "Thanh toán của bạn được bảo mật bởi",
+    "fastDelivery": "Giao hàng nhanh",
+    "links": {
+      "chemicals": "Hóa chất và thuốc thử",
+      "consumables": "Vật tư phòng thí nghiệm",
+      "equipment": "Thiết bị phòng thí nghiệm",
+      "housing": "Hệ thống nuôi động vật nghiên cứu",
+      "biotechnology": "Giải pháp công nghệ sinh học",
+      "trackOrder": "Theo dõi đơn hàng",
+      "shipping": "Vận chuyển và giao hàng",
+      "returns": "Chính sách đổi trả",
+      "consultation": "Tư vấn kỹ thuật",
+      "terms": "Điều khoản và điều kiện",
+      "privacy": "Chính sách bảo mật",
+      "warranty": "Chính sách bảo hành",
+      "about": "Về chúng tôi",
+      "news": "Tin tức"
+    }
+  },
+  "Home": {
+    "heroTitle": "Đối tác đáng tin cậy cho hoạt động mua sắm phòng thí nghiệm",
+    "heroDescription": "Khám phá dòng máy ly tâm iDNA mới. Hiệu suất được tái định nghĩa cho nghiên cứu hiện đại.",
+    "guarantees": {
+      "verified": "Sản phẩm đã xác minh",
+      "certified": "Chứng nhận ISO",
+      "delivery": "Giao hàng nhanh",
+      "pricing": "Có giá mua số lượng lớn"
+    },
+    "quickActions": {
+      "product": "Sản phẩm",
+      "suppliers": "Nhà cung cấp",
+      "rfq": "Báo giá",
+      "orders": "Đơn hàng",
+      "chat": "Trò chuyện",
+      "news": "Tin tức"
+    },
+    "lowStock": "Sắp hết hàng",
+    "upcomingEvent": "Sự kiện sắp tới",
+    "chemicalPromo": "Hóa chất độ tinh khiết cao cho nghiên cứu không thỏa hiệp.",
+    "eventPromo": "Biotech Expo 2025, trình diễn trực tiếp từ iDNA",
+    "register": "Đăng ký ngay",
+    "shopCollection": "Xem bộ sưu tập",
+    "outstanding": "Sản phẩm nổi bật",
+    "newProducts": "Sản phẩm và dịch vụ mới",
+    "personalized": "Ưu đãi dành riêng cho bạn",
+    "viewAll": "Xem tất cả sản phẩm",
+    "topCategories": "Danh mục nổi bật",
+    "verifiedProducts": "Sản phẩm phòng thí nghiệm đã xác minh",
+    "bestSeller": "Bán chạy",
+    "trending": "Xu hướng",
+    "trusted": "Được hơn 500 nhà nghiên cứu tin tưởng",
+    "productCount": "{count} sản phẩm",
+    "categories": {
+      "molecularBiology": "Bộ kit sinh học phân tử",
+      "thermalControl": "Kiểm soát nhiệt độ",
+      "cellCultureMedia": "Môi trường và huyết thanh nuôi cấy tế bào",
+      "solvents": "Dung môi độ tinh khiết cao",
+      "liquidHandling": "Xử lý chất lỏng",
+      "cellCulturePlastics": "Vật tư nhựa nuôi cấy tế bào",
+      "cryogenicStorage": "Lưu trữ đông lạnh",
+      "filtration": "Sản phẩm lọc",
+      "samplePreparation": "Chuẩn bị mẫu",
+      "analyticalInstruments": "Thiết bị phân tích",
+      "ngsLibrary": "Chuẩn bị thư viện NGS",
+      "genomeEditing": "Chỉnh sửa hệ gen"
+    },
+    "cta": {
+      "equipment": {
+        "title": "Thiết bị phòng thí nghiệm tiên tiến",
+        "description": "Nâng cấp cơ sở với thiết bị hiệu suất cao và dịch vụ hậu mãi chuyên nghiệp.",
+        "action": "Xem bộ sưu tập"
+      },
+      "partner": {
+        "title": "Trở thành đối tác phân phối",
+        "description": "Đăng danh mục trên sàn thương mại sinh học và tiếp cận người mua có nhu cầu cao.",
+        "action": "Bán hàng trên Labdock"
+      }
+    },
+    "editorial": {
+      "equipment": {
+        "badge": "Giảm giá 15%",
+        "title": "Thiết bị phòng thí nghiệm tiên tiến",
+        "description": "Nâng cấp cơ sở với thiết bị hiệu suất cao và dịch vụ hậu mãi chuyên nghiệp.",
+        "action": "Yêu cầu báo giá"
+      },
+      "chemicals": {
+        "badge": "Xu hướng",
+        "title": "Hóa chất và thuốc thử độ tinh khiết cao",
+        "description": "Tiếp cận thuốc thử sinh học phân tử chính hãng và giải pháp công nghệ sinh học từ nhà cung cấp uy tín.",
+        "action": "Xem bộ sưu tập"
+      },
+      "consumables": {
+        "badge": "Xu hướng",
+        "title": "Vật tư phòng thí nghiệm cao cấp",
+        "description": "Trang bị thủy tinh và vật tư nhựa thiết yếu để đơn giản hóa mua sắm và nâng cao hiệu quả.",
+        "action": "Xem bộ sưu tập"
+      }
+    }
+  },
+  "ProductCard": {
+    "learnMore": "Tìm hiểu thêm",
+    "buyNow": "Mua ngay",
+    "addToCart": "Thêm {name} vào giỏ hàng",
+    "added": "Đã thêm {name} vào giỏ hàng.",
+    "error": "Không thể cập nhật giỏ hàng.",
+    "outOfStock": "Hết hàng",
+    "bestSeller": "Bán chạy"
+  },
+  "ServiceGuarantees": {
+    "label": "Cam kết dịch vụ Labdock",
+    "verifiedTitle": "Sản phẩm đã xác minh",
+    "verifiedDescription": "Đảm bảo sản phẩm chính hãng và tiêu chuẩn cao.",
+    "documentsTitle": "Có COA / SDS",
+    "documentsDescription": "Thông tin kỹ thuật chuẩn hóa cho mọi đơn hàng.",
+    "deliveryTitle": "Giao hàng nhanh",
+    "deliveryDescription": "Hoàn tất nhanh chóng để nâng cao hiệu quả nghiên cứu (Singapore 1–2 ngày)",
+    "pricingTitle": "Giá mua số lượng lớn",
+    "pricingDescription": "Giải pháp mua sắm có thể mở rộng cho phòng thí nghiệm.",
+    "certifiedTitle": "Chứng nhận S5G & CSBE",
+    "certifiedDescription": "Tuân thủ các tiêu chuẩn và quy định toàn cầu."
+  }
+}

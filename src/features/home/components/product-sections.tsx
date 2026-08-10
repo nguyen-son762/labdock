@@ -1,14 +1,17 @@
 import { ArrowRight, Box, ProfileCircle } from "iconsax-reactjs";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { ProductCard, ProductCarousel, productGrid, products } from "@/features/products";
+import { Link } from "@/i18n/navigation";
 
 function ViewAllProducts() {
+  const t = useTranslations("Home");
+
   return (
     <Button asChild className="h-11 rounded-full bg-gradient-to-r from-[#2f7bc4] to-[#0f3678] px-5 shadow-none">
       <Link href="/products">
-        View all Products
+        {t("viewAll")}
         <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
           <ArrowRight className="size-4" aria-hidden="true" />
         </span>
@@ -18,6 +21,8 @@ function ViewAllProducts() {
 }
 
 export function OutstandingProducts() {
+  const t = useTranslations("Home");
+
   return (
     <section className="bg-[#f5f8fb] pb-16" aria-labelledby="outstanding-products-title">
       <div className="container">
@@ -27,10 +32,10 @@ export function OutstandingProducts() {
             id="outstanding-products-title"
             className="absolute left-1/2 top-0 flex h-14 w-[min(360px,80%)] -translate-x-1/2 items-center justify-center gap-2 rounded-b-2xl bg-gradient-to-b from-[#e57a00] to-[#f3c15c] text-xl font-semibold text-white shadow-lg"
           >
-            <Box className="size-6" variant="Bulk" aria-hidden="true" /> Outstanding Products
+            <Box className="size-6" variant="Bulk" aria-hidden="true" /> {t("outstanding")}
           </h2>
           <div className="relative">
-            <ProductCarousel products={productGrid} label="Outstanding products" appearance="outstanding" tone="dark" />
+            <ProductCarousel products={productGrid} label={t("outstanding")} appearance="outstanding" tone="dark" />
           </div>
         </div>
       </div>
@@ -39,11 +44,13 @@ export function OutstandingProducts() {
 }
 
 export function NewProductsSection() {
+  const t = useTranslations("Home");
+
   return (
     <section id="new-products" className="bg-[#f5f8fb] py-12" aria-labelledby="new-products-title">
       <div className="container rounded-2xl bg-white px-4 py-8 lg:px-5">
         <h2 id="new-products-title" className="mb-8 text-center text-2xl font-semibold text-[#051a50]">
-          New Products &amp; Services
+          {t("newProducts")}
         </h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
           {productGrid.map((product, index) => (
@@ -59,6 +66,8 @@ export function NewProductsSection() {
 }
 
 export function PersonalizedProducts() {
+  const t = useTranslations("Home");
+
   return (
     <section className="bg-[#f5f8fb] py-12" aria-labelledby="personalized-title">
       <div className="container">
@@ -67,7 +76,7 @@ export function PersonalizedProducts() {
             id="personalized-title"
             className="absolute left-1/2 top-0 flex h-14 w-[min(390px,80%)] -translate-x-1/2 items-center justify-center gap-2 rounded-b-2xl bg-gradient-to-b from-[#174d91] to-[#72b1de] text-xl font-semibold text-white"
           >
-            <ProfileCircle className="size-7 text-[#f6a21a]" variant="Bold" aria-hidden="true" /> Personalized offer
+            <ProfileCircle className="size-7 text-[#f6a21a]" variant="Bold" aria-hidden="true" /> {t("personalized")}
           </h2>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
             {products.map((product, index) => (

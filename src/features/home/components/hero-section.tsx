@@ -13,27 +13,30 @@ import {
   Verify,
 } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 const guarantees = [
-  { label: "Verified Lab Products", icon: Verify, color: "bg-[#dff5eb] text-[#3eb584]" },
-  { label: "ISO Certified", icon: Verify, color: "bg-[#dff5eb] text-[#3eb584]" },
-  { label: "Fast Delivery", icon: TruckFast, color: "bg-[#dceeff] text-[#164990]" },
-  { label: "Bulk Pricing Available", icon: MoneyChange, color: "bg-[#fff0d2] text-[#e57a00]" },
+  { key: "verified", icon: Verify, color: "bg-[#dff5eb] text-[#3eb584]" },
+  { key: "certified", icon: Verify, color: "bg-[#dff5eb] text-[#3eb584]" },
+  { key: "delivery", icon: TruckFast, color: "bg-[#dceeff] text-[#164990]" },
+  { key: "pricing", icon: MoneyChange, color: "bg-[#fff0d2] text-[#e57a00]" },
 ] as const;
 
 const quickActions = [
-  { label: "Product", icon: Box, href: "#new-products" },
-  { label: "Suppliers", icon: People, href: "#research-leaders" },
-  { label: "RFQ", icon: ClipboardText, href: "/rfqs" },
-  { label: "Orders", icon: ShoppingCart, href: "/orders" },
-  { label: "Chat", icon: MessageText, href: "/contact-us" },
-  { label: "News", icon: ReceiptItem, href: "#news" },
+  { key: "product", icon: Box, href: "/#new-products" },
+  { key: "suppliers", icon: People, href: "/#research-leaders" },
+  { key: "rfq", icon: ClipboardText, href: "/rfqs" },
+  { key: "orders", icon: ShoppingCart, href: "/orders" },
+  { key: "chat", icon: MessageText, href: "/contact-us" },
+  { key: "news", icon: ReceiptItem, href: "/#news" },
 ] as const;
 
 function PromoCard({ event = false }: { event?: boolean }) {
+  const t = useTranslations("Home");
+
   return (
     <article className="relative min-h-[250px] overflow-hidden rounded-xl text-white lg:min-h-[300px]">
       <Image
@@ -48,10 +51,10 @@ function PromoCard({ event = false }: { event?: boolean }) {
       <div className="absolute inset-0  " />
       <div className="relative flex h-full min-h-[250px] max-w-lg flex-col justify-end p-6 lg:min-h-[300px]">
         <span className="mb-2 w-fit rounded bg-[#e57a00] px-1.5 py-0.5 text-[10px] font-semibold uppercase">
-          {event ? "Upcoming event" : "Low stock"}
+          {event ? t("upcomingEvent") : t("lowStock")}
         </span>
         <h2 className="max-w-md text-xl font-semibold leading-tight lg:text-2xl">
-          {event ? "2025 Biotech Expo, iDNA Live Demonstration" : "High-Purity Chemicals for Uncompromising Research."}
+          {event ? t("eventPromo") : t("chemicalPromo")}
         </h2>
         {event ? (
           <p className="mt-3 flex flex-wrap gap-4 text-xs text-white/90">
@@ -65,7 +68,7 @@ function PromoCard({ event = false }: { event?: boolean }) {
         ) : null}
         <Button asChild variant={event ? "default" : "brand"} className="mt-5 h-11 w-fit rounded-full px-5">
           <Link href={event ? "/contact-us" : "#new-products"}>
-            {event ? "Register Now" : "Shop the Collection"}
+            {event ? t("register") : t("shopCollection")}
             <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
               <ArrowRight className="size-4" aria-hidden="true" />
             </span>
@@ -77,6 +80,8 @@ function PromoCard({ event = false }: { event?: boolean }) {
 }
 
 export function HeroSection() {
+  const t = useTranslations("Home");
+
   return (
     <section className="relative overflow-hidden bg-[#dcecff] pb-14" aria-labelledby="home-hero-title">
       <Image
@@ -95,22 +100,19 @@ export function HeroSection() {
             id="home-hero-title"
             className="max-w-[470px] text-4xl font-bold leading-[1.12] text-[#051a50] lg:text-[40px]"
           >
-            Your Trusted Partner for Laboratory Procurement
+            {t("heroTitle")}
           </h1>
-          <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]">
-            Explore the new iDNA-Centrifuge series.
-            <br /> Efficiency redefined for modern research.
-          </p>
+          <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]">{t("heroDescription")}</p>
           <ul className="mt-7 flex flex-wrap gap-2" aria-label="Procurement guarantees">
-            {guarantees.map(({ label, icon: Icon, color }) => (
+            {guarantees.map(({ key, icon: Icon, color }) => (
               <li
-                key={label}
+                key={key}
                 className="flex items-center gap-2 rounded-full bg-white px-2 py-1.5 text-xs text-[#22293b]"
               >
                 <span className={`flex size-6 items-center justify-center rounded-full ${color}`}>
                   <Icon className="size-3.5" variant="Bold" aria-hidden="true" />
                 </span>
-                {label}
+                {t(`guarantees.${key}`)}
               </li>
             ))}
           </ul>
@@ -122,16 +124,16 @@ export function HeroSection() {
         </div>
 
         <nav aria-label="Quick actions" className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {quickActions.map(({ label, icon: Icon, href }) => (
+          {quickActions.map(({ key, icon: Icon, href }) => (
             <Link
-              key={label}
+              key={key}
               href={href}
               className="flex h-[72px] items-center justify-center gap-3 rounded-xl bg-white/90 px-4 font-semibold text-[#22293b] shadow-[0_8px_30px_rgba(5,26,80,0.05)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
             >
               <span className="flex size-10 items-center justify-center rounded-xl bg-[#e8f3ff] text-[#1670aa]">
                 <Icon className="size-6" variant="Bulk" aria-hidden="true" />
               </span>
-              {label}
+              {t(`quickActions.${key}`)}
             </Link>
           ))}
         </nav>

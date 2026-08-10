@@ -1,0 +1,66 @@
+import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
+
+import { siteConfig } from "@/config/site";
+import { getLanguageAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
+import { routing } from "@/i18n/routing";
+
+import "../globals.css";
+
+type LocaleLayoutProps = Readonly<{
+  children: ReactNode;
+  params: Promise<{ locale: string }>;
+}>;
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isAppLocale(locale)) return {};
+
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  return {
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: siteConfig.name,
+      template: `%s · ${siteConfig.name}`,
+    },
+    description: t("siteDescription"),
+    alternates: {
+      canonical: getLocalizedPath("/", locale),
+      languages: getLanguageAlternates("/"),
+    },
+    openGraph: {
+      title: siteConfig.name,
+      description: t("siteDescription"),
+      type: "website",
+      locale: locale === "vi" ? "vi_VN" : "en_SG",
+      siteName: siteConfig.name,
+      url: getLocalizedPath("/", locale),
+    },
+  };
+}
+
+export default async function RootLayout({ children, params }: LocaleLayoutProps) {
+  const { locale } = await params;
+  if (!isAppLocale(locale)) notFound();
+
+  setRequestLocale(locale);
+  const messages = await getMessages({ locale });
+
+  return (
+    <html lang={locale} data-scroll-behavior="smooth">
+      <body className="min-h-dvh font-sans">
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

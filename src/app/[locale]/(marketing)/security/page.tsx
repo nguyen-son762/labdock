@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import { Key, SecuritySafe, ShieldTick } from "iconsax-reactjs";
 
-export const metadata: Metadata = {
-  title: "Security",
-  description: "Learn how Labdock protects account sessions and user data.",
-  alternates: { canonical: "/security" },
-  openGraph: {
-    title: "Security | Labdock",
-    description: "Learn how Labdock protects account sessions and user data.",
-    url: "/security",
-  },
-};
+import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isAppLocale(locale)) return {};
+  const description = "Learn how Labdock protects account sessions and user data.";
+
+  return {
+    title: "Security",
+    description,
+    alternates: getLocalizedAlternates("/security", locale),
+    openGraph: {
+      title: "Security | Labdock",
+      description,
+      url: getLocalizedPath("/security", locale),
+      locale: locale === "vi" ? "vi_VN" : "en_SG",
+    },
+  };
+}
 
 const protections = [
   {

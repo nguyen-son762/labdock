@@ -36,6 +36,8 @@ npm run build
 
 ```text
 src/app                 Route, layout, metadata và composition
+src/i18n                Locale contract, navigation và request configuration
+messages                Bản dịch theo namespace cho từng locale
 src/features/auth       Login/logout service, mutation và form
 src/features/profile    Current User query, profile mutation và Dashboard UI
 src/components/ui       Primitive theo Shadcn UI convention
@@ -44,7 +46,24 @@ src/lib                 Axios instance, error normalization và utility
 src/providers           React Query provider tại boundary cần thiết
 ```
 
-Homepage, Privacy và Security là Server Component tĩnh. Login chỉ hydrate form. Dashboard chỉ hydrate khu vực dữ liệu người dùng. React Query provider không bọc public Homepage.
+Các route nằm dưới segment `[locale]`; locale mặc định `en` giữ URL không tiền tố, còn tiếng Việt dùng `/vi`. Nội dung public vẫn được render phía Server; chỉ language switcher và các interaction cần thiết mới hydrate phía Client.
+
+## Đa ngôn ngữ
+
+Dự án dùng `next-intl` với source of truth tại `src/i18n/routing.ts`. Hiện hỗ trợ:
+
+- English: `/products` (locale mặc định, không có prefix).
+- Tiếng Việt: `/vi/products`.
+
+File message nằm tại `messages/en.json` và `messages/vi.json`. Khi thêm message, phải thêm cùng key cho mọi locale; không đưa câu hiển thị dùng chung trực tiếp vào shared component. Link và điều hướng phía Client dùng wrapper trong `src/i18n/navigation.ts` để giữ locale hiện tại.
+
+Khi thêm locale mới:
+
+1. Thêm locale vào `src/i18n/routing.ts`.
+2. Tạo file `messages/<locale>.json` có cấu trúc key tương ứng.
+3. Thêm nhãn/flag vào language switcher.
+4. Cập nhật locale OpenGraph trong metadata nếu locale có region riêng.
+5. Chạy test, kiểm tra sitemap alternates và production build.
 
 ## UI và form
 

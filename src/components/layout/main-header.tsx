@@ -18,43 +18,47 @@ import {
   Sms,
 } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
+import { LanguageSwitcher } from "./language-switcher";
+
 const topLinks = [
-  { label: "Home", icon: Home, href: "/" },
-  { label: "About us", icon: Building, href: "/about-us" },
-  { label: "Contact us", icon: Call, href: "/contact-us" },
+  { key: "home", icon: Home, href: "/" },
+  { key: "about", icon: Building, href: "/about-us" },
+  { key: "contact", icon: Call, href: "/contact-us" },
 ] as const;
 
 const categories = [
-  { label: "Chemicals & Reagents", icon: ChemicalGlass, slug: "chemicals-reagents" },
-  { label: "Lab Equipment", icon: Microscope, slug: "lab-equipment" },
-  { label: "Medical & Healthcare", icon: Health, slug: "medical-healthcare" },
-  { label: "Lab Consumables", icon: Box, slug: "lab-consumables" },
+  { key: "chemicals", icon: ChemicalGlass, slug: "chemicals-reagents" },
+  { key: "equipment", icon: Microscope, slug: "lab-equipment" },
+  { key: "healthcare", icon: Health, slug: "medical-healthcare" },
+  { key: "consumables", icon: Box, slug: "lab-consumables" },
 ] as const;
 
 function CategoryPopover({ compact = false }: { compact?: boolean }) {
+  const t = useTranslations("Header");
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           type="button"
           variant="brand"
-          aria-label={compact ? "Open categories" : undefined}
+          aria-label={compact ? t("openCategories") : undefined}
           className={cn(
             "h-11 shrink-0 gap-2 shadow-none",
             compact ? "size-10 rounded-full p-0" : "w-[134px] rounded-l-full rounded-r-none px-4",
           )}
         >
           <Menu className="size-4" aria-hidden="true" />
-          {compact ? null : <span>All Categories</span>}
+          {compact ? null : <span>{t("allCategories")}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -63,10 +67,10 @@ function CategoryPopover({ compact = false }: { compact?: boolean }) {
         className="w-[320px] overflow-hidden rounded-xl border border-[#d5d7da] bg-white p-2 text-[#101828] shadow-[0_12px_32px_rgba(5,26,80,0.16)]"
       >
         <p className="px-3 pb-2 pt-1 text-xs font-semibold uppercase tracking-[0.08em] text-[#868da5]">
-          Shop by categories
+          {t("shopByCategories")}
         </p>
-        <nav aria-label="Product categories" className="space-y-1">
-          {categories.map(({ label, icon: Icon, slug }) => (
+        <nav aria-label={t("productCategories")} className="space-y-1">
+          {categories.map(({ key, icon: Icon, slug }) => (
             <Button
               key={slug}
               asChild
@@ -75,7 +79,7 @@ function CategoryPopover({ compact = false }: { compact?: boolean }) {
             >
               <Link href={`/#category-${slug}`}>
                 <Icon className="size-5 text-[#2f7ac6]" aria-hidden="true" />
-                <span className="flex-1 text-left">{label}</span>
+                <span className="flex-1 text-left">{t(`categories.${key}`)}</span>
                 <ArrowRight2 className="size-4 text-[#a3abbd]" aria-hidden="true" />
               </Link>
             </Button>
@@ -89,6 +93,8 @@ function CategoryPopover({ compact = false }: { compact?: boolean }) {
 type HeaderAccount = { fullName: string; email: string };
 
 function AccountSummary({ account }: { account?: HeaderAccount }) {
+  const t = useTranslations("Header");
+
   return (
     <Link
       href={account ? "/profile" : "/login"}
@@ -105,8 +111,8 @@ function AccountSummary({ account }: { account?: HeaderAccount }) {
           </>
         ) : (
           <>
-            <span className="text-[13px] leading-[17px]">Sign in</span>
-            <strong className="text-sm leading-[18px]">Account</strong>
+            <span className="text-[13px] leading-[17px]">{t("signIn")}</span>
+            <strong className="text-sm leading-[18px]">{t("account")}</strong>
           </>
         )}
       </span>
@@ -115,6 +121,8 @@ function AccountSummary({ account }: { account?: HeaderAccount }) {
 }
 
 function OrderSummary() {
+  const t = useTranslations("Header");
+
   return (
     <Link
       href="/cart"
@@ -127,7 +135,7 @@ function OrderSummary() {
         </span>
       </span>
       <span className="flex flex-col text-left leading-none">
-        <span className="text-[13px] leading-[17px]">Cart</span>
+        <span className="text-[13px] leading-[17px]">{t("cart")}</span>
         <strong className="whitespace-nowrap text-sm leading-[18px]">S$200.00</strong>
       </span>
     </Link>
@@ -135,18 +143,20 @@ function OrderSummary() {
 }
 
 function SearchBox({ className }: { className?: string }) {
+  const t = useTranslations("Header");
+
   return (
     <div role="search" className={cn("flex h-11 items-center overflow-hidden bg-[#f5f7f8] pl-4 pr-1.5", className)}>
       <Input
-        aria-label="Search catalog"
-        placeholder="Search by CAS/catalog/product name..."
+        aria-label={t("searchCatalog")}
+        placeholder={t("searchPlaceholder")}
         className="h-10 min-w-0 flex-1 border-0 bg-transparent px-0 text-sm text-[#051a50] shadow-none placeholder:text-[#a3abbd] focus-visible:ring-0! focus-visible:ring-offset-0 focus-visible:outline-none! focus-visible:shadow-none!"
       />
       <Button
         type="button"
         size="icon"
         variant="brand"
-        aria-label="Search"
+        aria-label={t("search")}
         className="size-8 shrink-0 p-0 shadow-[0_0_15px_rgba(229,122,0,0.5)]"
       >
         <SearchNormal1 className="size-4" aria-hidden="true" />
@@ -157,6 +167,7 @@ function SearchBox({ className }: { className?: string }) {
 
 export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; account?: HeaderAccount }) {
   const pathname = usePathname();
+  const t = useTranslations("Header");
 
   return (
     <header className="relative h-[110px] overflow-visible bg-[#16518f] text-white">
@@ -182,10 +193,10 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
 
       <div className="relative z-10 mx-auto h-full max-w-[1440px]">
         <div className="flex h-9 items-center justify-between border-b border-white/10 px-5 text-[13px] font-medium sm:px-10 xl:px-20">
-          <nav aria-label="Secondary navigation" className="flex items-center gap-4 sm:gap-6">
-            {topLinks.map(({ label, icon: Icon, href }) => (
+          <nav aria-label={t("secondaryNavigation")} className="flex items-center gap-4 sm:gap-6">
+            {topLinks.map(({ key, icon: Icon, href }) => (
               <Link
-                key={label}
+                key={key}
                 href={href}
                 className={cn(
                   "inline-flex h-5 items-center gap-2 transition-colors hover:text-[#f5a623]",
@@ -193,7 +204,7 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
                 )}
               >
                 <Icon className="size-4" aria-hidden="true" />
-                <span className={cn(label !== "Home" && "hidden sm:inline")}>{label}</span>
+                <span className={cn(key !== "home" && "hidden sm:inline")}>{t(key)}</span>
               </Link>
             ))}
           </nav>
@@ -203,13 +214,7 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
               info@i-dna.sg
             </span>
             <span className="mx-5 h-5 w-px bg-white/20" aria-hidden="true" />
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-auto gap-1.5 rounded p-0 font-medium text-white hover:bg-transparent hover:text-white hover:opacity-80"
-            >
-              English <ArrowDown className="size-3.5" aria-hidden="true" />
-            </Button>
+            <LanguageSwitcher />
             <Button
               type="button"
               variant="ghost"
@@ -255,8 +260,8 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
               <Shop className="size-4" aria-hidden="true" />
             </span>
             <span className="flex flex-col items-start gap-px text-left leading-none">
-              <strong className="text-[13px] leading-[16px]">Sell on Labdock</strong>
-              <span className="text-xs font-normal leading-[15px]">Become distributor partner</span>
+              <strong className="text-[13px] leading-[16px]">{t("sell")}</strong>
+              <span className="text-xs font-normal leading-[15px]">{t("partner")}</span>
             </span>
           </Button>
 
@@ -270,14 +275,14 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
             <CategoryPopover compact />
             <Link
               href={account ? "/profile" : "/login"}
-              aria-label={account ? "My profile" : "Sign in"}
+              aria-label={account ? t("profile") : t("signIn")}
               className="flex size-10 items-center justify-center rounded-full bg-white/10"
             >
               <ProfileCircle className="size-5" variant="Bold" aria-hidden="true" />
             </Link>
             <Link
               href="/cart"
-              aria-label="Cart"
+              aria-label={t("cart")}
               className="relative flex size-10 items-center justify-center rounded-full bg-white/10"
             >
               <ShoppingCart className="size-5" variant="Bold" aria-hidden="true" />

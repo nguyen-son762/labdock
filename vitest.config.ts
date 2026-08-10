@@ -15,6 +15,11 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
     css: true,
+    server: {
+      deps: {
+        inline: ["next-intl"],
+      },
+    },
     coverage: {
       reporter: ["text", "html"],
     },

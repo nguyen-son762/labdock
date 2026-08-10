@@ -2,11 +2,12 @@
 
 import { ArrowRight, BucketSquare, ShoppingCart, Verify } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useAddCartItemMutation } from "@/features/checkout";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
 import type { Product } from "../products.types";
@@ -18,6 +19,7 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, appearance = "default" }: ProductCardProps) {
+  const t = useTranslations("ProductCard");
   const addCartItem = useAddCartItemMutation();
   const [status, setStatus] = useState("");
   const outOfStock = product.badge === "Out of stock";
@@ -57,7 +59,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
               outOfStock ? "bg-[#c9ced8]" : "bg-gradient-to-r from-[#efa33b] to-[#e57a00]",
             )}
           >
-            {product.badge}
+            {outOfStock ? t("outOfStock") : product.badge === "Best Seller" ? t("bestSeller") : product.badge}
           </span>
         ) : null}
         {product.discount ? (
@@ -107,7 +109,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
             )}
           >
             <Link href={productHref}>
-              {outOfStock ? "Learn more" : "Buy now"}
+              {outOfStock ? t("learnMore") : t("buyNow")}
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
           </Button>
@@ -115,13 +117,13 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
             <Button
               type="button"
               size="icon"
-              aria-label={`Add ${product.name} to cart`}
+              aria-label={t("addToCart", { name: product.name })}
               disabled={addCartItem.isPending}
               onClick={() => {
                 setStatus("");
                 addCartItem.mutate(createCartItemFromProduct(product, { quantity: 1, size: product.volume }), {
-                  onSuccess: () => setStatus(`${product.name} added to cart.`),
-                  onError: () => setStatus("We could not update your cart."),
+                  onSuccess: () => setStatus(t("added", { name: product.name })),
+                  onError: () => setStatus(t("error")),
                 });
               }}
               className="size-8 shrink-0 rounded-full bg-gradient-to-r from-[#164990] to-[#2f7bc4] shadow-none hover:brightness-110"
