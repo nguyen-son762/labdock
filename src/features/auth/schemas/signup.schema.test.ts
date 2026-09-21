@@ -10,8 +10,8 @@ describe("signupSchema", () => {
       email: "  son@example.com  ",
       phoneCode: "+65",
       phone: "91234567",
-      country: "Singapore",
-      region: "Central Region",
+      country: "SG",
+      region: "SG",
       address: "  1 Science Park Road  ",
     });
 
@@ -20,6 +20,7 @@ describe("signupSchema", () => {
       fullName: "Son Nguyen",
       email: "son@example.com",
       address: "1 Science Park Road",
+      country: "SG",
     });
   });
 

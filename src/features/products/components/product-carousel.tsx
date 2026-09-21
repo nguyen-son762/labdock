@@ -13,7 +13,7 @@ import { ProductCard } from "./product-card";
 import "swiper/css";
 
 type ProductCarouselProps = {
-  products: Product[];
+  products: readonly Product[];
   label: string;
   appearance?: "default" | "outstanding";
   tone?: "light" | "dark" | "orange";

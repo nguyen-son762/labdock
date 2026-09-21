@@ -12,6 +12,7 @@ import { cn } from "@/lib/class-names";
 
 import type { Product } from "../products.types";
 import { createCartItemFromProduct } from "../utils/product-cart";
+import { getProductCardPresentation } from "../utils/product-display";
 
 type ProductCardProps = {
   product: Product;
@@ -22,8 +23,9 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
   const t = useTranslations("ProductCard");
   const addCartItem = useAddCartItemMutation();
   const [status, setStatus] = useState("");
-  const outOfStock = product.badge === "Out of stock";
-  const productHref = `/products/${product.id}`;
+  const presentation = getProductCardPresentation(product);
+  const selectedVariant = presentation.variant;
+  const productHref = `/products/${product.slug}`;
 
   return (
     <article
@@ -45,33 +47,37 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
         )}
       >
         <Image
-          src={product.image}
+          src={presentation.image}
           alt={product.name}
           fill
           unoptimized
           sizes="(min-width: 1280px) 190px, (min-width: 768px) 30vw, 45vw"
           className="object-contain p-3"
         />
-        {product.badge ? (
+        {presentation.badge ? (
           <span
             className={cn(
               "absolute left-0 top-0 rounded-br px-1.5 py-0.5 text-[10px] font-medium text-white",
-              outOfStock ? "bg-[#c9ced8]" : "bg-gradient-to-r from-[#efa33b] to-[#e57a00]",
+              presentation.outOfStock ? "bg-[#c9ced8]" : "bg-gradient-to-r from-[#efa33b] to-[#e57a00]",
             )}
           >
-            {outOfStock ? t("outOfStock") : product.badge === "Best Seller" ? t("bestSeller") : product.badge}
+            {presentation.outOfStock
+              ? t("outOfStock")
+              : presentation.badge === "Best Seller"
+                ? t("bestSeller")
+                : presentation.badge}
           </span>
         ) : null}
-        {product.discount ? (
+        {presentation.discount ? (
           <span className="absolute right-0 top-0 rounded-bl bg-[#dc2626] px-1.5 py-0.5 text-[10px] font-medium text-white">
-            {product.discount}
+            {presentation.discount}
           </span>
         ) : null}
       </Link>
 
       <div className="relative z-10 flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
         <div className="min-h-[57px]">
-          <p className="text-[10px] leading-4 text-[#73798f]">{product.category}</p>
+          {product.productNo ? <p className="text-[10px] leading-4 text-[#73798f]">{product.productNo}</p> : null}
           <Link
             href={productHref}
             className="line-clamp-2 text-xs font-semibold leading-[17px] text-[#051a50] hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
@@ -80,21 +86,30 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
           </Link>
         </div>
 
-        <div className="flex items-center gap-1 overflow-hidden text-[9px] text-[#5e6375]">
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5">
-            <BucketSquare className="size-3 text-[#1f6db2]" variant="Bold" aria-hidden="true" />
-            {product.volume}
-          </span>
-          <span className="inline-flex min-w-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5">
-            <Verify className="size-3 shrink-0 text-[#3eb584]" variant="Bold" aria-hidden="true" />
-            <span className="truncate">{product.brand}</span>
-          </span>
-        </div>
+        {presentation.variantLabel || product.brandName ? (
+          <div className="flex items-center gap-1 overflow-hidden text-[9px] text-[#5e6375]">
+            {presentation.variantLabel ? (
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5">
+                <BucketSquare className="size-3 text-[#1f6db2]" variant="Bold" aria-hidden="true" />
+                {presentation.variantLabel}
+              </span>
+            ) : null}
+            {product.brandName ? (
+              <span
+                className="inline-flex min-w-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5"
+                title={product.brandName}
+              >
+                <Verify className="size-3 shrink-0 text-[#3eb584]" variant="Bold" aria-hidden="true" />
+                <span className="truncate">{product.brandName}</span>
+              </span>
+            ) : null}
+          </div>
+        ) : null}
 
         <p className="flex min-h-5 items-center gap-1.5 text-sm font-bold text-[#e57a00]">
-          {product.price}
-          {product.originalPrice ? (
-            <span className="text-[9px] font-normal text-[#a3abbd] line-through">{product.originalPrice}</span>
+          {presentation.price}
+          {presentation.originalPrice ? (
+            <span className="text-[9px] font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
           ) : null}
         </p>
 
@@ -102,18 +117,19 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
           <Button
             asChild
             size="sm"
-            variant={outOfStock ? "outline" : "brand"}
+            variant={presentation.canPurchase ? "brand" : "outline"}
             className={cn(
               "h-8 flex-1 rounded-full px-2 text-xs shadow-none",
-              outOfStock && "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
+              !presentation.canPurchase &&
+                "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
             )}
           >
             <Link href={productHref}>
-              {outOfStock ? t("learnMore") : t("buyNow")}
+              {presentation.canPurchase ? t("buyNow") : t("learnMore")}
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
           </Button>
-          {!outOfStock ? (
+          {presentation.canPurchase && selectedVariant ? (
             <Button
               type="button"
               size="icon"
@@ -121,7 +137,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
               disabled={addCartItem.isPending}
               onClick={() => {
                 setStatus("");
-                addCartItem.mutate(createCartItemFromProduct(product, { quantity: 1, size: product.volume }), {
+                addCartItem.mutate(createCartItemFromProduct(product, { quantity: 1, variantId: selectedVariant.id }), {
                   onSuccess: () => setStatus(t("added", { name: product.name })),
                   onError: () => setStatus(t("error")),
                 });

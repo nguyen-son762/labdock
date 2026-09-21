@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-const authenticatedSessionSchema = z.object({ authenticated: z.literal(true) });
+const authenticatedSessionSchema = z.object({
+  authenticated: z.literal(true),
+  expiresAt: z.iso.datetime({ offset: true }),
+  mustChangePassword: z.boolean(),
+});
 
 const anonymousSessionSchema = z.object({ authenticated: z.literal(false) });
 

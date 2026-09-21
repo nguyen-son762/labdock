@@ -1,0 +1,39 @@
+import { z } from "zod";
+
+const guidSchema = z.string().regex(/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i, "Invalid identifier.");
+
+export const publicProductListItemSchema = z.object({
+  id: guidSchema,
+  name: z.string().min(1),
+  slug: z.string().min(1),
+  productNo: z.string().min(1),
+  brandName: z.string().min(1),
+  primaryImageUrl: z.string().min(1).nullable(),
+  priceVisible: z.boolean(),
+  fromPrice: z.number().nonnegative().nullable(),
+  currency: z.string().length(3),
+  outOfStock: z.boolean(),
+  publishedAt: z.iso.datetime({ offset: true }),
+  isNew: z.boolean(),
+  isOutstanding: z.boolean(),
+});
+
+export const publicProductsPageSchema = z.object({
+  items: z.array(publicProductListItemSchema),
+  page: z.number().int().positive(),
+  pageSize: z.number().int().positive(),
+  total: z.number().int().nonnegative(),
+});
+
+export type PublicProductListItem = z.infer<typeof publicProductListItemSchema>;
+export type PublicProductsPage = z.infer<typeof publicProductsPageSchema>;
+
+export type GetPublicProductsParams = {
+  page: number;
+  pageSize: number;
+  brandId?: string;
+  categoryId?: string;
+  sort?: string;
+  isNew?: boolean;
+  isOutstanding?: boolean;
+};

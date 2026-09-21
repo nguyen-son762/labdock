@@ -13,6 +13,12 @@
     "openCategories": "Open categories",
     "shopByCategories": "Shop by categories",
     "productCategories": "Product categories",
+    "loadingCategories": "Loading categories...",
+    "noCategories": "No categories are available.",
+    "categoriesUnavailable": "Categories could not be loaded.",
+    "categoryProductCount": "{count} products",
+    "openSubcategories": "Open subcategories for {category}",
+    "subcategoriesOf": "Subcategories of {category}",
     "categories": {
       "chemicals": "Chemicals & Reagents",
       "equipment": "Lab Equipment",
@@ -90,6 +96,8 @@
     "bestSeller": "Best Seller",
     "trending": "Trending",
     "trusted": "Trusted by 500+ Research Leaders",
+    "testimonialsTitle": "What research leaders say",
+    "visitBrandWebsite": "Visit {name} website",
     "productCount": "{count} products",
     "categories": {
       "molecularBiology": "Molecular Biology Kits",

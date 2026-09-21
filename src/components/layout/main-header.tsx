@@ -2,15 +2,9 @@
 
 import {
   ArrowDown,
-  ArrowRight2,
-  Box,
   Building,
   Call,
-  ChemicalGlass,
-  Health,
   Home,
-  Menu,
-  Microscope,
   ProfileCircle,
   SearchNormal1,
   Shop,
@@ -23,10 +17,10 @@ import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
+import { CategoryPopover, type HeaderCategory } from "./category-popover";
 import { LanguageSwitcher } from "./language-switcher";
 
 const topLinks = [
@@ -35,62 +29,15 @@ const topLinks = [
   { key: "contact", icon: Call, href: "/contact-us" },
 ] as const;
 
-const categories = [
-  { key: "chemicals", icon: ChemicalGlass, slug: "chemicals-reagents" },
-  { key: "equipment", icon: Microscope, slug: "lab-equipment" },
-  { key: "healthcare", icon: Health, slug: "medical-healthcare" },
-  { key: "consumables", icon: Box, slug: "lab-consumables" },
-] as const;
-
-function CategoryPopover({ compact = false }: { compact?: boolean }) {
-  const t = useTranslations("Header");
-
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="brand"
-          aria-label={compact ? t("openCategories") : undefined}
-          className={cn(
-            "h-11 shrink-0 gap-2 shadow-none",
-            compact ? "size-10 rounded-full p-0" : "w-[134px] rounded-l-full rounded-r-none px-4",
-          )}
-        >
-          <Menu className="size-4" aria-hidden="true" />
-          {compact ? null : <span>{t("allCategories")}</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="start"
-        sideOffset={8}
-        className="w-[320px] overflow-hidden rounded-xl border border-[#d5d7da] bg-white p-2 text-[#101828] shadow-[0_12px_32px_rgba(5,26,80,0.16)]"
-      >
-        <p className="px-3 pb-2 pt-1 text-xs font-semibold uppercase tracking-[0.08em] text-[#868da5]">
-          {t("shopByCategories")}
-        </p>
-        <nav aria-label={t("productCategories")} className="space-y-1">
-          {categories.map(({ key, icon: Icon, slug }) => (
-            <Button
-              key={slug}
-              asChild
-              variant="ghost"
-              className="h-11 w-full justify-start rounded-lg px-3 font-medium text-[#051a50] hover:bg-[#f5f7f8]"
-            >
-              <Link href={`/#category-${slug}`}>
-                <Icon className="size-5 text-[#2f7ac6]" aria-hidden="true" />
-                <span className="flex-1 text-left">{t(`categories.${key}`)}</span>
-                <ArrowRight2 className="size-4 text-[#a3abbd]" aria-hidden="true" />
-              </Link>
-            </Button>
-          ))}
-        </nav>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 type HeaderAccount = { fullName: string; email: string };
+
+type MainHeaderProps = {
+  cartContent?: ReactNode;
+  account?: HeaderAccount;
+  categories?: readonly HeaderCategory[];
+  categoriesLoading?: boolean;
+  categoriesError?: boolean;
+};
 
 function AccountSummary({ account }: { account?: HeaderAccount }) {
   const t = useTranslations("Header");
@@ -165,7 +112,13 @@ function SearchBox({ className }: { className?: string }) {
   );
 }
 
-export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; account?: HeaderAccount }) {
+export function MainHeader({
+  cartContent,
+  account,
+  categories = [],
+  categoriesLoading = false,
+  categoriesError = false,
+}: MainHeaderProps) {
   const pathname = usePathname();
   const t = useTranslations("Header");
 
@@ -248,7 +201,7 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
           </Link>
 
           <div className="ml-[71px] hidden h-11 w-[485px] shrink-0 items-stretch gap-px min-[1380px]:flex">
-            <CategoryPopover />
+            <CategoryPopover categories={categories} isLoading={categoriesLoading} hasError={categoriesError} />
             <SearchBox className="w-[350px] rounded-r-full" />
           </div>
 
@@ -272,7 +225,7 @@ export function MainHeader({ cartContent, account }: { cartContent?: ReactNode; 
 
           <div className="ml-auto flex min-w-0 items-center gap-2 min-[1380px]:hidden">
             <SearchBox className="hidden w-[min(42vw,420px)] rounded-full lg:flex" />
-            <CategoryPopover compact />
+            <CategoryPopover categories={categories} compact isLoading={categoriesLoading} hasError={categoriesError} />
             <Link
               href={account ? "/profile" : "/login"}
               aria-label={account ? t("profile") : t("signIn")}

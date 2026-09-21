@@ -1,0 +1,103 @@
+import type { Product, RelatedProduct } from "../products.types";
+import type { PublicProductListItem } from "../schemas/product-list.schema";
+
+export function mapPublicProduct(product: PublicProductListItem): Product {
+  const unitPrice = product.fromPrice ?? 0;
+
+  return {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    productNo: product.productNo,
+    status: 1,
+    brandName: product.brandName,
+    notes: "",
+    description: product.name,
+    specialRequirement: false,
+    restrictedCondition: false,
+    priceVisible: product.priceVisible,
+    casNumber: "",
+    specifications: [
+      { name: "Product number", value: product.productNo },
+      { name: "Brand", value: product.brandName },
+    ],
+    variants: [
+      {
+        id: product.id,
+        sku: product.productNo,
+        priceVisible: product.priceVisible,
+        unitPrice,
+        rfqBasePrice: unitPrice,
+        promotionPercent: 0,
+        currency: product.currency,
+        stockQty: product.outOfStock ? 0 : 1,
+        isActive: true,
+        selections: [],
+      },
+    ],
+    media: product.primaryImageUrl
+      ? [
+          {
+            id: product.id,
+            url: product.primaryImageUrl,
+            contentType: "image/*",
+            sortOrder: 0,
+            isPrimary: true,
+          },
+        ]
+      : [],
+    documents: [],
+    related: [],
+    certificates: [],
+    isNew: product.isNew,
+    isOutstanding: product.isOutstanding,
+  };
+}
+
+export function mapRelatedProduct(product: RelatedProduct): Product {
+  return {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    productNo: "",
+    status: 1,
+    brandName: "",
+    notes: "",
+    description: product.name,
+    specialRequirement: false,
+    restrictedCondition: false,
+    priceVisible: product.priceVisible,
+    casNumber: "",
+    specifications: [],
+    variants: [
+      {
+        id: product.id,
+        sku: "",
+        priceVisible: product.priceVisible,
+        unitPrice: product.fromPrice,
+        rfqBasePrice: product.fromPrice,
+        promotionPercent: 0,
+        currency: product.currency,
+        stockQty: 1,
+        isActive: true,
+        selections: [],
+      },
+    ],
+    media: product.primaryImageUrl
+      ? [
+          {
+            id: product.id,
+            url: product.primaryImageUrl,
+            contentType: "image/*",
+            sortOrder: 0,
+            isPrimary: true,
+          },
+        ]
+      : [],
+    documents: [],
+    related: [],
+    certificates: [],
+    isNew: false,
+    isOutstanding: false,
+  };
+}

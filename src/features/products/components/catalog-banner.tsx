@@ -7,7 +7,7 @@ const benefits = [
   { label: "Bulk Pricing Available", icon: MoneyChange },
 ] as const;
 
-export function CatalogBanner() {
+export function CatalogBanner({ total }: { total: number }) {
   return (
     <section
       className="relative isolate min-h-[300px] overflow-hidden bg-[#1f5fa8] text-white"
@@ -29,7 +29,7 @@ export function CatalogBanner() {
           id="catalog-banner-title"
           className="text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-[48px]"
         >
-          10,000 products
+          {total.toLocaleString("en-SG")} products
         </h1>
         <p className="mt-1 text-base sm:text-lg">Premium quality. Fast delivery. Ships 7-10 days</p>
         <div className="mt-5 flex w-fit max-w-full flex-wrap items-center gap-2 rounded-xl bg-white p-1.5 text-[#051a50] sm:rounded-full">

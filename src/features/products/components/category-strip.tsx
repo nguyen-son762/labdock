@@ -1,32 +1,37 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
 import { A11y, Grid } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/class-names";
 
-import { productCategories } from "../data/products-data";
+import type { CatalogCategoryOption } from "../products.types";
+import { resolveProductMediaUrl } from "../utils/product-display";
 
 import "swiper/css";
 import "swiper/css/grid";
 
-const thumbnails = [
-  "/home/product-flask-round.png",
-  "/home/product-spider.png",
-  "/home/product-filter.png",
-  "/home/product-volumetric.png",
-] as const;
-
-export function CategoryStrip() {
+export function CategoryStrip({
+  categories,
+  selectedCategoryId,
+}: {
+  categories: readonly CatalogCategoryOption[];
+  selectedCategoryId?: string;
+}) {
+  const searchParams = useSearchParams();
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [edgeState, setEdgeState] = useState({ beginning: true, end: false });
   const updateEdges = (instance: SwiperInstance) => {
     setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd });
   };
+
+  if (categories.length === 0) return null;
 
   return (
     <section aria-labelledby="categories-title">
@@ -62,20 +67,30 @@ export function CategoryStrip() {
         onBreakpoint={updateEdges}
         onResize={updateEdges}
       >
-        {productCategories.map((category, index) => {
-          const thumbnail = thumbnails[index % thumbnails.length] ?? "/home/product-flask-round.png";
+        {categories.map((category) => {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set("categoryId", category.id);
+          params.delete("page");
+          const selected = selectedCategoryId === category.id;
+          const thumbnail = category.imageUrl
+            ? resolveProductMediaUrl(category.imageUrl)
+            : "/home/product-flask-round.png";
+
           return (
-            <SwiperSlide key={category} className="!h-auto">
+            <SwiperSlide key={category.id} className="!h-auto">
               <Link
-                href={`/products?category=${encodeURIComponent(category)}`}
-                className="flex min-h-[66px] items-center gap-2 rounded-lg bg-[#f5f7f8] p-2 transition-colors hover:bg-[#eaf2f9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+                href={`/products?${params.toString()}`}
+                aria-current={selected ? "true" : undefined}
+                className={cn(
+                  "flex min-h-[66px] items-center gap-2 rounded-lg border p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
+                  selected ? "border-[#2f7bc4] bg-[#eaf2f9]" : "border-transparent bg-[#f5f7f8] hover:bg-[#eaf2f9]",
+                )}
               >
                 <span className="relative size-8 shrink-0 overflow-hidden rounded bg-white">
                   <Image src={thumbnail} alt="" fill unoptimized sizes="32px" className="object-contain p-0.5" />
                 </span>
                 <span className="min-w-0">
-                  <strong className="line-clamp-2 text-[11px] leading-4 text-[#051a50]">{category}</strong>
-                  <span className="block text-[10px] text-[#868da5]">122 products</span>
+                  <strong className="line-clamp-2 text-[11px] leading-4 text-[#051a50]">{category.name}</strong>
                 </span>
               </Link>
             </SwiperSlide>

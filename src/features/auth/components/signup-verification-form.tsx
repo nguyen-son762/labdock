@@ -17,17 +17,35 @@ type SignupVerificationFormProps = {
   verifyMutation: ReturnType<typeof useVerifySignupMutation>;
   onSubmit: (values: VerificationValues) => void;
   onBack: () => void;
+  onResend: () => Promise<void>;
+  resendPending: boolean;
+  resendError: string | null;
+  expiresAt: string;
   errorMessage: (error: unknown) => string | null;
 };
+
+function getRemainingSeconds(expiresAt: string): number {
+  return Math.max(0, Math.ceil((Date.parse(expiresAt) - Date.now()) / 1000));
+}
+
+function formatCountdown(totalSeconds: number): string {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
 
 export function SignupVerificationForm({
   form,
   verifyMutation,
   onSubmit,
   onBack,
+  onResend,
+  resendPending,
+  resendError,
+  expiresAt,
   errorMessage,
 }: SignupVerificationFormProps) {
-  const [resendSeconds, setResendSeconds] = useState(59);
+  const [resendSeconds, setResendSeconds] = useState(() => getRemainingSeconds(expiresAt));
   const otpInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
@@ -80,16 +98,20 @@ export function SignupVerificationForm({
     if (event.key === "ArrowRight" && index < 5) otpInputRefs.current[index + 1]?.focus();
   }
 
-  function resendCode() {
-    form.reset({ code: "" });
-    verifyMutation.reset();
-    setResendSeconds(59);
-    window.requestAnimationFrame(() => otpInputRefs.current[0]?.focus());
+  async function resendCode(): Promise<void> {
+    try {
+      await onResend();
+      form.reset({ code: "" });
+      verifyMutation.reset();
+      window.requestAnimationFrame(() => otpInputRefs.current[0]?.focus());
+    } catch {
+      // The shared alert renders the normalized API error.
+    }
   }
 
   const code = form.watch("code");
   const verificationError = errorMessage(verifyMutation.error);
-  const isExpired = verificationError?.toLowerCase().includes("expired") ?? false;
+  const isExpired = resendSeconds === 0 || (verificationError?.toLowerCase().includes("expired") ?? false);
   const isIncorrect = verificationError?.toLowerCase().includes("incorrect") ?? false;
   const isKnownCodeError = isExpired || isIncorrect;
 
@@ -103,6 +125,7 @@ export function SignupVerificationForm({
       </div>
       <Form {...form}>
         <form className="space-y-5 pt-6" noValidate onSubmit={form.handleSubmit(onSubmit)}>
+          {resendError ? <Alert>{resendError}</Alert> : null}
           {verificationError && !isKnownCodeError ? <Alert>{verificationError}</Alert> : null}
           <FormField
             control={form.control}
@@ -162,17 +185,16 @@ export function SignupVerificationForm({
                   type="button"
                   variant="ghost"
                   onClick={resendCode}
+                  disabled={resendPending}
                   className="h-auto rounded-none p-0 font-medium text-[#2f7ac6] hover:bg-transparent hover:underline"
                 >
-                  Resend now
+                  {resendPending ? "Sending…" : "Resend now"}
                 </Button>
               </>
             ) : resendSeconds > 0 ? (
               <>
                 <span>Didn’t receive the code?</span>
-                <span className="font-medium text-[#051a50]">
-                  Resend in 00:{String(resendSeconds).padStart(2, "0")}
-                </span>
+                <span className="font-medium text-[#051a50]">Resend in {formatCountdown(resendSeconds)}</span>
               </>
             ) : (
               <>
@@ -181,9 +203,10 @@ export function SignupVerificationForm({
                   type="button"
                   variant="ghost"
                   onClick={resendCode}
+                  disabled={resendPending}
                   className="h-auto rounded-none p-0 font-medium text-[#2f7ac6] hover:bg-transparent hover:underline"
                 >
-                  Resend now
+                  {resendPending ? "Sending…" : "Resend now"}
                 </Button>
               </>
             )}
@@ -192,7 +215,7 @@ export function SignupVerificationForm({
             variant="brand"
             size="auth"
             type="submit"
-            disabled={code.length !== 6 || verifyMutation.isPending || isKnownCodeError}
+            disabled={code.length !== 6 || verifyMutation.isPending || isKnownCodeError || isExpired}
             className="w-[110px] disabled:bg-none disabled:bg-[#fdefca] disabled:opacity-100 disabled:shadow-none"
           >
             {verifyMutation.isPending ? <Refresh className="size-4 animate-spin" aria-hidden="true" /> : null}

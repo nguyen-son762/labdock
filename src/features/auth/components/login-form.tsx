@@ -20,12 +20,12 @@ export function LoginForm() {
   const loginMutation = useLoginMutation();
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "", remember: false },
+    defaultValues: { email: "", password: "" },
   });
 
   function handleLogin(values: LoginValues): void {
     loginMutation.mutate(values, {
-      onSuccess: () => router.replace("/dashboard"),
+      onSuccess: () => router.replace("/"),
     });
   }
 

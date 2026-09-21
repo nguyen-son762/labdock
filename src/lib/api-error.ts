@@ -2,7 +2,8 @@ import axios from "axios";
 import { z } from "zod";
 
 const apiErrorPayloadSchema = z.object({
-  message: z.string().min(1),
+  message: z.string().min(1).optional(),
+  detail: z.string().min(1).optional(),
 });
 
 const statusMessages: Readonly<Record<number, string>> = {
@@ -20,12 +21,15 @@ export function getApiErrorMessage(error: unknown): string {
   }
 
   const payload = apiErrorPayloadSchema.safeParse(error.response?.data);
+  const status = error.response?.status;
 
-  if (payload.success) {
+  if (payload.success && payload.data.message) {
     return payload.data.message;
   }
 
-  const status = error.response?.status;
+  if (payload.success && payload.data.detail && status !== undefined && status < 500) {
+    return payload.data.detail;
+  }
 
   if (status && statusMessages[status]) {
     return statusMessages[status];

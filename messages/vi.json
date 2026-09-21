@@ -13,6 +13,12 @@
     "openCategories": "Mở danh mục",
     "shopByCategories": "Mua theo danh mục",
     "productCategories": "Danh mục sản phẩm",
+    "loadingCategories": "Đang tải danh mục...",
+    "noCategories": "Chưa có danh mục.",
+    "categoriesUnavailable": "Không thể tải danh mục.",
+    "categoryProductCount": "{count} sản phẩm",
+    "openSubcategories": "Mở danh mục con của {category}",
+    "subcategoriesOf": "Danh mục con của {category}",
     "categories": {
       "chemicals": "Hóa chất và thuốc thử",
       "equipment": "Thiết bị phòng thí nghiệm",
@@ -90,6 +96,8 @@
     "bestSeller": "Bán chạy",
     "trending": "Xu hướng",
     "trusted": "Được hơn 500 nhà nghiên cứu tin tưởng",
+    "testimonialsTitle": "Nhận xét từ các nhà nghiên cứu",
+    "visitBrandWebsite": "Truy cập website của {name}",
     "productCount": "{count} sản phẩm",
     "categories": {
       "molecularBiology": "Bộ kit sinh học phân tử",

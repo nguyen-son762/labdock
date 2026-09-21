@@ -29,8 +29,12 @@ describe("LoginForm", () => {
     expect(screen.getByText("Mật khẩu phải có ít nhất 8 ký tự.")).toBeInTheDocument();
   });
 
-  it("gửi dữ liệu qua service và chuyển đến Dashboard khi thành công", async () => {
-    const loginSpy = vi.spyOn(authService, "login").mockResolvedValue(undefined);
+  it("gửi dữ liệu qua service và chuyển về trang chủ khi thành công", async () => {
+    const loginSpy = vi.spyOn(authService, "login").mockResolvedValue({
+      authenticated: true,
+      expiresAt: "2099-08-21T12:00:00+00:00",
+      mustChangePassword: false,
+    });
     const user = userEvent.setup();
     renderWithProviders(<LoginForm />);
 
@@ -43,9 +47,8 @@ describe("LoginForm", () => {
       expect(loginSpy.mock.calls[0]?.[0]).toEqual({
         email: "user@labdock.vn",
         password: "mat-khau-an-toan",
-        remember: false,
       });
-      expect(replaceMock).toHaveBeenCalledWith("/dashboard");
+      expect(replaceMock).toHaveBeenCalledWith("/");
     });
   });
 });

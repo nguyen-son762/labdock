@@ -4,12 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useSetSignupPasswordMutation, useSignupMutation, useVerifySignupMutation } from "../api/use-signup-mutation";
+import { getApiErrorMessage } from "@/lib/api-error";
+
+import { useCompleteSignupMutation, useSignupMutation, useVerifySignupMutation } from "../api/use-signup-mutation";
 import {
   passwordSchema,
   signupSchema,
   verificationSchema,
   type PasswordValues,
+  type SignupChallenge,
   type SignupValues,
   type VerificationValues,
 } from "../schemas/signup.schema";
@@ -18,15 +21,19 @@ import { SignupAccountForm } from "./signup-account-form";
 import { SignupPasswordForm } from "./signup-password-form";
 import { SignupVerificationForm } from "./signup-verification-form";
 
-function errorMessage(error: unknown): string | null {
-  return error instanceof Error ? error.message : error ? "Something went wrong. Please try again." : null;
+type SignupFlowState = { step: 1 } | { step: 2; challenge: SignupChallenge } | { step: 3; challengeId: string };
+
+function getSignupErrorMessage(error: unknown): string | null {
+  if (!error) return null;
+  if (error instanceof Error && error.name !== "AxiosError") return error.message;
+  return getApiErrorMessage(error);
 }
 
 export function SignupForm() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [flow, setFlow] = useState<SignupFlowState>({ step: 1 });
   const signupMutation = useSignupMutation();
   const verifyMutation = useVerifySignupMutation();
-  const passwordMutation = useSetSignupPasswordMutation();
+  const completeMutation = useCompleteSignupMutation();
   const accountForm = useForm<SignupValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -50,18 +57,36 @@ export function SignupForm() {
   });
 
   function submitAccount(values: SignupValues) {
-    signupMutation.mutate(values, { onSuccess: () => setStep(2) });
+    signupMutation.mutate(values, {
+      onSuccess: (challenge) => {
+        verifyMutation.reset();
+        completeMutation.reset();
+        verificationForm.reset({ code: "" });
+        passwordForm.reset({ password: "", confirmPassword: "" });
+        setFlow({ step: 2, challenge });
+      },
+    });
   }
 
   function submitVerification(values: VerificationValues) {
-    verifyMutation.mutate(values, { onSuccess: () => setStep(3) });
+    if (flow.step !== 2) return;
+    verifyMutation.mutate(
+      { challengeId: flow.challenge.challengeId, code: values.code },
+      { onSuccess: () => setFlow({ step: 3, challengeId: flow.challenge.challengeId }) },
+    );
   }
 
   function submitPassword(values: PasswordValues) {
-    passwordMutation.mutate(values);
+    if (flow.step !== 3) return;
+    completeMutation.mutate({ challengeId: flow.challengeId, ...values });
   }
 
-  if (step === 1) {
+  async function resendVerification(): Promise<void> {
+    const challenge = await signupMutation.mutateAsync(accountForm.getValues());
+    setFlow({ step: 2, challenge });
+  }
+
+  if (flow.step === 1) {
     return (
       <>
         <AuthStepper activeStep={1} />
@@ -69,22 +94,27 @@ export function SignupForm() {
           form={accountForm}
           signupMutation={signupMutation}
           onSubmit={submitAccount}
-          errorMessage={errorMessage}
+          errorMessage={getSignupErrorMessage}
         />
       </>
     );
   }
 
-  if (step === 2) {
+  if (flow.step === 2) {
     return (
       <>
         <AuthStepper activeStep={2} />
         <SignupVerificationForm
+          key={`${flow.challenge.challengeId}:${flow.challenge.expiresAt}`}
           form={verificationForm}
           verifyMutation={verifyMutation}
           onSubmit={submitVerification}
-          onBack={() => setStep(1)}
-          errorMessage={errorMessage}
+          onBack={() => setFlow({ step: 1 })}
+          onResend={resendVerification}
+          resendPending={signupMutation.isPending}
+          resendError={getSignupErrorMessage(signupMutation.error)}
+          expiresAt={flow.challenge.expiresAt}
+          errorMessage={getSignupErrorMessage}
         />
       </>
     );
@@ -95,9 +125,9 @@ export function SignupForm() {
       <AuthStepper activeStep={3} />
       <SignupPasswordForm
         form={passwordForm}
-        passwordMutation={passwordMutation}
+        completeMutation={completeMutation}
         onSubmit={submitPassword}
-        errorMessage={errorMessage}
+        errorMessage={getSignupErrorMessage}
       />
     </>
   );

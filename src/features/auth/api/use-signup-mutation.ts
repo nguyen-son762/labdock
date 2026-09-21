@@ -10,6 +10,6 @@ export function useVerifySignupMutation() {
   return useMutation({ mutationFn: authService.verifySignup });
 }
 
-export function useSetSignupPasswordMutation() {
-  return useMutation({ mutationFn: authService.setSignupPassword });
+export function useCompleteSignupMutation() {
+  return useMutation({ mutationFn: authService.completeSignup });
 }

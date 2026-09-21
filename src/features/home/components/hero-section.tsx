@@ -17,6 +17,9 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/class-names";
+
+import type { HomeBanner } from "../home.types";
 
 const guarantees = [
   { key: "verified", icon: Verify, color: "bg-[#dff5eb] text-[#3eb584]" },
@@ -79,7 +82,51 @@ function PromoCard({ event = false }: { event?: boolean }) {
   );
 }
 
-export function HeroSection() {
+function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
+  const content = (
+    <article className="group relative min-h-[250px] overflow-hidden rounded-xl text-white lg:min-h-[300px]">
+      <Image
+        src={banner.imageUrl}
+        alt=""
+        fill
+        unoptimized
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08265f]/90 via-[#08265f]/25 to-transparent" />
+      {banner.title ? (
+        <div className="relative flex min-h-[250px] items-end p-6 lg:min-h-[300px]">
+          <h2 className="max-w-xl text-xl font-semibold leading-tight lg:text-2xl">{banner.title}</h2>
+        </div>
+      ) : null}
+    </article>
+  );
+
+  if (!banner.linkUrl) return content;
+
+  const linkClassName = "block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]";
+  if (/^https?:\/\//i.test(banner.linkUrl)) {
+    return (
+      <a
+        href={banner.linkUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={banner.title ?? "Homepage banner"}
+        className={linkClassName}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={banner.linkUrl} aria-label={banner.title ?? "Homepage banner"} className={linkClassName}>
+      {content}
+    </Link>
+  );
+}
+
+export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
   const t = useTranslations("Home");
 
   return (
@@ -118,10 +165,18 @@ export function HeroSection() {
           </ul>
         </div>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-[2fr_1fr]">
-          <PromoCard />
-          <PromoCard event />
-        </div>
+        {banners.length ? (
+          <div className={cn("mt-10 grid gap-5", banners.length > 1 ? "lg:grid-cols-2" : "lg:grid-cols-1")}>
+            {banners.map((banner) => (
+              <HomepageBannerCard key={banner.id} banner={banner} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 grid gap-5 lg:grid-cols-[2fr_1fr]">
+            <PromoCard />
+            <PromoCard event />
+          </div>
+        )}
 
         <nav aria-label="Quick actions" className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {quickActions.map(({ key, icon: Icon, href }) => (

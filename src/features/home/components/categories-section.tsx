@@ -18,7 +18,7 @@ import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 
-import { categoryNames } from "../data/home-data";
+import type { HomeCategory } from "../home.types";
 
 const categoryIcons = [
   Hierarchy3,
@@ -35,8 +35,10 @@ const categoryIcons = [
   Hierarchy3,
 ] as const;
 
-export function CategoriesSection() {
+export function CategoriesSection({ categories }: { categories: readonly HomeCategory[] }) {
   const t = useTranslations("Home");
+
+  if (!categories.length) return null;
 
   return (
     <section className="bg-[#f5f8fb] py-12" aria-labelledby="top-categories-title">
@@ -50,21 +52,20 @@ export function CategoriesSection() {
           </div>
           <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {categoryNames.map(([key, count, slug], index) => {
-                const Icon = categoryIcons[index];
+              {categories.map((category, index) => {
+                const Icon = categoryIcons[index % categoryIcons.length];
                 return (
                   <Link
-                    key={key}
-                    id={`category-${slug}`}
-                    href={`/categories/${slug}`}
+                    key={category.id}
+                    id={`category-${category.slug}`}
+                    href={`/categories/${category.slug}`}
                     className="relative flex min-h-[92px] items-center gap-3 rounded-lg bg-white/90 p-3 text-[#051a50] shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
                   >
                     {Icon ? (
                       <Icon className="size-8 shrink-0 text-[#1572ad]" variant="Bulk" aria-hidden="true" />
                     ) : null}
                     <span>
-                      <strong className="block text-sm leading-5">{t(`categories.${key}`)}</strong>
-                      <small className="text-xs text-[#73798f]">{t("productCount", { count })}</small>
+                      <strong className="block text-sm leading-5">{category.name}</strong>
                     </span>
                     {index < 4 ? (
                       <span className="absolute right-0 top-0 inline-flex items-center gap-1 rounded-bl bg-[#e57a00] px-1.5 py-0.5 text-[9px] text-white">

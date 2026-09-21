@@ -5,7 +5,7 @@ import { ProductCarousel } from "./product-carousel";
 
 type ProductShelfProps = {
   title: string;
-  products: Product[];
+  products: readonly Product[];
   tone: "blue" | "orange";
 };
 

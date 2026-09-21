@@ -7,7 +7,6 @@ describe("loginSchema", () => {
     const result = loginSchema.parse({
       email: "  user@labdock.vn ",
       password: "mat-khau-an-toan",
-      remember: true,
     });
 
     expect(result.email).toBe("user@labdock.vn");
@@ -17,7 +16,6 @@ describe("loginSchema", () => {
     const result = loginSchema.safeParse({
       email: "khong-phai-email",
       password: "123",
-      remember: false,
     });
 
     expect(result.success).toBe(false);

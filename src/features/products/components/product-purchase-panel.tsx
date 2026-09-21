@@ -1,25 +1,32 @@
 "use client";
 
-import { Add, Bookmark, Box, LocationTick, Minus, ShoppingCart, Verify, Warning2 } from "iconsax-reactjs";
-import { useRouter } from "next/navigation";
+import { Add, Bookmark, Box, Minus, ShoppingCart, Verify, Warning2 } from "iconsax-reactjs";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAddCartItemMutation } from "@/features/checkout";
+import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
-import type { Product } from "../products.types";
+import type { Product, ProductVariant } from "../products.types";
 import { createCartItemFromProduct } from "../utils/product-cart";
+import {
+  getDefaultProductVariant,
+  getProductVariantLabel,
+  getProductVariantPresentation,
+} from "../utils/product-display";
 
-const sizes = ["50ml", "100ml", "200ml"] as const;
-
-function ProductFacts({ product }: { product: Product }) {
+function ProductFacts({ product, variant }: { product: Product; variant?: ProductVariant }) {
   const facts = [
-    { label: "Brand", value: product.brand, icon: Bookmark },
-    { label: "Category no.", value: product.catalogNumber, icon: Box },
-    { label: "Origin", value: `🇩🇪 ${product.origin}`, icon: LocationTick },
-    { label: "CAS no.", value: product.casNumber ?? "N/A", icon: Box },
+    { label: "Brand", value: product.brandName, icon: Bookmark },
+    { label: "Product no.", value: product.productNo, icon: Box },
+    { label: "CAS no.", value: product.casNumber || "N/A", icon: Box },
+    {
+      label: "Availability",
+      value: variant?.isActive && variant.stockQty > 0 ? `${variant.stockQty} in stock` : "Unavailable",
+      icon: Box,
+    },
   ];
 
   return (
@@ -40,15 +47,23 @@ function ProductFacts({ product }: { product: Product }) {
 export function ProductPurchasePanel({ product }: { product: Product }) {
   const router = useRouter();
   const addCartItem = useAddCartItemMutation();
-  const [size, setSize] = useState<(typeof sizes)[number]>("50ml");
-  const [quantity, setQuantity] = useState(3);
+  const defaultVariant = getDefaultProductVariant(product);
+  const [selectedVariantId, setSelectedVariantId] = useState(defaultVariant?.id);
+  const [quantity, setQuantity] = useState(1);
   const [status, setStatus] = useState("");
-  const outOfStock = product.badge === "Out of stock";
+  const selectedVariant = product.variants.find((variant) => variant.id === selectedVariantId) ?? defaultVariant;
+  const presentation = getProductVariantPresentation(product, selectedVariant);
+  const maxQuantity = Math.min(999, selectedVariant?.stockQty ?? 0);
+  const notices = [
+    product.notes,
+    product.restrictedCondition ? "This product is restricted. Contact us to verify eligibility before ordering." : "",
+    product.specialRequirement ? "Special requirements and additional checkout steps may apply." : "",
+  ].filter(Boolean);
 
   function addProduct(destination?: "/checkout" | "/request-quote") {
-    if (addCartItem.isPending || outOfStock) return;
+    if (addCartItem.isPending || !presentation.canPurchase || !selectedVariant) return;
     setStatus("");
-    addCartItem.mutate(createCartItemFromProduct(product, { quantity, size }), {
+    addCartItem.mutate(createCartItemFromProduct(product, { quantity, variantId: selectedVariant.id }), {
       onSuccess: () => {
         if (destination) {
           router.push(`${destination}?items=${encodeURIComponent(product.id)}`);
@@ -62,42 +77,51 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
 
   return (
     <aside className="rounded-xl border border-[#e3e8ee] bg-white p-5 shadow-sm lg:p-6" aria-label="Purchase options">
-      {product.discount ? (
+      {presentation.discount ? (
         <span className="inline-flex rounded bg-[#dc2626] px-2 py-1 text-xs font-semibold text-white">
-          {product.discount}
+          {presentation.discount}
         </span>
       ) : null}
       <h1 className="mt-3 text-2xl font-semibold leading-tight text-[#051a50]">{product.name}</h1>
       <p className="mt-4 flex items-center gap-2 text-2xl font-bold text-[#e57a00]">
-        {product.price}
-        {product.originalPrice ? (
-          <span className="text-sm font-normal text-[#a3abbd] line-through">{product.originalPrice}</span>
+        {presentation.price}
+        {presentation.originalPrice ? (
+          <span className="text-sm font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
         ) : null}
       </p>
       <div className="mt-5">
-        <ProductFacts product={product} />
+        <ProductFacts product={product} variant={selectedVariant} />
       </div>
 
-      <fieldset className="mt-5">
-        <legend className="text-xs font-semibold text-[#051a50]">Size</legend>
-        <div className="mt-2 flex gap-2">
-          {sizes.map((option) => (
-            <Button
-              key={option}
-              type="button"
-              variant="outline"
-              aria-pressed={size === option}
-              onClick={() => setSize(option)}
-              className={cn(
-                "h-9 min-w-[72px] rounded-lg border-[#dfe5eb] text-xs",
-                size === option && "border-[#2f7bc4] bg-[#eef6fc] text-[#164990]",
-              )}
-            >
-              {option}
-            </Button>
-          ))}
-        </div>
-      </fieldset>
+      {product.variants.length ? (
+        <fieldset className="mt-5">
+          <legend className="text-xs font-semibold text-[#051a50]">Product option</legend>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {product.variants.map((variant) => {
+              const label = getProductVariantLabel(variant);
+              return (
+                <Button
+                  key={variant.id}
+                  type="button"
+                  variant="outline"
+                  aria-pressed={selectedVariant?.id === variant.id}
+                  onClick={() => {
+                    setSelectedVariantId(variant.id);
+                    setQuantity((value) => Math.min(value, Math.max(1, variant.stockQty)));
+                  }}
+                  className={cn(
+                    "h-9 min-w-[72px] rounded-lg border-[#dfe5eb] text-xs",
+                    selectedVariant?.id === variant.id && "border-[#2f7bc4] bg-[#eef6fc] text-[#164990]",
+                  )}
+                >
+                  {label}
+                  {!variant.isActive || variant.stockQty <= 0 ? " (Out of stock)" : ""}
+                </Button>
+              );
+            })}
+          </div>
+        </fieldset>
+      ) : null}
 
       <div className="mt-5">
         <Label className="text-xs font-semibold text-[#051a50]">Quantity</Label>
@@ -107,7 +131,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
             variant="ghost"
             size="icon"
             aria-label="Decrease quantity"
-            disabled={quantity <= 1}
+            disabled={!presentation.canPurchase || quantity <= 1}
             onClick={() => setQuantity((value) => Math.max(1, value - 1))}
             className="size-9"
           >
@@ -121,8 +145,8 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
             variant="ghost"
             size="icon"
             aria-label="Increase quantity"
-            disabled={quantity >= 999}
-            onClick={() => setQuantity((value) => Math.min(999, value + 1))}
+            disabled={!presentation.canPurchase || quantity >= maxQuantity}
+            onClick={() => setQuantity((value) => Math.min(maxQuantity, value + 1))}
             className="size-9"
           >
             <Add className="size-4" aria-hidden="true" />
@@ -134,7 +158,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         <Button
           type="button"
           variant="brand"
-          disabled={addCartItem.isPending || outOfStock}
+          disabled={addCartItem.isPending || !presentation.canPurchase}
           onClick={() => addProduct("/checkout")}
           className="h-11 shadow-none"
         >
@@ -142,7 +166,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         </Button>
         <Button
           type="button"
-          disabled={addCartItem.isPending || outOfStock}
+          disabled={addCartItem.isPending || !presentation.canPurchase}
           onClick={() => addProduct()}
           className="h-11 rounded-full bg-gradient-to-r from-[#164990] to-[#2f7bc4] shadow-none"
         >
@@ -159,8 +183,8 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         variant="outline"
         disabled={addCartItem.isPending}
         onClick={() => {
-          if (outOfStock) {
-            router.push("/contact-us?type=quote");
+          if (!presentation.canPurchase) {
+            router.push(`/contact-us?type=quote&product=${encodeURIComponent(product.slug)}`);
             return;
           }
           addProduct("/request-quote");
@@ -173,14 +197,16 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         {status}
       </p>
 
-      <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#5e6375]">
-        {["S5G Certified", "GMP Certified", "ISO Certified"].map((label) => (
-          <span key={label} className="inline-flex items-center gap-1">
-            <Verify className="size-3.5 text-[#3eb584]" variant="Bold" aria-hidden="true" />
-            {label}
-          </span>
-        ))}
-      </div>
+      {product.certificates.length ? (
+        <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#5e6375]" aria-label="Product certificates">
+          {product.certificates.map((certificate) => (
+            <span key={certificate.id} className="inline-flex items-center gap-1">
+              <Verify className="size-3.5 text-[#3eb584]" variant="Bold" aria-hidden="true" />
+              {certificate.name}
+            </span>
+          ))}
+        </div>
+      ) : null}
       <div
         className="mt-4 flex items-center gap-2 text-[9px] font-bold text-[#164990]"
         aria-label="Accepted payment methods"
@@ -191,18 +217,19 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
           </span>
         ))}
       </div>
-      <div className="mt-5 rounded-lg bg-[#fff7ed] p-3 text-[10px] leading-4 text-[#8a4b09]">
-        <p className="flex gap-2">
-          <Warning2 className="mt-0.5 size-4 shrink-0 text-[#e57a00]" variant="Bold" aria-hidden="true" />
-          <span>
-            <strong>Note (optional)</strong>
-            <br />
-            This product is restricted. Contact us to verify eligibility before ordering.
-            <br />
-            Special requirements and additional checkout steps may apply.
-          </span>
-        </p>
-      </div>
+      {notices.length ? (
+        <div className="mt-5 rounded-lg bg-[#fff7ed] p-3 text-[10px] leading-4 text-[#8a4b09]">
+          <div className="flex gap-2">
+            <Warning2 className="mt-0.5 size-4 shrink-0 text-[#e57a00]" variant="Bold" aria-hidden="true" />
+            <div>
+              <strong>Product notice</strong>
+              {notices.map((notice) => (
+                <p key={notice}>{notice}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </aside>
   );
 }

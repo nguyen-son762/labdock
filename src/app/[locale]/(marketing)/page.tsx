@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { siteConfig } from "@/config/site";
 import { HomeScreen } from "@/features/home";
+import { getHomePageData } from "@/features/home/server";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 
 type HomePageProps = { params: Promise<{ locale: string }> };
@@ -38,6 +39,7 @@ const organizationJsonLd = {
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   if (isAppLocale(locale)) setRequestLocale(locale);
+  const homePageData = await getHomePageData();
 
   return (
     <>
@@ -45,7 +47,7 @@ export default async function HomePage({ params }: HomePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replaceAll("<", "\\u003c") }}
       />
-      <HomeScreen />
+      <HomeScreen {...homePageData} />
     </>
   );
 }

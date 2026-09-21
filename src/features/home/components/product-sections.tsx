@@ -2,7 +2,7 @@ import { ArrowRight, Box, ProfileCircle } from "iconsax-reactjs";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
-import { ProductCard, ProductCarousel, productGrid, products } from "@/features/products";
+import { ProductCard, ProductCarousel, type Product } from "@/features/products";
 import { Link } from "@/i18n/navigation";
 
 function ViewAllProducts() {
@@ -20,7 +20,7 @@ function ViewAllProducts() {
   );
 }
 
-export function OutstandingProducts() {
+export function OutstandingProducts({ products }: { products: readonly Product[] }) {
   const t = useTranslations("Home");
 
   return (
@@ -35,7 +35,7 @@ export function OutstandingProducts() {
             <Box className="size-6" variant="Bulk" aria-hidden="true" /> {t("outstanding")}
           </h2>
           <div className="relative">
-            <ProductCarousel products={productGrid} label={t("outstanding")} appearance="outstanding" tone="dark" />
+            <ProductCarousel products={products} label={t("outstanding")} appearance="outstanding" tone="dark" />
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@ export function OutstandingProducts() {
   );
 }
 
-export function NewProductsSection() {
+export function NewProductsSection({ products }: { products: readonly Product[] }) {
   const t = useTranslations("Home");
 
   return (
@@ -53,8 +53,8 @@ export function NewProductsSection() {
           {t("newProducts")}
         </h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-          {productGrid.map((product, index) => (
-            <ProductCard key={`${product.id}-${index}`} product={product} />
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
         <div className="mt-8 flex justify-center">
@@ -65,7 +65,7 @@ export function NewProductsSection() {
   );
 }
 
-export function PersonalizedProducts() {
+export function PersonalizedProducts({ products }: { products: readonly Product[] }) {
   const t = useTranslations("Home");
 
   return (
@@ -79,11 +79,8 @@ export function PersonalizedProducts() {
             <ProfileCircle className="size-7 text-[#f6a21a]" variant="Bold" aria-hidden="true" /> {t("personalized")}
           </h2>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-            {products.map((product, index) => (
-              <ProductCard
-                key={`personalized-${product.id}`}
-                product={{ ...product, discount: index === 0 ? product.discount : "-25%" }}
-              />
+            {products.map((product) => (
+              <ProductCard key={`personalized-${product.id}`} product={product} />
             ))}
           </div>
           <div className="mt-8 flex justify-center">

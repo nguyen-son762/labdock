@@ -8,9 +8,9 @@ export function useLoginMutation() {
 
   return useMutation({
     mutationFn: authService.login,
-    onSuccess: () => {
+    onSuccess: (session) => {
       queryClient.clear();
-      queryClient.setQueryData(authSessionQueryKeys.current(), { authenticated: true });
+      queryClient.setQueryData(authSessionQueryKeys.current(), session);
     },
   });
 }

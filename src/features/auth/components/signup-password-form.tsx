@@ -8,32 +8,32 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Alert } from "@/components/ui/alert";
 
-import type { useSetSignupPasswordMutation } from "../api/use-signup-mutation";
+import type { useCompleteSignupMutation } from "../api/use-signup-mutation";
 import type { PasswordValues } from "../schemas/signup.schema";
 import { inputClassName } from "./signup-fields";
 
 type SignupPasswordFormProps = {
   form: UseFormReturn<PasswordValues>;
-  passwordMutation: ReturnType<typeof useSetSignupPasswordMutation>;
+  completeMutation: ReturnType<typeof useCompleteSignupMutation>;
   onSubmit: (values: PasswordValues) => void;
   errorMessage: (error: unknown) => string | null;
 };
 
-export function SignupPasswordForm({ form, passwordMutation, onSubmit, errorMessage }: SignupPasswordFormProps) {
+export function SignupPasswordForm({ form, completeMutation, onSubmit, errorMessage }: SignupPasswordFormProps) {
   return (
     <>
       <div className="w-full pt-8 sm:pt-10">
         <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">Set your password</h2>
         <p className="mt-2 text-base leading-6 text-[#868da5]">Create a secure password for your Labdock account.</p>
       </div>
-      {passwordMutation.isSuccess ? (
-        <div className="mt-6 rounded-xl border border-[#c8d0d9] bg-[#f5f7f8] p-5 text-sm text-[#164990]">
-          Your account is ready. You can now log in.
+      {completeMutation.isSuccess ? (
+        <div role="status" className="mt-6 rounded-xl border border-[#c8d0d9] bg-[#f5f7f8] p-5 text-sm text-[#164990]">
+          Your account for {completeMutation.data.email} is ready. You can now log in.
         </div>
       ) : (
         <Form {...form}>
           <form className="space-y-4 pt-6" noValidate onSubmit={form.handleSubmit(onSubmit)}>
-            {errorMessage(passwordMutation.error) ? <Alert>{errorMessage(passwordMutation.error)}</Alert> : null}
+            {errorMessage(completeMutation.error) ? <Alert>{errorMessage(completeMutation.error)}</Alert> : null}
             {(["password", "confirmPassword"] as const).map((name) => (
               <FormField
                 key={name}
@@ -59,13 +59,13 @@ export function SignupPasswordForm({ form, passwordMutation, onSubmit, errorMess
                 )}
               />
             ))}
-            <Button variant="brand" size="auth" type="submit" disabled={passwordMutation.isPending}>
-              {passwordMutation.isPending ? (
+            <Button variant="brand" size="auth" type="submit" disabled={completeMutation.isPending}>
+              {completeMutation.isPending ? (
                 <Refresh className="size-4 animate-spin" aria-hidden="true" />
               ) : (
                 <ArrowRight className="order-2 size-3.5" aria-hidden="true" />
               )}
-              {passwordMutation.isPending ? "Saving…" : "Create account"}
+              {completeMutation.isPending ? "Saving…" : "Create account"}
             </Button>
           </form>
         </Form>

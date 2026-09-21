@@ -1,4 +1,4 @@
-import type { Product } from "../products.types";
+import type { ProductViewModel } from "../products.types";
 
 const productDefaults = {
   category: "Laboratory Equipment",
@@ -6,7 +6,7 @@ const productDefaults = {
   currency: "SGD" as const,
 };
 
-export const products: Product[] = [
+export const products: ProductViewModel[] = [
   {
     ...productDefaults,
     id: "round-bottom-flask",
@@ -135,7 +135,9 @@ export const products: Product[] = [
 
 const repeatedProducts = [products[4], products[3], products[1], products[5], products[2], products[1]];
 
-export const productGrid = [...products, ...repeatedProducts].filter((product): product is Product => Boolean(product));
+export const productGrid = [...products, ...repeatedProducts].filter((product): product is ProductViewModel =>
+  Boolean(product),
+);
 
 export const productCategories = [
   "Laboratory Rodent Animals",

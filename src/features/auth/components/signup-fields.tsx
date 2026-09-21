@@ -5,13 +5,17 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/class-names";
 
+import callingCodeData from "../data/calling-codes.json";
+import countryData from "../data/countries.json";
 import { type SignupValues } from "../schemas/signup.schema";
 
 export const inputClassName =
   "h-[42px] rounded-lg border-[#d5d7da] px-3.5 py-2.5 text-base shadow-[0_1px_2px_rgba(10,13,18,0.05)]";
-export const countries = ["Singapore", "Malaysia", "Vietnam", "Indonesia"] as const;
-export const regions = ["Central Region", "East Region", "North Region", "North-East Region", "West Region"] as const;
-export const callingCodes = ["+65", "+60", "+84", "+62"] as const;
+export const countries = countryData.map(({ code, name }) => ({ value: code, label: name }));
+export const callingCodes = [...new Set(callingCodeData.map(({ dialCode }) => dialCode))].map((dialCode) => ({
+  value: dialCode,
+  label: dialCode,
+}));
 
 export function Field({
   name,
@@ -21,7 +25,7 @@ export function Field({
   required = false,
   className,
 }: {
-  name: "company" | "fullName" | "email" | "address";
+  name: "company" | "fullName" | "email" | "region" | "address";
   label: string;
   placeholder: string;
   control: Control<SignupValues>;
@@ -48,7 +52,9 @@ export function Field({
                     ? "name"
                     : name === "address"
                       ? "street-address"
-                      : "organization"
+                      : name === "region"
+                        ? "address-level1"
+                        : "organization"
               }
               className={inputClassName}
             />
@@ -71,7 +77,7 @@ export function SelectField({
   name: "country" | "region";
   label: string;
   placeholder: string;
-  options: readonly string[];
+  options: ReadonlyArray<{ value: string; label: string }>;
   control: Control<SignupValues>;
   required?: boolean;
 }) {
@@ -92,8 +98,8 @@ export function SelectField({
             </FormControl>
             <SelectContent>
               {options.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -125,9 +131,9 @@ export function PhoneField({ control }: { control: Control<SignupValues> }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {callingCodes.map((code) => (
-                    <SelectItem key={code} value={code}>
-                      {code}
+                  {callingCodes.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

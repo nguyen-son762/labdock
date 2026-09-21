@@ -5,16 +5,17 @@ Nền tảng Next.js 15 theo Feature First, minh họa đầy đủ luồng publ
 ## Yêu cầu môi trường
 
 - Node.js 20 trở lên.
-- Backend hỗ trợ Cookie session và các endpoint trong phần API contract.
+- Backend hỗ trợ Bearer JWT và các endpoint trong phần API contract.
 
 Sao chép `.env.example` thành `.env.local` và cấu hình:
 
 ```dotenv
-NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/api
+NEXT_PUBLIC_API_BASE_URL=https://uat-api-labdock.365studio.vn/api/public/v1
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 `NEXT_PUBLIC_SITE_URL` phải là origin public thực tế ở production để canonical, robots và sitemap chính xác.
+`NEXT_PUBLIC_API_BASE_URL` không có dấu `/` ở cuối; ứng dụng sẽ tự chuẩn hóa nếu biến môi trường có dấu `/`.
 
 ## Chạy dự án
 
@@ -39,6 +40,8 @@ src/app                 Route, layout, metadata và composition
 src/i18n                Locale contract, navigation và request configuration
 messages                Bản dịch theo namespace cho từng locale
 src/features/auth       Login/logout service, mutation và form
+src/features/categories Category API phía Server, runtime schema và cây nhiều cấp
+src/features/products   Product API phía Server, runtime schema và Product UI
 src/features/profile    Current User query, profile mutation và Dashboard UI
 src/components/ui       Primitive theo Shadcn UI convention
 src/components/shared   Composition không chứa nghiệp vụ
@@ -78,7 +81,7 @@ Native form control chỉ nằm trong implementation của UI primitive. Feature
 
 ## API contract
 
-Tất cả request phía Client dùng axios instance tại `src/lib/http-client.ts`, có `withCredentials`, XSRF header, timeout, cancellation và refresh session single-flight.
+Tất cả request phía Client dùng axios instance tại `src/lib/http-client.ts`, có timeout, cancellation, Bearer header và refresh single-flight.
 
 ### Authentication
 
@@ -87,15 +90,64 @@ Tất cả request phía Client dùng axios instance tại `src/lib/http-client.
 ```json
 {
   "email": "user@company.vn",
-  "password": "a-secure-password",
-  "remember": false
+  "password": "a-secure-password"
 }
 ```
 
-Response thành công: `204 No Content`. Backend phải phát hành session bằng Cookie `HttpOnly`, `Secure` ở production và `SameSite` phù hợp kiến trúc deployment.
+Response thành công:
 
-- `POST /auth/refresh`: trả `204`, làm mới session Cookie.
-- `POST /auth/logout`: trả `204`, thu hồi session và xóa Cookie.
+```json
+{
+  "accessToken": "<jwt>",
+  "refreshToken": "<jwt>",
+  "expiresAt": "2099-08-21T12:00:00+00:00",
+  "mustChangePassword": false
+}
+```
+
+- Token chỉ được giữ trong memory, không ghi vào local/session storage, URL hoặc log. Reload trang sẽ kết thúc phiên phía Client.
+- Request sau login tự gắn `Authorization: Bearer <accessToken>`.
+- Khi request trả `401`, `POST /auth/refresh` nhận `{ "refreshToken": "<jwt>" }`; các lỗi `401` đồng thời dùng chung một refresh request rồi retry với token mới.
+- Refresh thất bại hoặc logout sẽ xóa token và private React Query Cache.
+
+### Sign up
+
+Đăng ký tài khoản là luồng ba bước. `challengeId` chỉ được giữ trong state của form để liên kết các request; OTP và password không được đưa vào URL, Cache hay persistent storage.
+
+1. `POST /auth/signup/start`
+
+```json
+{
+  "organization": "Example Name",
+  "fullName": "Example Name",
+  "phone": "+84901234567",
+  "email": "user@labdock.local",
+  "country": "VN",
+  "region": "HCM",
+  "address": "1 Nguyen Hue"
+}
+```
+
+Response trả `challengeId` và `expiresAt`. Đồng hồ OTP dùng chính `expiresAt` từ backend; thao tác gửi lại sẽ khởi tạo challenge mới.
+
+2. `POST /auth/signup/verify-otp` nhận `{ "challengeId": "<guid>", "code": "123456" }` và chỉ chuyển bước khi response có `{ "verified": true }`.
+
+3. `POST /auth/signup/complete` nhận:
+
+```json
+{
+  "challengeId": "<guid>",
+  "password": "Passw0rd!",
+  "confirmPassword": "Passw0rd!"
+}
+```
+
+Response trả `userId` và `email`. Các mutation signup không tự retry để tránh gửi lặp OTP hoặc hoàn tất tài khoản nhiều lần.
+
+Dữ liệu select của signup nằm tại:
+
+- `src/features/auth/data/countries.json`: 249 quốc gia/vùng lãnh thổ, dùng `code` ISO alpha-2 làm giá trị `country` gửi API.
+- `src/features/auth/data/calling-codes.json`: mapping quốc gia với `dialCode`; UI gom các mã trùng nhau thành một option như `+1`, `+44` hoặc `+7`.
 
 ### Current User
 
@@ -124,11 +176,50 @@ Response thành công: `204 No Content`. Backend phải phát hành session bằ
 
 Response dùng cùng schema với `GET /users/me`.
 
-Backend luôn phải kiểm tra Authentication và Authorization. Việc ẩn UI không được xem là kiểm soát quyền. Khi frontend và backend khác origin, backend phải allowlist đúng origin và cho phép credentials; không dùng wildcard CORS với Cookie.
+Backend luôn phải kiểm tra Authentication và Authorization. Việc ẩn UI không được xem là kiểm soát quyền.
+
+### Categories
+
+`GET /categories` trên Public API trả cây nhiều cấp qua trường `children`. Frontend validate đệ quy toàn bộ response bằng Zod rồi truyền dữ liệu đã kiểm tra vào menu “All Categories”.
+
+Category được tải trong Server Component bằng native `fetch`, không gửi Bearer token, và được cache/revalidate mỗi 5 phút. Request thất bại sẽ hiển thị trạng thái không tải được category thay vì làm hỏng header.
+
+### Product catalog
+
+Route `/products` tải song song `GET /products`, `GET /categories` và `GET /brands` ở Server Component. Bộ lọc là single-select theo đúng contract API và được lưu trong URL qua `categoryId`, `brandId`; phân trang và sắp xếp dùng `page`, `sort`. Mỗi lần đổi bộ lọc hoặc sort, trang được đưa về page đầu và Server Component request lại `GET /products` với `pageSize=20`.
+
+Category tree được flatten nhưng vẫn giữ độ sâu để hiển thị phân cấp. Ba request có thể lỗi độc lập: lỗi products không khóa bộ lọc, còn lỗi categories hoặc brands không làm mất danh sách products. Dữ liệu public dùng native `fetch` và Next Data Cache revalidate 5 phút; URL request khác nhau được cache riêng, còn tag chung hỗ trợ invalidation theo resource.
+
+### Product detail contract
+
+Route `/products/[slug]` gọi `GET /products/{slug}` phía Server và dùng cùng payload cho metadata, JSON-LD và nội dung hiển thị. Response `404` được map sang trang Not Found; lỗi HTTP hoặc payload không hợp lệ được chuyển cho error boundary. Request được cache 5 phút với tags `products` và `product:{slug}`.
+
+Payload đầy đủ được định nghĩa bởi type `Product` tại `src/features/products/products.types.ts` và validate bằng `publicProductDetailSchema`. Contract gồm thông tin cơ bản, trạng thái, flags yêu cầu đặc biệt/hạn chế, CAS, specifications, variants và selections, media, documents, related products và certificates. UAT có thể trả giá variant và `related` là `null` khi dữ liệu không công khai; Zod boundary chuẩn hóa giá về `0` và related về mảng rỗng để domain type không chứa nullable ngoài contract.
+
+Detail UI dùng trực tiếp `Product`: gallery lấy media primary/sort order, purchase panel dùng variant và stock thực, References dùng documents, badges chứng nhận dùng certificates, còn shelf related được map từ `related`. Response product list rút gọn cũng được map vào cùng contract trước khi truyền xuống `ProductCard`; `ProductViewModel` chỉ còn phục vụ dữ liệu demo cũ.
+
+### Homepage
+
+`GET /homepage` là request public duy nhất cho nội dung Home, trả về `banners`, `topBrands`, `topCategories`, `newestProducts`, `personalizedOffers` và `testimonials`. Frontend validate toàn bộ payload bằng Zod rồi map sang view model:
+
+- `banners` cấp ảnh/link/title cho Hero.
+- `topBrands` cấp logo và tên cho Research Leaders.
+- `topCategories` cấp tên/slug cho Top Categories.
+- `newestProducts` cấp New Products và dùng các item có `isOutstanding=true` cho Outstanding Products.
+- `personalizedOffers` cấp Personalized offer.
+- `testimonials` cấp nội dung/author cho testimonial carousel.
+
+Request dùng native `fetch` phía Server với Next Data Cache `revalidate` 5 phút và tag `homepage`. Nếu request lỗi hoặc payload không hợp lệ, Home nhận các section rỗng và không thực hiện các request products/brands riêng. Request `/categories` vẫn được giữ cho menu “All Categories” nhiều cấp dùng chung ở header.
 
 ## Cache và session
 
 - Public content không dùng React Query.
+- Categories public dùng Next Data Cache với `revalidate` 5 phút và tag `categories`.
+- Product catalog dùng Next Data Cache với `revalidate` 5 phút và tag `products`; filter, sort và page nằm trong URL request.
+- Product detail dùng tags `products` và `product:{slug}`, revalidate 5 phút.
+- Brands public dùng Next Data Cache với `revalidate` 5 phút và tag `brands`.
+- Homepage public dùng Next Data Cache với `revalidate` 5 phút và tag `homepage`.
+- Products và Brands standalone vẫn có thể dùng các server service riêng khi các màn hình khác cần chúng; Home không gọi các service này.
 - Profile dùng key `['session', 'profile', 'current']`, `staleTime` 60 giây.
 - Login và logout xóa private React Query Cache để ngăn dữ liệu vượt phiên.
 - Token không được lưu vào localStorage, query string hoặc log.
