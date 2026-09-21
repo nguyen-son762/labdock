@@ -5,12 +5,20 @@ import { Button } from "@/components/ui/button";
 import type { OrderTotals } from "../checkout.types";
 import { formatCurrency } from "../data/checkout-data";
 
-export function OrderSummary({ totals, pending }: { totals: OrderTotals; pending: boolean }) {
+export function OrderSummary({
+  totals,
+  pending,
+  currency,
+}: {
+  totals: OrderTotals;
+  pending: boolean;
+  currency?: string;
+}) {
   const rows = [
-    ["Subtotal", formatCurrency(totals.subtotal)],
-    ["Total discount", `-${formatCurrency(totals.discount)}`],
-    ["Delivery", totals.delivery === 0 ? "FREE" : formatCurrency(totals.delivery)],
-    ["Tax", formatCurrency(totals.tax)],
+    ["Subtotal", formatCurrency(totals.subtotal, currency)],
+    ["Total discount", `-${formatCurrency(totals.discount, currency)}`],
+    ["Delivery", totals.delivery === 0 ? "FREE" : formatCurrency(totals.delivery, currency)],
+    ["Tax", formatCurrency(totals.tax, currency)],
   ] as const;
 
   return (
@@ -31,7 +39,7 @@ export function OrderSummary({ totals, pending }: { totals: OrderTotals; pending
       </dl>
       <div className="mt-5 flex items-center justify-between border-t border-[#dde2e8] pt-4">
         <span className="text-sm font-semibold text-[#051a50]">Total</span>
-        <strong className="text-xl text-[#164990]">{formatCurrency(totals.total)}</strong>
+        <strong className="text-xl text-[#164990]">{formatCurrency(totals.total, currency)}</strong>
       </div>
       <Button
         form="checkout-form"

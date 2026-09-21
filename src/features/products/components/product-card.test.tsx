@@ -89,7 +89,7 @@ describe("ProductCard", () => {
   });
 
   it("adds the selected product to the shared cart", async () => {
-    const addSpy = vi.spyOn(cartService, "add").mockResolvedValue([]);
+    const addSpy = vi.spyOn(cartService, "add").mockResolvedValue();
     const user = userEvent.setup();
     renderWithProviders(<ProductCard product={product} />);
 

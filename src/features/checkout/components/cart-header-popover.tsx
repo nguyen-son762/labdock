@@ -44,7 +44,9 @@ export function CartHeaderPopover() {
           </span>
           <span className="flex flex-col text-left leading-none">
             <span className="text-[13px] leading-[17px]">Cart</span>
-            <strong className="whitespace-nowrap text-sm leading-[18px]">{formatCurrency(totals.total)}</strong>
+            <strong className="whitespace-nowrap text-sm leading-[18px]">
+              {formatCurrency(totals.total, items[0]?.currency)}
+            </strong>
           </span>
         </Button>
       </PopoverTrigger>
@@ -91,9 +93,11 @@ export function CartHeaderPopover() {
               </div>
               <div className="min-w-0">
                 <p className="truncate text-xs font-semibold">{item.name}</p>
-                <strong className="mt-1 block text-sm text-[#e57a00]">{formatCurrency(item.unitPrice)}</strong>
+                <strong className="mt-1 block text-sm text-[#e57a00]">
+                  {formatCurrency(item.unitPrice, item.currency)}
+                </strong>
                 <p className="mt-1 text-[11px] text-[#868da5]">
-                  {item.size} x{item.quantity}
+                  {item.size ? `${item.size} · ` : ""}x{item.quantity}
                 </p>
               </div>
               <Button

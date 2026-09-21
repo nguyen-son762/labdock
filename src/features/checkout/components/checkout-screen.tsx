@@ -105,7 +105,7 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
               <BillingSection form={form} />
               <PaymentMethodSection form={form} />
             </div>
-            <OrderSummary totals={orderTotals} pending={checkoutMutation.isPending} />
+            <OrderSummary totals={orderTotals} pending={checkoutMutation.isPending} currency={items[0]?.currency} />
           </form>
         </Form>
       </div>

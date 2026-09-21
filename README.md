@@ -211,6 +211,12 @@ Detail UI dùng trực tiếp `Product`: gallery lấy media primary/sort order,
 
 Request dùng native `fetch` phía Server với Next Data Cache `revalidate` 5 phút và tag `homepage`. Nếu request lỗi hoặc payload không hợp lệ, Home nhận các section rỗng và không thực hiện các request products/brands riêng. Request `/categories` vẫn được giữ cho menu “All Categories” nhiều cấp dùng chung ở header.
 
+### Cart
+
+`GET /cart` là dữ liệu riêng theo phiên đăng nhập, được gọi phía Client qua axios instance chung để tự gắn Bearer token và dùng refresh-token single-flight. `useCartQuery` truyền AbortSignal, giữ kết quả tại private React Query key `['cart', 'detail']` trong 30 giây và Cache bị xóa khi logout hoặc phiên hết hạn.
+
+Response được validate bằng `cartResponseSchema` trước khi map các field transport (`productName`, `sku`, `variantId`, `productId`, `currency`, `lineTotal`, `stockQty`) sang model mà Cart, Checkout và header đang dùng. Cart UI giới hạn quantity theo `stockQty` và format theo currency của item. Hiện chỉ `GET /cart` dùng backend; add, update và remove vẫn dùng implementation local hiện có cho đến khi có contract endpoint tương ứng.
+
 ## Cache và session
 
 - Public content không dùng React Query.
@@ -220,6 +226,7 @@ Request dùng native `fetch` phía Server với Next Data Cache `revalidate` 5 p
 - Brands public dùng Next Data Cache với `revalidate` 5 phút và tag `brands`.
 - Homepage public dùng Next Data Cache với `revalidate` 5 phút và tag `homepage`.
 - Products và Brands standalone vẫn có thể dùng các server service riêng khi các màn hình khác cần chúng; Home không gọi các service này.
+- Cart dùng private React Query Cache với key `['cart', 'detail']`, `staleTime` 30 giây và không đi qua Next public Cache.
 - Profile dùng key `['session', 'profile', 'current']`, `staleTime` 60 giây.
 - Login và logout xóa private React Query Cache để ngăn dữ liệu vượt phiên.
 - Token không được lưu vào localStorage, query string hoặc log.

@@ -1,7 +1,8 @@
-import { checkoutItems } from "../data/checkout-data";
+import { httpClient } from "@/lib/http-client";
+
 import {
   addCartItemSchema,
-  cartItemsSchema,
+  cartResponseSchema,
   removeCartItemSchema,
   updateCartItemSchema,
   type AddCartItemInput,
@@ -12,49 +13,44 @@ import {
 
 const MOCK_DELAY_MS = 300;
 
-let mockCart = cartItemsSchema.parse(checkoutItems);
-
 function waitForMockApi(): Promise<void> {
   return new Promise((resolve) => globalThis.setTimeout(resolve, MOCK_DELAY_MS));
 }
 
-function cloneCart(): CartItem[] {
-  return cartItemsSchema.parse(mockCart.map((item) => ({ ...item })));
+function mapCartResponse(input: unknown): CartItem[] {
+  const cart = cartResponseSchema.parse(input);
+  return cart.items.map((item) => ({
+    id: item.id,
+    variantId: item.variantId,
+    productId: item.productId,
+    name: item.productName,
+    catalogNumber: item.sku,
+    quantity: item.quantity,
+    unitPrice: item.unitPrice,
+    currency: item.currency,
+    lineTotal: item.lineTotal,
+    stockQty: item.stockQty,
+  }));
 }
 
 export const cartService = {
-  async get(): Promise<CartItem[]> {
-    await waitForMockApi();
-    return cloneCart();
+  async get(signal?: AbortSignal): Promise<CartItem[]> {
+    const response = await httpClient.get<unknown>("/cart", { signal });
+    return mapCartResponse(response.data);
   },
 
-  async add(input: AddCartItemInput): Promise<CartItem[]> {
-    const parsed = addCartItemSchema.parse(input);
+  async add(input: AddCartItemInput): Promise<void> {
+    addCartItemSchema.parse(input);
     await waitForMockApi();
-    const existingItem = mockCart.find((item) => item.id === parsed.id);
-    mockCart = existingItem
-      ? mockCart.map((item) =>
-          item.id === parsed.id ? { ...parsed, quantity: Math.min(999, item.quantity + parsed.quantity) } : item,
-        )
-      : [...mockCart, parsed];
-    return cloneCart();
   },
 
-  async update(input: UpdateCartItemInput): Promise<CartItem[]> {
-    const parsed = updateCartItemSchema.parse(input);
+  async update(input: UpdateCartItemInput): Promise<void> {
+    updateCartItemSchema.parse(input);
     await waitForMockApi();
-    mockCart = mockCart.map((item) => (item.id === parsed.itemId ? { ...item, ...parsed } : item));
-    return cloneCart();
   },
 
-  async remove(input: RemoveCartItemInput): Promise<CartItem[]> {
-    const parsed = removeCartItemSchema.parse(input);
+  async remove(input: RemoveCartItemInput): Promise<void> {
+    removeCartItemSchema.parse(input);
     await waitForMockApi();
-    mockCart = mockCart.filter((item) => item.id !== parsed.itemId);
-    return cloneCart();
-  },
-
-  reset(): void {
-    mockCart = cartItemsSchema.parse(checkoutItems);
   },
 };

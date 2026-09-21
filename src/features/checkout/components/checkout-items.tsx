@@ -34,7 +34,7 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
         <span>Product</span>
         <span>Price</span>
         <span>Qty</span>
-        <span>Size</span>
+        <span>Option</span>
       </div>
       <div className="divide-y divide-[#ecf0f3]">
         {items.map((item) => (
@@ -43,10 +43,10 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
             <div className="flex items-center justify-between sm:block">
               <span className="text-[10px] font-medium text-[#868da5] sm:hidden">Price</span>
               <p className="text-xs font-medium text-[#051a50]">
-                {formatCurrency(item.unitPrice)}
+                {formatCurrency(item.unitPrice, item.currency)}
                 {item.originalPrice ? (
                   <span className="block text-[10px] font-normal text-[#a3abbd] line-through">
-                    {formatCurrency(item.originalPrice)}
+                    {formatCurrency(item.originalPrice, item.currency)}
                   </span>
                 ) : null}
               </p>
@@ -56,8 +56,8 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
               <span>×{item.quantity}</span>
             </div>
             <div className="flex items-center justify-between text-xs text-[#051a50] sm:block">
-              <span className="text-[10px] font-medium text-[#868da5] sm:hidden">Size</span>
-              <span>{item.size}</span>
+              <span className="text-[10px] font-medium text-[#868da5] sm:hidden">Option</span>
+              <span>{item.size ?? "Default"}</span>
             </div>
           </article>
         ))}

@@ -11,7 +11,7 @@ import { CartHeaderPopover } from "./cart-header-popover";
 describe("CartHeaderPopover", () => {
   it("removes products through the shared cart service", async () => {
     vi.spyOn(cartService, "get").mockResolvedValue(checkoutItems);
-    const removeSpy = vi.spyOn(cartService, "remove").mockResolvedValue(checkoutItems.slice(1));
+    const removeSpy = vi.spyOn(cartService, "remove").mockResolvedValue();
     const user = userEvent.setup();
     renderWithProviders(<CartHeaderPopover />);
 

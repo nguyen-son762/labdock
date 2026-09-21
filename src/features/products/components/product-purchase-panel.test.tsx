@@ -78,7 +78,7 @@ const product: Product = {
 
 describe("ProductPurchasePanel", () => {
   it("adds the variant selected from the API payload to cart", async () => {
-    const addSpy = vi.spyOn(cartService, "add").mockResolvedValue([]);
+    const addSpy = vi.spyOn(cartService, "add").mockResolvedValue();
     const user = userEvent.setup();
     renderWithProviders(<ProductPurchasePanel product={product} />);
 

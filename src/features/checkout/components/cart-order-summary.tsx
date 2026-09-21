@@ -11,11 +11,12 @@ export function CartOrderSummary({ items }: { items: CartItem[] }) {
   const disabled = items.length === 0;
   const selectedIds = items.map(({ id }) => id).join(",");
   const orderTotals = calculateOrderTotals(items);
+  const currency = items[0]?.currency;
   const rows = [
-    ["Subtotal", formatCurrency(orderTotals.subtotal)],
-    ["Total discount", `-${formatCurrency(orderTotals.discount)}`],
+    ["Subtotal", formatCurrency(orderTotals.subtotal, currency)],
+    ["Total discount", `-${formatCurrency(orderTotals.discount, currency)}`],
     ["Delivery", "FREE"],
-    ["Tax", formatCurrency(orderTotals.tax)],
+    ["Tax", formatCurrency(orderTotals.tax, currency)],
   ] as const;
 
   return (
@@ -36,7 +37,7 @@ export function CartOrderSummary({ items }: { items: CartItem[] }) {
       </dl>
       <div className="mt-5 flex items-center justify-between border-t border-[#dde2e8] pt-4">
         <span className="text-sm font-semibold text-[#051a50]">Total</span>
-        <strong className="text-xl text-[#164990]">{formatCurrency(orderTotals.total)}</strong>
+        <strong className="text-xl text-[#164990]">{formatCurrency(orderTotals.total, currency)}</strong>
       </div>
       <Button
         asChild

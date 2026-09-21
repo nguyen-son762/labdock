@@ -43,9 +43,11 @@ function ProductDetails({ item }: { item: CartItem }) {
       <p className="font-semibold leading-5 text-[#051a50]">{item.name}</p>
       <p className="mt-1 text-xs text-[#868da5]">Catalog no.: {item.catalogNumber}</p>
       <div className="mt-3 flex flex-wrap items-baseline gap-2">
-        <strong className="text-base text-[#e57a00]">{formatCurrency(item.unitPrice)}</strong>
+        <strong className="text-base text-[#e57a00]">{formatCurrency(item.unitPrice, item.currency)}</strong>
         {item.originalPrice ? (
-          <span className="text-xs text-[#a3abbd] line-through">{formatCurrency(item.originalPrice)}</span>
+          <span className="text-xs text-[#a3abbd] line-through">
+            {formatCurrency(item.originalPrice, item.currency)}
+          </span>
         ) : null}
       </div>
     </div>
@@ -63,6 +65,7 @@ function QuantityInput({
 }) {
   const [draftQuantity, setDraftQuantity] = useState<number | undefined>(item.quantity);
   const focusedRef = useRef(false);
+  const maximumQuantity = Math.max(1, item.stockQty ?? 999_999);
 
   useEffect(() => {
     if (!focusedRef.current) setDraftQuantity(item.quantity);
@@ -70,7 +73,7 @@ function QuantityInput({
 
   const commitQuantity = () => {
     focusedRef.current = false;
-    const quantity = Math.max(1, draftQuantity ?? 1);
+    const quantity = Math.min(maximumQuantity, Math.max(1, draftQuantity ?? 1));
     setDraftQuantity(quantity);
     if (quantity !== item.quantity) onCommit(item.id, quantity);
   };
@@ -85,8 +88,9 @@ function QuantityInput({
       inputMode="numeric"
       aria-label={`Quantity for ${item.name}`}
       aria-busy={pending}
+      disabled={pending || item.stockQty === 0}
       className="h-10 bg-white text-center text-[#051a50]"
-      isAllowed={({ floatValue }) => floatValue === undefined || floatValue <= 999_999}
+      isAllowed={({ floatValue }) => floatValue === undefined || floatValue <= maximumQuantity}
       onFocus={() => {
         focusedRef.current = true;
       }}
@@ -148,18 +152,22 @@ export function CartItemsTable({
               <span className="md:sr-only">Quantity</span>
               <QuantityInput item={item} pending={pending} onCommit={onQuantityChange} />
             </label>
-            <Select value={item.size} disabled={pending} onValueChange={(value) => onSizeChange(item.id, value)}>
-              <SelectTrigger className="h-10 bg-white" aria-label={`Option for ${item.name}`}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-white">
-                {(sizeOptions[item.id] ?? [item.size]).map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {item.size ? (
+              <Select value={item.size} disabled={pending} onValueChange={(value) => onSizeChange(item.id, value)}>
+                <SelectTrigger className="h-10 bg-white" aria-label={`Option for ${item.name}`}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  {(sizeOptions[item.id] ?? [item.size]).map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <span className="text-xs text-[#73798f]">Default option</span>
+            )}
             <Button
               type="button"
               variant="ghost"

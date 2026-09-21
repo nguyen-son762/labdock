@@ -6,6 +6,6 @@ export { PaymentSuccessScreen } from "./components/payment-success-screen";
 export { QuoteSuccessScreen } from "./components/quote-success-screen";
 export { RequestQuoteScreen } from "./components/request-quote-screen";
 export { useAddCartItemMutation } from "./api/use-add-cart-item-mutation";
-export type { AddCartItemInput, CartItem } from "./schemas/cart.schema";
+export type { AddCartItemInput, CartApiItem, CartItem, CartResponse } from "./schemas/cart.schema";
 export { paymentMethodSchema } from "./schemas/checkout.schema";
 export type { PaymentMethod } from "./schemas/checkout.schema";

@@ -22,7 +22,7 @@ export const checkoutItems: CheckoutItem[] = [
 ];
 
 export function calculateOrderTotals(items: CheckoutItem[]): OrderTotals {
-  const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + (item.lineTotal ?? item.unitPrice * item.quantity), 0);
   const discount = items.reduce(
     (sum, item) => sum + Math.max(0, (item.originalPrice ?? item.unitPrice) - item.unitPrice) * item.quantity,
     0,
@@ -33,6 +33,10 @@ export function calculateOrderTotals(items: CheckoutItem[]): OrderTotals {
   return { subtotal, discount, delivery, tax, total: subtotal + delivery + tax };
 }
 
-export function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-SG", { style: "currency", currency: "SGD" }).format(value);
+export function formatCurrency(value: number, currency = "SGD") {
+  try {
+    return new Intl.NumberFormat("en-SG", { style: "currency", currency }).format(value);
+  } catch {
+    return `${currency} ${value.toFixed(2)}`;
+  }
 }
