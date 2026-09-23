@@ -1,7 +1,17 @@
 import { httpClient } from "@/lib/http-client";
 import { authTokenStore } from "@/lib/auth-token-store";
 
-import type { ForgotPasswordValues } from "../schemas/forgot-password.schema";
+import {
+  forgotPasswordSchema,
+  forgotPasswordStartResponseSchema,
+  forgotPasswordVerificationResponseSchema,
+  resetForgotPasswordInputSchema,
+  verifyForgotPasswordInputSchema,
+  type ForgotPasswordChallenge,
+  type ForgotPasswordValues,
+  type ResetForgotPasswordInput,
+  type VerifyForgotPasswordInput,
+} from "../schemas/forgot-password.schema";
 import { loginSchema, type LoginValues } from "../schemas/login.schema";
 import {
   completeSignupInputSchema,
@@ -18,17 +28,11 @@ import {
 } from "../schemas/signup.schema";
 import { authSessionSchema, type AuthSession } from "../schemas/auth-session.schema";
 
-const MOCK_AUTH_DELAY_MS = 350;
-
 function getCurrentSession(): AuthSession {
   const session = authTokenStore.getSessionMetadata();
   return session
     ? authSessionSchema.parse({ authenticated: true, ...session })
     : authSessionSchema.parse({ authenticated: false });
-}
-
-function waitForMockApi(): Promise<void> {
-  return new Promise((resolve) => window.setTimeout(resolve, MOCK_AUTH_DELAY_MS));
 }
 
 function toInternationalPhone(phoneCode: string, phone: string): string {
@@ -79,9 +83,22 @@ export const authService = {
     return signupCompletionSchema.parse(response.data);
   },
 
-  async forgotPassword(input: ForgotPasswordValues): Promise<void> {
-    await waitForMockApi();
-    if (input.email === "error@labdock.vn") throw new Error("We could not find an account for this email.");
+  async startForgotPassword(input: ForgotPasswordValues): Promise<ForgotPasswordChallenge> {
+    const values = forgotPasswordSchema.parse(input);
+    const response = await httpClient.post<unknown>("/auth/forgot-password/start", values);
+    return forgotPasswordStartResponseSchema.parse(response.data);
+  },
+
+  async verifyForgotPassword(input: VerifyForgotPasswordInput): Promise<void> {
+    const values = verifyForgotPasswordInputSchema.parse(input);
+    const response = await httpClient.post<unknown>("/auth/forgot-password/verify-otp", values);
+    const result = forgotPasswordVerificationResponseSchema.parse(response.data);
+    if (!result.verified) throw new Error("The verification code could not be verified.");
+  },
+
+  async resetForgotPassword(input: ResetForgotPasswordInput): Promise<void> {
+    const values = resetForgotPasswordInputSchema.parse(input);
+    await httpClient.post("/auth/forgot-password/reset", values);
   },
 
   resetSession(): void {

@@ -117,4 +117,40 @@ describe("authService", () => {
       authService.verifySignup({ challengeId: signupChallenge.challengeId, code: "123456" }),
     ).rejects.toThrow("could not be verified");
   });
+
+  it("starts, verifies and resets a forgot-password challenge", async () => {
+    httpClient.post
+      .mockResolvedValueOnce({ data: signupChallenge })
+      .mockResolvedValueOnce({ data: { verified: true } })
+      .mockResolvedValueOnce({ data: {} });
+
+    const challenge = await authService.startForgotPassword({ email: " user@labdock.local " });
+    await authService.verifyForgotPassword({ challengeId: challenge.challengeId, code: "123456" });
+    await authService.resetForgotPassword({
+      challengeId: challenge.challengeId,
+      newPassword: "Passw0rd!",
+      confirmPassword: "Passw0rd!",
+    });
+
+    expect(httpClient.post).toHaveBeenNthCalledWith(1, "/auth/forgot-password/start", {
+      email: "user@labdock.local",
+    });
+    expect(httpClient.post).toHaveBeenNthCalledWith(2, "/auth/forgot-password/verify-otp", {
+      challengeId: signupChallenge.challengeId,
+      code: "123456",
+    });
+    expect(httpClient.post).toHaveBeenNthCalledWith(3, "/auth/forgot-password/reset", {
+      challengeId: signupChallenge.challengeId,
+      newPassword: "Passw0rd!",
+      confirmPassword: "Passw0rd!",
+    });
+  });
+
+  it("rejects a forgot-password OTP response that was not verified", async () => {
+    httpClient.post.mockResolvedValue({ data: { verified: false } });
+
+    await expect(
+      authService.verifyForgotPassword({ challengeId: signupChallenge.challengeId, code: "123456" }),
+    ).rejects.toThrow("could not be verified");
+  });
 });

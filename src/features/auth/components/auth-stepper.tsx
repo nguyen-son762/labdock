@@ -2,15 +2,21 @@
 
 import { TickCircle } from "iconsax-reactjs";
 
-const steps = [
+const signupSteps = [
   ["Step 1", "Account details"],
   ["Step 2", "Verification"],
   ["Step 3", "Set password"],
 ] as const;
 
-export function AuthStepper({ activeStep }: { activeStep: 1 | 2 | 3 }) {
+type AuthStepperProps = {
+  activeStep: 1 | 2 | 3;
+  steps?: readonly (readonly [string, string])[];
+  ariaLabel?: string;
+};
+
+export function AuthStepper({ activeStep, steps = signupSteps, ariaLabel = "Sign up progress" }: AuthStepperProps) {
   return (
-    <ol aria-label="Sign up progress" className="flex w-full items-start">
+    <ol aria-label={ariaLabel} className="flex w-full items-start">
       {steps.map(([label, description], index) => {
         const step = (index + 1) as 1 | 2 | 3;
         const active = step === activeStep;

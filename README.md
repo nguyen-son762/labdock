@@ -144,6 +144,24 @@ Response trả `challengeId` và `expiresAt`. Đồng hồ OTP dùng chính `exp
 
 Response trả `userId` và `email`. Các mutation signup không tự retry để tránh gửi lặp OTP hoặc hoàn tất tài khoản nhiều lần.
 
+### Forgot password
+
+Khôi phục mật khẩu dùng luồng public ba bước tại route `/forgot-password`. `challengeId` chỉ nằm trong state của form; OTP và password mới không được ghi vào URL, persistent storage hoặc log. Các endpoint này không gửi Bearer token và không kích hoạt refresh token khi backend trả `401`.
+
+1. `POST /auth/forgot-password/start` nhận `{ "email": "user@labdock.local" }`, trả `challengeId` và `expiresAt`. Đồng hồ OTP và thao tác resend dùng cùng cách xử lý với sign up; resend luôn thay thế bằng challenge mới.
+2. `POST /auth/forgot-password/verify-otp` nhận `{ "challengeId": "<guid>", "code": "123456" }`. UI chỉ chuyển sang bước đặt mật khẩu khi response có `{ "verified": true }`.
+3. `POST /auth/forgot-password/reset` nhận:
+
+```json
+{
+  "challengeId": "<guid>",
+  "newPassword": "Passw0rd!",
+  "confirmPassword": "Passw0rd!"
+}
+```
+
+Sau response thành công, form xóa hai trường password khỏi state mutation/form và hiển thị link quay lại login. Các mutation không tự retry để tránh gửi OTP hoặc reset mật khẩu lặp ngoài ý muốn.
+
 Dữ liệu select của signup nằm tại:
 
 - `src/features/auth/data/countries.json`: 249 quốc gia/vùng lãnh thổ, dùng `code` ISO alpha-2 làm giá trị `country` gửi API.

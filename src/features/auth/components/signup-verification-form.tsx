@@ -9,12 +9,17 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/class-names";
 
-import type { useVerifySignupMutation } from "../api/use-signup-mutation";
-import type { VerificationValues } from "../schemas/signup.schema";
+type VerificationValues = { code: string };
+
+type VerificationMutationState = {
+  error: unknown;
+  isPending: boolean;
+  reset: () => void;
+};
 
 type SignupVerificationFormProps = {
   form: UseFormReturn<VerificationValues>;
-  verifyMutation: ReturnType<typeof useVerifySignupMutation>;
+  verifyMutation: VerificationMutationState;
   onSubmit: (values: VerificationValues) => void;
   onBack: () => void;
   onResend: () => Promise<void>;
@@ -22,6 +27,9 @@ type SignupVerificationFormProps = {
   resendError: string | null;
   expiresAt: string;
   errorMessage: (error: unknown) => string | null;
+  title?: string;
+  description?: string;
+  backLabel?: string;
 };
 
 function getRemainingSeconds(expiresAt: string): number {
@@ -44,6 +52,9 @@ export function SignupVerificationForm({
   resendError,
   expiresAt,
   errorMessage,
+  title = "Verify your email",
+  description = "We’ve sent a 6-digit code to your registered email address",
+  backLabel = "Back to account details",
 }: SignupVerificationFormProps) {
   const [resendSeconds, setResendSeconds] = useState(() => getRemainingSeconds(expiresAt));
   const otpInputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -118,10 +129,8 @@ export function SignupVerificationForm({
   return (
     <>
       <div className="w-full pt-8 sm:pt-10">
-        <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">Verify your email</h2>
-        <p className="mt-2 text-base leading-6 text-[#868da5]">
-          We’ve sent a 6-digit code to your registered email address
-        </p>
+        <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{title}</h2>
+        <p className="mt-2 text-base leading-6 text-[#868da5]">{description}</p>
       </div>
       <Form {...form}>
         <form className="space-y-5 pt-6" noValidate onSubmit={form.handleSubmit(onSubmit)}>
@@ -230,7 +239,7 @@ export function SignupVerificationForm({
         onClick={onBack}
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
-        Back to account details
+        {backLabel}
       </Button>
     </>
   );

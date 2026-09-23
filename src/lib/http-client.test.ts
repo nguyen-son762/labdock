@@ -52,7 +52,7 @@ describe("httpClient authentication", () => {
     expect(authorization).toBe("Bearer initial-access-token");
   });
 
-  it("does not send an access token to public category and signup endpoints", async () => {
+  it("does not send an access token to public category, signup and password reset endpoints", async () => {
     authTokenStore.set(initialTokens);
     const authorizations: Array<string | undefined> = [];
     httpClient.defaults.adapter = (async (config) => {
@@ -62,8 +62,9 @@ describe("httpClient authentication", () => {
 
     await httpClient.get("/categories");
     await httpClient.post("/auth/signup/start", {});
+    await httpClient.post("/auth/forgot-password/start", {});
 
-    expect(authorizations).toEqual([undefined, undefined]);
+    expect(authorizations).toEqual([undefined, undefined, undefined]);
   });
 
   it("refreshes once for concurrent 401 responses and retries with the new access token", async () => {

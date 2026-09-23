@@ -4,7 +4,7 @@ import { clientEnv } from "@/config/client-env";
 
 import { authTokenStore } from "./auth-token-store";
 
-const refreshExcludedPaths = ["/auth/login", "/auth/refresh", "/auth/signup/"] as const;
+const refreshExcludedPaths = ["/auth/login", "/auth/refresh", "/auth/signup/", "/auth/forgot-password/"] as const;
 const authorizationExcludedPaths = [...refreshExcludedPaths, "/categories"] as const;
 const retriedRequests = new WeakSet<InternalAxiosRequestConfig>();
 let refreshPromise: Promise<void> | null = null;
