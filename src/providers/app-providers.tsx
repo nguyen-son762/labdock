@@ -12,7 +12,7 @@ function shouldRetryRequest(failureCount: number, error: unknown): boolean {
   }
 
   if (!axios.isAxiosError(error)) {
-    return true;
+    return false;
   }
 
   const status = error.response?.status;

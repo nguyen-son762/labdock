@@ -1,4 +1,5 @@
 import { clientEnv } from "@/config/client-env";
+import { createServerApiRequestInit } from "@/lib/server-api-request";
 
 import { products } from "./data/products-data";
 import type { Product } from "./products.types";
@@ -43,9 +44,13 @@ function getProductsCacheTag(params: GetPublicProductsParams): string {
 }
 
 export async function getPublicProducts(params: GetPublicProductsParams): Promise<PublicProductsPage> {
-  const response = await fetch(`${clientEnv.NEXT_PUBLIC_API_BASE_URL}/products?${createProductsQuery(params)}`, {
-    next: { revalidate: 300, tags: ["products", getProductsCacheTag(params)] },
-  });
+  const response = await fetch(
+    `${clientEnv.NEXT_PUBLIC_API_BASE_URL}/products?${createProductsQuery(params)}`,
+    await createServerApiRequestInit({
+      revalidate: 300,
+      tags: ["products", getProductsCacheTag(params)],
+    }),
+  );
 
   if (!response.ok) {
     throw new Error(`Unable to load products (${response.status}).`);
@@ -60,9 +65,13 @@ export async function getProductCatalogPage(params: GetPublicProductsParams): Pr
 }
 
 export async function getPublicProductBySlug(slug: string): Promise<Product> {
-  const response = await fetch(`${clientEnv.NEXT_PUBLIC_API_BASE_URL}/products/${encodeURIComponent(slug)}`, {
-    next: { revalidate: 300, tags: ["products", `product:${slug}`] },
-  });
+  const response = await fetch(
+    `${clientEnv.NEXT_PUBLIC_API_BASE_URL}/products/${encodeURIComponent(slug)}`,
+    await createServerApiRequestInit({
+      revalidate: 300,
+      tags: ["products", `product:${slug}`],
+    }),
+  );
 
   if (response.status === 404) throw new ProductNotFoundError(slug);
   if (!response.ok) throw new Error(`Unable to load product (${response.status}).`);

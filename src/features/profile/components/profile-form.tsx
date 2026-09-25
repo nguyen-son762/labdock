@@ -133,9 +133,9 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Singapore">Singapore</SelectItem>
-                      <SelectItem value="Malaysia">Malaysia</SelectItem>
-                      <SelectItem value="Vietnam">Vietnam</SelectItem>
+                      <SelectItem value="SG">Singapore</SelectItem>
+                      <SelectItem value="MY">Malaysia</SelectItem>
+                      <SelectItem value="VN">Vietnam</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage className="text-xs" />

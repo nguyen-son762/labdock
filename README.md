@@ -105,10 +105,11 @@ Response thành công:
 }
 ```
 
-- Token chỉ được giữ trong memory, không ghi vào local/session storage, URL hoặc log. Reload trang sẽ kết thúc phiên phía Client.
+- Token được giữ trong memory và đồng bộ vào cookie phiên `SameSite=Lax`, thêm `Secure` khi chạy HTTPS; không ghi vào local/session storage, URL hoặc log. Cookie được đọc lại khi mở tab mới và bị xóa khi logout hoặc session không còn hợp lệ.
 - Request sau login tự gắn `Authorization: Bearer <accessToken>`.
 - Khi request trả `401`, `POST /auth/refresh` nhận `{ "refreshToken": "<jwt>" }`; các lỗi `401` đồng thời dùng chung một refresh request rồi retry với token mới.
 - Refresh thất bại hoặc logout sẽ xóa token và private React Query Cache.
+- Vì backend hiện trả JWT trong response body và frontend gọi Public API trực tiếp bằng Bearer header, cookie này phải đọc được phía Client nên không tương đương cookie `HttpOnly`. Khi backend hỗ trợ `Set-Cookie`/BFF, nên chuyển token sang `HttpOnly` để giảm rủi ro từ XSS.
 
 ### Sign up
 
@@ -169,30 +170,36 @@ Dữ liệu select của signup nằm tại:
 
 ### Current User
 
-`GET /users/me` trả:
+Sau `POST /auth/login` thành công, frontend khởi chạy prefetch `GET /me/profile` và điều hướng về Home mà không biến lỗi profile thành lỗi đăng nhập. Profile được validate, map và lưu tại private React Query key `['session', 'profile', 'current']`. Provider đặt tại locale root nên request/cache được dùng tiếp khi chuyển từ route Auth sang Home, không tạo request thứ hai.
+
+Khi mở tab mới, token được khôi phục từ cookie phiên; `useAuthSessionQuery` xác định lại session và `useCurrentUserQuery` gọi mới `GET /me/profile`, không persist PII của profile vào cookie hoặc Web Storage.
+
+Khi đã đăng nhập, vùng tài khoản trên header mở account popup bằng click/keyboard với liên kết “My profile” và nút “Logout”. Popover đóng khi click ra ngoài hoặc nhấn Escape. Logout xóa token cùng toàn bộ private React Query Cache, cập nhật session thành unauthenticated và chuyển về `/login`.
+
+`GET /me/profile` trả:
 
 ```json
 {
-  "id": "usr_01",
-  "fullName": "Nguyễn An",
-  "email": "user@company.vn",
-  "role": "member",
-  "joinedAt": "2026-01-15T08:00:00.000Z",
-  "lastActiveAt": "2026-08-09T03:30:00.000Z"
+  "fullName": "Example Name",
+  "phoneNumber": "+84901234567",
+  "email": "user@labdock.local",
+  "companyName": "Example Company",
+  "companyPhone": "+84987654321",
+  "businessRegistrationNumber": "0123456789",
+  "deliveryAddress": { "address": "1 Nguyen Hue", "postalCode": "700000", "country": "VN" },
+  "sameAsDeliveryAddress": true,
+  "billingAddress": { "address": "1 Nguyen Hue", "postalCode": "700000", "country": "VN" },
+  "profilePictureUrl": "/media/public/profile.jpg",
+  "passwordChangedAt": "2026-08-21T10:00:00+00:00",
+  "memberSince": "2026-08-21T10:00:00+00:00"
 }
 ```
 
-`role` chỉ nhận `member`, `manager` hoặc `admin`. `lastActiveAt` có thể là `null`.
+Transport fields được map sang `CurrentUser`: `phoneNumber -> phone`, `profilePictureUrl -> avatarUrl`, `memberSince -> joinedAt`; delivery và billing address vẫn được giữ đầy đủ. Các field hồ sơ chưa hoàn thiện có thể là `null` và được chuẩn hóa sang giá trị rỗng/fallback an toàn. API chưa trả role/last activity nên domain dùng `unknown`/`null`, không suy diễn quyền hạn từ UI.
 
-`PATCH /users/me` nhận:
+Form Profile cập nhật qua `PUT /me/profile` bằng axios instance chung nên tự gắn Bearer token và dùng refresh-token single-flight. Form values được map về transport fields (`phone -> phoneNumber`, `billingSameAsDelivery -> sameAsDeliveryAddress`); khi billing giống delivery, request gửi cùng address object, nếu không thì giữ billing address hiện tại. Mutation không retry, validate response bằng cùng schema với `GET`, rồi thay trực tiếp private Cache `['session', 'profile', 'current']` bằng response mới nhất.
 
-```json
-{
-  "fullName": "Nguyễn An"
-}
-```
-
-Response dùng cùng schema với `GET /users/me`.
+Form Security đổi mật khẩu qua `POST /auth/change-password` với `currentPassword`, `newPassword` và `confirmPassword`. Request dùng Bearer token, không tự retry và không đưa password vào URL, log hoặc Cache. Sau thành công, form xóa toàn bộ password khỏi state và invalidate riêng profile hiện tại để tải lại `passwordChangedAt`.
 
 Backend luôn phải kiểm tra Authentication và Authorization. Việc ẩn UI không được xem là kiểm soát quyền.
 
@@ -200,17 +207,17 @@ Backend luôn phải kiểm tra Authentication và Authorization. Việc ẩn UI
 
 `GET /categories` trên Public API trả cây nhiều cấp qua trường `children`. Frontend validate đệ quy toàn bộ response bằng Zod rồi truyền dữ liệu đã kiểm tra vào menu “All Categories”.
 
-Category được tải trong Server Component bằng native `fetch`, không gửi Bearer token, và được cache/revalidate mỗi 5 phút. Request thất bại sẽ hiển thị trạng thái không tải được category thay vì làm hỏng header.
+Category được tải trong Server Component bằng native `fetch`. Nếu request có cookie access token, frontend gửi `Authorization: Bearer <token>` và dùng `cache: 'no-store'`; nếu không có token, response public được cache/revalidate mỗi 5 phút. Request thất bại sẽ hiển thị trạng thái không tải được category thay vì làm hỏng header.
 
 ### Product catalog
 
 Route `/products` tải song song `GET /products`, `GET /categories` và `GET /brands` ở Server Component. Bộ lọc là single-select theo đúng contract API và được lưu trong URL qua `categoryId`, `brandId`; phân trang và sắp xếp dùng `page`, `sort`. Mỗi lần đổi bộ lọc hoặc sort, trang được đưa về page đầu và Server Component request lại `GET /products` với `pageSize=20`.
 
-Category tree được flatten nhưng vẫn giữ độ sâu để hiển thị phân cấp. Ba request có thể lỗi độc lập: lỗi products không khóa bộ lọc, còn lỗi categories hoặc brands không làm mất danh sách products. Dữ liệu public dùng native `fetch` và Next Data Cache revalidate 5 phút; URL request khác nhau được cache riêng, còn tag chung hỗ trợ invalidation theo resource.
+Category tree được flatten nhưng vẫn giữ độ sâu để hiển thị phân cấp. Ba request có thể lỗi độc lập: lỗi products không khóa bộ lọc, còn lỗi categories hoặc brands không làm mất danh sách products. Request ẩn danh dùng Next Data Cache revalidate 5 phút; URL request khác nhau được cache riêng, còn tag chung hỗ trợ invalidation theo resource. Khi có access token trong cookie, cả ba request gắn Bearer token và dùng `no-store` để không chia sẻ response theo người dùng.
 
 ### Product detail contract
 
-Route `/products/[slug]` gọi `GET /products/{slug}` phía Server và dùng cùng payload cho metadata, JSON-LD và nội dung hiển thị. Response `404` được map sang trang Not Found; lỗi HTTP hoặc payload không hợp lệ được chuyển cho error boundary. Request được cache 5 phút với tags `products` và `product:{slug}`.
+Route `/products/[slug]` gọi `GET /products/{slug}` phía Server và dùng cùng payload cho metadata, JSON-LD và nội dung hiển thị. Response `404` được map sang trang Not Found; lỗi HTTP hoặc payload không hợp lệ được chuyển cho error boundary. Request ẩn danh được cache 5 phút với tags `products` và `product:{slug}`; request có access token gửi Bearer token và dùng `no-store`.
 
 Payload đầy đủ được định nghĩa bởi type `Product` tại `src/features/products/products.types.ts` và validate bằng `publicProductDetailSchema`. Contract gồm thông tin cơ bản, trạng thái, flags yêu cầu đặc biệt/hạn chế, CAS, specifications, variants và selections, media, documents, related products và certificates. UAT có thể trả giá variant và `related` là `null` khi dữ liệu không công khai; Zod boundary chuẩn hóa giá về `0` và related về mảng rỗng để domain type không chứa nullable ngoài contract.
 
@@ -227,7 +234,7 @@ Detail UI dùng trực tiếp `Product`: gallery lấy media primary/sort order,
 - `personalizedOffers` cấp Personalized offer.
 - `testimonials` cấp nội dung/author cho testimonial carousel.
 
-Request dùng native `fetch` phía Server với Next Data Cache `revalidate` 5 phút và tag `homepage`. Nếu request lỗi hoặc payload không hợp lệ, Home nhận các section rỗng và không thực hiện các request products/brands riêng. Request `/categories` vẫn được giữ cho menu “All Categories” nhiều cấp dùng chung ở header.
+Request dùng native `fetch` phía Server. Nếu không có access token, Next Data Cache dùng `revalidate` 5 phút và tag `homepage`; nếu cookie có token, request gắn Bearer token và dùng `no-store`. Nếu request lỗi hoặc payload không hợp lệ, Home nhận các section rỗng và không thực hiện các request products/brands riêng. Request `/categories` vẫn được giữ cho menu “All Categories” nhiều cấp dùng chung ở header.
 
 ### Cart
 
@@ -238,16 +245,15 @@ Response được validate bằng `cartResponseSchema` trước khi map các fie
 ## Cache và session
 
 - Public content không dùng React Query.
-- Categories public dùng Next Data Cache với `revalidate` 5 phút và tag `categories`.
-- Product catalog dùng Next Data Cache với `revalidate` 5 phút và tag `products`; filter, sort và page nằm trong URL request.
-- Product detail dùng tags `products` và `product:{slug}`, revalidate 5 phút.
-- Brands public dùng Next Data Cache với `revalidate` 5 phút và tag `brands`.
-- Homepage public dùng Next Data Cache với `revalidate` 5 phút và tag `homepage`.
+- Mọi server request tới `/homepage`, `/categories`, `/brands` và `/products...` đọc cookie `labdock_access_token`. Khi có token, request gắn `Authorization: Bearer <token>` và dùng `cache: 'no-store'` để response theo phiên không đi vào shared Cache.
+- Marketing/Auth layouts chờ request context trước khi tải dữ liệu server để cookie luôn khả dụng theo từng request; response ẩn danh của từng API vẫn có thể dùng shared Data Cache.
+- Khi không có token, Categories, Brands, Homepage và Products dùng Next Data Cache với `revalidate` 5 phút cùng resource tags tương ứng; filter, sort và page của Product catalog nằm trong URL request.
+- Product detail ẩn danh dùng tags `products` và `product:{slug}`, revalidate 5 phút.
 - Products và Brands standalone vẫn có thể dùng các server service riêng khi các màn hình khác cần chúng; Home không gọi các service này.
 - Cart dùng private React Query Cache với key `['cart', 'detail']`, `staleTime` 30 giây và không đi qua Next public Cache.
-- Profile dùng key `['session', 'profile', 'current']`, `staleTime` 60 giây.
+- Profile dùng key `['session', 'profile', 'current']`, `staleTime` 60 giây và không tự retry; user có thể retry có chủ đích tại màn Profile.
 - Login và logout xóa private React Query Cache để ngăn dữ liệu vượt phiên.
-- Token không được lưu vào localStorage, query string hoặc log.
+- Token không được lưu vào localStorage, sessionStorage, query string hoặc log; cookie phiên bị xóa cùng private Cache khi logout/refresh thất bại.
 
 ## Thêm feature mới
 

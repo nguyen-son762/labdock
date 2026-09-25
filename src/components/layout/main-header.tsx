@@ -34,6 +34,8 @@ type HeaderAccount = { fullName: string; email: string };
 type MainHeaderProps = {
   cartContent?: ReactNode;
   account?: HeaderAccount;
+  accountContent?: ReactNode;
+  compactAccountContent?: ReactNode;
   categories?: readonly HeaderCategory[];
   categoriesLoading?: boolean;
   categoriesError?: boolean;
@@ -115,6 +117,8 @@ function SearchBox({ className }: { className?: string }) {
 export function MainHeader({
   cartContent,
   account,
+  accountContent,
+  compactAccountContent,
   categories = [],
   categoriesLoading = false,
   categoriesError = false,
@@ -219,20 +223,22 @@ export function MainHeader({
           </Button>
 
           <div className="ml-2.5 hidden items-center gap-2 min-[1380px]:flex">
-            <AccountSummary account={account} />
+            {accountContent ?? <AccountSummary account={account} />}
             {cartContent ?? <OrderSummary />}
           </div>
 
           <div className="ml-auto flex min-w-0 items-center gap-2 min-[1380px]:hidden">
             <SearchBox className="hidden w-[min(42vw,420px)] rounded-full lg:flex" />
             <CategoryPopover categories={categories} compact isLoading={categoriesLoading} hasError={categoriesError} />
-            <Link
-              href={account ? "/profile" : "/login"}
-              aria-label={account ? t("profile") : t("signIn")}
-              className="flex size-10 items-center justify-center rounded-full bg-white/10"
-            >
-              <ProfileCircle className="size-5" variant="Bold" aria-hidden="true" />
-            </Link>
+            {compactAccountContent ?? (
+              <Link
+                href={account ? "/profile" : "/login"}
+                aria-label={account ? t("profile") : t("signIn")}
+                className="flex size-10 items-center justify-center rounded-full bg-white/10"
+              >
+                <ProfileCircle className="size-5" variant="Bold" aria-hidden="true" />
+              </Link>
+            )}
             <Link
               href="/cart"
               aria-label={t("cart")}

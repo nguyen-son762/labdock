@@ -46,7 +46,6 @@ export const authService = {
 
   async login(input: LoginValues): Promise<AuthSession> {
     const { email, password } = loginSchema.parse(input);
-    authTokenStore.clear();
     const response = await httpClient.post<unknown>("/auth/login", { email, password });
     authTokenStore.set(response.data);
     return getCurrentSession();

@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { siteConfig } from "@/config/site";
 import { getLanguageAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 import { routing } from "@/i18n/routing";
+import { AppProviders } from "@/providers/app-providers";
 
 import "../globals.css";
 
@@ -58,7 +59,7 @@ export default async function RootLayout({ children, params }: LocaleLayoutProps
     <html lang={locale} data-scroll-behavior="smooth">
       <body className="min-h-dvh font-sans">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <AppProviders>{children}</AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

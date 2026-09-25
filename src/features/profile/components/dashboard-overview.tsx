@@ -15,6 +15,7 @@ const roleLabels = {
   member: "Thành viên",
   manager: "Quản lý",
   admin: "Quản trị viên",
+  unknown: "Chưa có dữ liệu",
 } as const;
 
 export function DashboardOverview() {

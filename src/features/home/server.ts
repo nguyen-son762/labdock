@@ -3,6 +3,7 @@ import type { Brand } from "@/features/brands";
 import { mapPublicBrand } from "@/features/brands/utils/map-public-brand";
 import type { Product } from "@/features/products/products.types";
 import { mapPublicProduct } from "@/features/products/utils/map-public-product";
+import { createServerApiRequestInit } from "@/lib/server-api-request";
 
 import type { HomeBanner, HomeCategory, Testimonial } from "./home.types";
 import { publicHomepageSchema, type PublicHomepage } from "./schemas/homepage.schema";
@@ -65,9 +66,10 @@ function mapHomepageData(homepage: PublicHomepage): HomePageData {
 }
 
 export async function getPublicHomepage(): Promise<PublicHomepage> {
-  const response = await fetch(`${clientEnv.NEXT_PUBLIC_API_BASE_URL}/homepage`, {
-    next: { revalidate: 300, tags: ["homepage"] },
-  });
+  const response = await fetch(
+    `${clientEnv.NEXT_PUBLIC_API_BASE_URL}/homepage`,
+    await createServerApiRequestInit({ revalidate: 300, tags: ["homepage"] }),
+  );
 
   if (!response.ok) {
     throw new Error(`Unable to load homepage (${response.status}).`);

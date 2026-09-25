@@ -24,7 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 const protections = [
   {
     title: "Cookie-based sessions",
-    description: "Access tokens are not stored in local storage. Secure session cookies are managed by the backend.",
+    description:
+      "Tokens are kept out of local storage and use same-site session cookies, with secure transport enforced on HTTPS.",
     icon: SecuritySafe,
   },
   {
@@ -48,7 +49,7 @@ export default function SecurityPage() {
         <p className="text-sm font-semibold text-primary">Defence in depth</p>
         <h1 className="mt-3 text-4xl font-bold tracking-tight">Secure by design</h1>
         <p className="mt-4 text-lg leading-8 text-muted-foreground">
-          Labdock reduces its attack surface with clear data boundaries and backend-controlled sessions.
+          Labdock reduces its attack surface with clear data boundaries and API-validated sessions.
         </p>
       </div>
       <div className="mt-10 grid gap-5 md:grid-cols-3">

@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("next/headers", () => ({
+  cookies: vi.fn(async () => ({ get: () => undefined })),
+}));
+
 import { getProductCatalogPage, getPublicProductBySlug, getPublicProducts, ProductNotFoundError } from "./server";
 
 const productsResponse = {

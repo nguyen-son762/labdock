@@ -51,7 +51,7 @@ describe("authService", () => {
     await expect(authService.getSession()).resolves.toEqual({ authenticated: false });
   });
 
-  it("clears the in-memory session on logout", async () => {
+  it("clears the persisted session on logout", async () => {
     httpClient.post.mockResolvedValue({ data: loginResponse });
     await authService.login({ email: "admin@labdock.local", password: "Passw0rd!" });
 

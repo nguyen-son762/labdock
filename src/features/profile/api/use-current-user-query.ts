@@ -1,13 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
 import { profileKeys } from "./profile-query-keys";
 import { profileService } from "./profile.service";
 
-export function useCurrentUserQuery(enabled = true) {
-  return useQuery({
+export function currentUserQueryOptions() {
+  return queryOptions({
     queryKey: profileKeys.current(),
     queryFn: ({ signal }) => profileService.getCurrent(signal),
     staleTime: 60_000,
-    enabled,
+    retry: false,
+    retryOnMount: false,
   });
+}
+
+export function useCurrentUserQuery(enabled = true) {
+  return useQuery({ ...currentUserQueryOptions(), enabled });
 }

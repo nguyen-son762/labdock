@@ -1,7 +1,7 @@
 "use client";
 
 import { MainHeader } from "@/components/layout/main-header";
-import { useAuthSessionQuery } from "@/features/auth";
+import { HeaderAccountMenu, useAuthSessionQuery } from "@/features/auth";
 import type { PublicCategoryTreeNode } from "@/features/categories";
 import { CartHeaderPopover } from "@/features/checkout";
 import { useCurrentUserQuery } from "@/features/profile";
@@ -21,6 +21,8 @@ export function MarketingHeader({ categories, categoriesError = false }: Marketi
   return (
     <MainHeader
       account={account}
+      accountContent={account ? <HeaderAccountMenu account={account} /> : undefined}
+      compactAccountContent={account ? <HeaderAccountMenu account={account} compact /> : undefined}
       cartContent={<CartHeaderPopover />}
       categories={categories}
       categoriesError={categoriesError}

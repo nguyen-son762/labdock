@@ -23,6 +23,22 @@ describe("profileFormSchema", () => {
   it("rejects an invalid email address", () => {
     expect(profileFormSchema.safeParse({ ...validProfile, email: "invalid" }).success).toBe(false);
   });
+
+  it("allows company phone and business registration number to be empty", () => {
+    const result = profileFormSchema.parse({
+      ...validProfile,
+      companyPhone: "   ",
+      businessRegistrationNumber: "",
+    });
+
+    expect(result.companyPhone).toBe("");
+    expect(result.businessRegistrationNumber).toBe("");
+  });
+
+  it("still rejects partially entered optional company fields", () => {
+    expect(profileFormSchema.safeParse({ ...validProfile, companyPhone: "123" }).success).toBe(false);
+    expect(profileFormSchema.safeParse({ ...validProfile, businessRegistrationNumber: "1" }).success).toBe(false);
+  });
 });
 
 describe("passwordFormSchema", () => {
