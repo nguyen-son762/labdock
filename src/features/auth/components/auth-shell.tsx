@@ -10,7 +10,7 @@ type AuthShellProps = {
 /** Shared Figma auth frame: orange visual panel + white form panel. */
 export function AuthShell({ children, heroTitle = "Welcome back to LABDOCK", cardClassName }: AuthShellProps) {
   return (
-    <main className="mx-auto grid min-h-[calc(100dvh-110px)] max-w-[1440px] grid-cols-1 gap-4 p-4 lg:h-[calc(100dvh-110px)] lg:max-h-[790px] lg:grid-cols-[minmax(0,0.55357fr)_minmax(0,1fr)]">
+    <main className="mx-auto grid min-h-[calc(100dvh-110px)] max-w-[1440px] grid-cols-1 gap-4 p-4 lg:h-[790px] lg:grid-cols-[minmax(0,0.55357fr)_minmax(0,1fr)]">
       <section className="relative hidden min-h-[520px] overflow-hidden rounded-3xl bg-gradient-to-r from-[var(--brand-orange-start)] to-[var(--brand-orange-end)] lg:block">
         <div
           className="absolute left-0 top-[-37px] h-[364px] w-[515px] opacity-50 mix-blend-lighten"
@@ -24,14 +24,14 @@ export function AuthShell({ children, heroTitle = "Welcome back to LABDOCK", car
         >
           <Image src="/auth/pattern.png" alt="" fill sizes="515px" className="pointer-events-none object-cover" />
         </div>
-        <div className="absolute left-0 top-[112px] h-[520px] w-[480px] overflow-hidden">
+        <div className="absolute -left-[54px] bottom-0 h-[536px] w-[804px]" aria-hidden="true">
           <Image
             src="/auth/researcher.png"
             alt=""
             fill
             priority
-            sizes="480px"
-            className="pointer-events-none object-cover object-[58%_center]"
+            sizes="804px"
+            className="pointer-events-none object-contain object-left-bottom"
           />
         </div>
         {heroTitle ? (

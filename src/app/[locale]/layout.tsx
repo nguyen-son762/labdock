@@ -9,8 +9,6 @@ import { getLanguageAlternates, getLocalizedPath, isAppLocale } from "@/i18n/loc
 import { routing } from "@/i18n/routing";
 import { AppProviders } from "@/providers/app-providers";
 
-import "../globals.css";
-
 type LocaleLayoutProps = Readonly<{
   children: ReactNode;
   params: Promise<{ locale: string }>;
@@ -48,7 +46,7 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
   };
 }
 
-export default async function RootLayout({ children, params }: LocaleLayoutProps) {
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;
   if (!isAppLocale(locale)) notFound();
 
@@ -56,12 +54,8 @@ export default async function RootLayout({ children, params }: LocaleLayoutProps
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} data-scroll-behavior="smooth">
-      <body className="min-h-dvh font-sans">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <AppProviders>{children}</AppProviders>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <AppProviders>{children}</AppProviders>
+    </NextIntlClientProvider>
   );
 }

@@ -48,7 +48,7 @@ export function CtaSection() {
               <Button
                 asChild
                 variant={card.key === "partner" ? "default" : "brand"}
-                className="mt-5 h-11 w-fit rounded-full px-5"
+                className="mt-5 h-11 w-fit rounded-full p-1.5 pl-5"
               >
                 <Link href={card.href}>
                   {t(`cta.${card.key}.action`)}

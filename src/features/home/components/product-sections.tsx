@@ -4,12 +4,13 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { ProductCard, ProductCarousel, type Product } from "@/features/products";
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 
 function ViewAllProducts() {
   const t = useTranslations("Home");
 
   return (
-    <Button asChild className="h-11 rounded-full bg-gradient-to-r from-[#2f7bc4] to-[#0f3678] px-5 shadow-none">
+    <Button asChild className="h-11 rounded-full bg-gradient-to-r from-[#2f7bc4] to-[#0f3678] p-[6px] pl-5 shadow-none">
       <Link href="/products">
         {t("viewAll")}
         <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
@@ -32,7 +33,7 @@ export function OutstandingProducts({ products }: { products: readonly Product[]
             id="outstanding-products-title"
             className="absolute left-1/2 top-0 flex h-14 w-[min(360px,80%)] -translate-x-1/2 items-center justify-center gap-2 rounded-b-2xl bg-gradient-to-b from-[#e57a00] to-[#f3c15c] text-xl font-semibold text-white shadow-lg"
           >
-            <Box className="size-6" variant="Bulk" aria-hidden="true" /> {t("outstanding")}
+            <Image src="/home/icon/awards.svg" alt="" width={30} height={40} /> {t("outstanding")}
           </h2>
           <div className="relative">
             <ProductCarousel products={products} label={t("outstanding")} appearance="outstanding" tone="dark" />

@@ -29,12 +29,12 @@ const guarantees = [
 ] as const;
 
 const quickActions = [
-  { key: "product", icon: Box, href: "/#new-products" },
-  { key: "suppliers", icon: People, href: "/#research-leaders" },
-  { key: "rfq", icon: ClipboardText, href: "/rfqs" },
-  { key: "orders", icon: ShoppingCart, href: "/orders" },
-  { key: "chat", icon: MessageText, href: "/contact-us" },
-  { key: "news", icon: ReceiptItem, href: "/#news" },
+  { key: "product", icon: Box, href: "/#new-products", imageUrl: "/home/icon/lab_1.svg" },
+  { key: "suppliers", icon: People, href: "/#research-leaders", imageUrl: "/home/icon/group.svg" },
+  { key: "rfq", icon: ClipboardText, href: "/rfqs", imageUrl: "/home/icon/invoice.svg" },
+  { key: "orders", icon: ShoppingCart, href: "/orders", imageUrl: "/home/icon/shopping-cart.svg" },
+  { key: "chat", icon: MessageText, href: "/contact-us", imageUrl: "/home/icon/chat-box.svg" },
+  { key: "news", icon: ReceiptItem, href: "/#news", imageUrl: "/home/icon/annotation.svg" },
 ] as const;
 
 function PromoCard({ event = false }: { event?: boolean }) {
@@ -142,7 +142,7 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#d8e9ff]/35 via-[#dcecff]/65 to-[#f5f8fb]" />
       <div className="container relative pt-12 lg:pt-14">
-        <div className="max-w-[610px]">
+        <div className="max-w-[820px]">
           <h1
             id="home-hero-title"
             className="max-w-[470px] text-4xl font-bold leading-[1.12] text-[#051a50] lg:text-[40px]"
@@ -150,14 +150,14 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
             {t("heroTitle")}
           </h1>
           <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]">{t("heroDescription")}</p>
-          <ul className="mt-7 flex flex-wrap gap-2" aria-label="Procurement guarantees">
+          <ul
+            className="mt-7 inline-flex max-w-full flex-wrap items-center gap-x-5 gap-y-2 rounded-[28px] bg-white px-2.5 py-2 pr-5 shadow-[0_6px_24px_rgba(5,26,80,0.04)]"
+            aria-label="Procurement guarantees"
+          >
             {guarantees.map(({ key, icon: Icon, color }) => (
-              <li
-                key={key}
-                className="flex items-center gap-2 rounded-full bg-white px-2 py-1.5 text-xs text-[#22293b]"
-              >
-                <span className={`flex size-6 items-center justify-center rounded-full ${color}`}>
-                  <Icon className="size-3.5" variant="Bold" aria-hidden="true" />
+              <li key={key} className="flex min-h-8 items-center gap-2 whitespace-nowrap text-sm text-[#22293b]">
+                <span className={`flex size-8 shrink-0 items-center justify-center rounded-full ${color}`}>
+                  <Icon className="size-4" variant="Bold" aria-hidden="true" />
                 </span>
                 {t(`guarantees.${key}`)}
               </li>
@@ -179,15 +179,13 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
         )}
 
         <nav aria-label="Quick actions" className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {quickActions.map(({ key, icon: Icon, href }) => (
+          {quickActions.map(({ key, href, imageUrl }) => (
             <Link
               key={key}
               href={href}
               className="flex h-[72px] items-center justify-center gap-3 rounded-xl bg-white/90 px-4 font-semibold text-[#22293b] shadow-[0_8px_30px_rgba(5,26,80,0.05)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
             >
-              <span className="flex size-10 items-center justify-center rounded-xl bg-[#e8f3ff] text-[#1670aa]">
-                <Icon className="size-6" variant="Bulk" aria-hidden="true" />
-              </span>
+              <Image src={imageUrl} alt="" width={40} height={40} />
               {t(`quickActions.${key}`)}
             </Link>
           ))}
