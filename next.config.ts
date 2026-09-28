@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   poweredByHeader: false,
   reactStrictMode: true,
+  images: {
+    unoptimized: true,
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
