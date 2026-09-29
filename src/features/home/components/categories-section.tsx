@@ -41,7 +41,7 @@ export function CategoriesSection({ categories }: { categories: readonly HomeCat
   if (!categories.length) return null;
 
   return (
-    <section className="bg-[#f5f8fb] py-12" aria-labelledby="top-categories-title">
+    <section className="bg-[#f5f8fb] py-16" aria-labelledby="top-categories-title">
       <div className="container">
         <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-[#ef8704] via-[#f6ad4b] to-white p-4 lg:p-5">
           <div className="mb-5 flex items-center gap-2 text-white">

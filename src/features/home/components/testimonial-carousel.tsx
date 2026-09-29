@@ -20,7 +20,7 @@ export function TestimonialCarousel({ testimonials }: { testimonials: readonly T
   };
 
   return (
-    <div className="mt-10">
+    <div>
       <Swiper
         modules={[A11y]}
         slidesPerView={1.1}

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BucketSquare, ShoppingCart, Verify } from "iconsax-reactjs";
+import { ArrowRight, BucketSquare, FlashCircle, ShoppingCart, Verify } from "iconsax-reactjs";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -30,17 +30,16 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
   return (
     <article
       className={cn(
-        "group relative isolate flex min-w-0 flex-col overflow-hidden rounded-lg bg-[#f5f7f8] p-1 transition-shadow duration-300",
+        "group relative isolate flex min-w-0 flex-col overflow-hidden rounded-[8px] bg-[#f5f7f8] p-1 transition-shadow duration-300",
         "before:absolute before:inset-0 before:z-0 before:bg-gradient-to-t before:from-white before:via-white before:via-[25%] before:to-[#efa33b] before:opacity-0 before:transition-opacity before:duration-300 before:content-['']",
         "hover:shadow-[0_12px_30px_rgba(239,163,59,0.2)] hover:before:opacity-100",
         "focus-within:shadow-[0_12px_30px_rgba(239,163,59,0.2)] focus-within:before:opacity-100",
-        appearance === "outstanding" && "bg-white",
       )}
     >
       <Link
         href={productHref}
         className={cn(
-          "relative z-10 block aspect-square overflow-hidden rounded border border-[#ecf0f3] bg-white transition-[border-color] duration-300",
+          "relative z-10 block aspect-square overflow-hidden rounded-[8px] border border-[#ecf0f3] bg-white transition-[border-color] duration-300",
           "group-hover:border-2 group-hover:border-[#fcdb97] group-focus-within:border-2 group-focus-within:border-[#fcdb97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
           appearance === "outstanding" && "border-2 border-[#fcdb97]",
@@ -57,10 +56,13 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
         {presentation.badge ? (
           <span
             className={cn(
-              "absolute left-0 top-0 rounded-br px-1.5 py-0.5 text-[10px] font-medium text-white",
-              presentation.outOfStock ? "bg-[#c9ced8]" : "bg-gradient-to-r from-[#efa33b] to-[#e57a00]",
+              "absolute left-0 top-0 inline-flex items-center gap-0.5 rounded-br px-2 py-1.5 text-xs font-medium leading-none text-white",
+              presentation.outOfStock ? "bg-[#c9ced8]" : "bg-[#e57a00]",
             )}
           >
+            {!presentation.outOfStock && presentation.badge === "Best Seller" ? (
+              <Image src='/home/icon/fire.svg' alt="Best Seller" width={12} height={12} />
+            ) : null}
             {presentation.outOfStock
               ? t("outOfStock")
               : presentation.badge === "Best Seller"
@@ -76,18 +78,18 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
       </Link>
 
       <div className="relative z-10 flex flex-1 flex-col gap-2 px-2 pb-2 pt-3">
-        <div className="min-h-[57px]">
-          {product.productNo ? <p className="text-[10px] leading-4 text-[#73798f]">{product.productNo}</p> : null}
+        <div className="min-h-[58px]">
+          {product.productNo ? <p className="text-xs leading-4 text-[#73798f]">{product.productNo}</p> : null}
           <Link
             href={productHref}
-            className="line-clamp-2 text-xs font-semibold leading-[17px] text-[#051a50] hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+            className="line-clamp-2 text-sm font-semibold leading-[17px] text-[#051a50] hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
           >
             {product.name}
           </Link>
         </div>
 
         {presentation.variantLabel || product.brandName ? (
-          <div className="flex items-center gap-1 overflow-hidden text-[9px] text-[#5e6375]">
+          <div className="flex items-center gap-1 overflow-hidden text-xs text-[#5e6375]">
             {presentation.variantLabel ? (
               <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#ecf0f3] px-1.5 py-0.5">
                 <BucketSquare className="size-3 text-[#1f6db2]" variant="Bold" aria-hidden="true" />
@@ -106,10 +108,10 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
           </div>
         ) : null}
 
-        <p className="flex min-h-5 items-center gap-1.5 text-sm font-bold text-[#e57a00]">
+        <p className="flex min-h-5 items-center gap-1.5 text-base font-bold text-[#e57a00]">
           {presentation.price}
           {presentation.originalPrice ? (
-            <span className="text-[9px] font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
+            <span className="text-base font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
           ) : null}
         </p>
 
@@ -121,7 +123,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
             className={cn(
               "h-8 flex-1 rounded-full px-2 text-xs shadow-none",
               !presentation.canPurchase &&
-                "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
+              "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
             )}
           >
             <Link href={productHref}>

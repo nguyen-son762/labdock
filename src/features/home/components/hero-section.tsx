@@ -82,21 +82,37 @@ function PromoCard({ event = false }: { event?: boolean }) {
   );
 }
 
-function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
+function HomepageBannerCard({ banner, isLeft }: { banner: HomeBanner; isLeft: boolean }) {
   const content = (
-    <article className="group relative min-h-[250px] overflow-hidden rounded-xl text-white lg:min-h-[300px]">
+    <article
+      className={cn(
+        "group relative min-h-[250px] overflow-hidden rounded-xl text-white shadow-[0_0_10px_rgba(255,255,255,0.5)] lg:min-h-[300px]",
+        isLeft ? "lg:col-span-2" : "lg:col-span-1",
+      )}
+    >
       <Image
         src={banner.imageUrl}
         alt=""
         fill
         unoptimized
         sizes="(min-width: 1024px) 50vw, 100vw"
-        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#08265f]/90 via-[#08265f]/25 to-transparent" />
+      <div className="pointer-events-none absolute inset-px rounded-[10px] bg-[linear-gradient(90deg,rgba(8,38,95,0.72)_0%,rgba(8,38,95,0.2)_55%,rgba(8,38,95,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-white" />
       {banner.title ? (
-        <div className="relative flex min-h-[250px] items-end p-6 lg:min-h-[300px]">
+        <div className="absolute bottom-6 left-6">
           <h2 className="max-w-xl text-xl font-semibold leading-tight lg:text-2xl">{banner.title}</h2>
+          <div className="mt-6">
+            <Button asChild className="h-11 rounded-full p-[6px] pl-5 shadow-none" variant={isLeft ? "brand" : "default"}>
+              <Link href="/products">
+                {banner.buttonLabel}
+                <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </span>
+              </Link>
+            </Button>
+          </div>
         </div>
       ) : null}
     </article>
@@ -130,32 +146,22 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
   const t = useTranslations("Home");
 
   return (
-    <section className="relative overflow-hidden bg-[#dcecff] pb-14" aria-labelledby="home-hero-title">
-      <Image
-        src="/home/hero-bg.png"
-        alt=""
-        fill
-        unoptimized
-        priority
-        sizes="100vw"
-        className="object-cover object-top opacity-45 mix-blend-multiply"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#d8e9ff]/35 via-[#dcecff]/65 to-[#f5f8fb]" />
+    <section className="relative overflow-hidden pb-[70px]" aria-labelledby="home-hero-title">
       <div className="container relative pt-12 lg:pt-14">
         <div className="max-w-[820px]">
           <h1
             id="home-hero-title"
-            className="max-w-[470px] text-4xl font-bold leading-[1.12] text-[#051a50] lg:text-[40px]"
+            className="max-w-[470px] text-xl font-bold leading-[1.12] text-[#051a50] lg:text-[32px]"
           >
             {t("heroTitle")}
           </h1>
           <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]">{t("heroDescription")}</p>
           <ul
-            className="mt-7 inline-flex max-w-full flex-wrap items-center gap-x-5 gap-y-2 rounded-[28px] bg-white px-2.5 py-2 pr-5 shadow-[0_6px_24px_rgba(5,26,80,0.04)]"
+            className="mt-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-[28px] bg-white p-1.5 pr-3 shadow-[0_6px_24px_rgba(5,26,80,0.04)]"
             aria-label="Procurement guarantees"
           >
             {guarantees.map(({ key, icon: Icon, color }) => (
-              <li key={key} className="flex min-h-8 items-center gap-2 whitespace-nowrap text-sm text-[#22293b]">
+              <li key={key} className="flex items-center pr-3 gap-2 whitespace-nowrap text-sm text-[#1A1A1A]">
                 <span className={`flex size-8 shrink-0 items-center justify-center rounded-full ${color}`}>
                   <Icon className="size-4" variant="Bold" aria-hidden="true" />
                 </span>
@@ -166,13 +172,13 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
         </div>
 
         {banners.length ? (
-          <div className={cn("mt-10 grid gap-5", banners.length > 1 ? "lg:grid-cols-2" : "lg:grid-cols-1")}>
-            {banners.map((banner) => (
-              <HomepageBannerCard key={banner.id} banner={banner} />
+          <div className={cn("mt-10 grid gap-5", banners.length > 1 ? "lg:grid-cols-[2fr_1fr]" : "lg:grid-cols-1")}>
+            {banners.map((banner, index) => (
+              <HomepageBannerCard isLeft={index === 0} key={banner.id} banner={banner} />
             ))}
           </div>
         ) : (
-          <div className="mt-10 grid gap-5 lg:grid-cols-[2fr_1fr]">
+          <div className="mt-11 grid gap-5 lg:grid-cols-[2fr_1fr]">
             <PromoCard />
             <PromoCard event />
           </div>

@@ -8,15 +8,19 @@ import { Link } from "@/i18n/navigation";
 const cards = [
   {
     key: "equipment",
-    image: "/home/cta-equipment.png",
-    tone: "from-[#154b93] to-[#2f7bc4]",
+    image: "/home/cta-equipment-figma.png",
+    background: "linear-gradient(270deg, #0F3678 0%, #2F7BC4 100%)",
     href: "#new-products",
+    buttonVariant: "brand",
+    patternClassName: "left-0 -scale-x-100",
   },
   {
     key: "partner",
-    image: "/home/cta-partner.png",
-    tone: "from-[#eb6e77] to-[#f39a13]",
+    image: "/home/cta-partner-figma.png",
+    background: "linear-gradient(90deg, #E57A00 0%, #EFA33B 100%)",
     href: "/contact-us",
+    buttonVariant: "default",
+    patternClassName: "right-0",
   },
 ] as const;
 
@@ -25,30 +29,44 @@ export function CtaSection() {
 
   return (
     <section className="bg-[#f5f8fb] py-16" aria-label="Explore Labdock opportunities">
-      <div className="container grid gap-5 lg:grid-cols-2">
+      <div className="container grid gap-6 lg:grid-cols-2">
         {cards.map((card) => (
           <article
             key={card.key}
-            className={`relative min-h-[300px] overflow-hidden rounded-2xl bg-gradient-to-r ${card.tone}`}
+            className="relative h-[300px] overflow-hidden rounded-[20px]"
+            style={{ background: card.background }}
           >
-            <div className="absolute right-0 top-0 h-full w-[55%]">
+            <Image
+              src="/home/cta-pattern-figma.png"
+              alt=""
+              width={515}
+              height={364}
+              aria-hidden="true"
+              className={`pointer-events-none absolute top-0 z-0 h-[364px] w-[515px] max-w-none opacity-80 mix-blend-lighten ${card.patternClassName}`}
+            />
+            <div className="absolute right-0 top-0 z-10 h-[336px] w-[310px] max-w-[55%]">
               <Image
                 src={card.image}
                 alt=""
                 fill
                 unoptimized
-                sizes="(min-width: 1024px) 25vw, 50vw"
-                className="object-contain object-bottom"
+                sizes="310px"
+                className="rounded-[20px] object-contain object-right-top"
               />
             </div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_30%,rgba(255,255,255,0.15),transparent_35%)]" />
-            <div className="relative flex min-h-[300px] max-w-[60%] flex-col justify-center p-6 text-white">
-              <h2 className="text-2xl font-semibold leading-tight">{t(`cta.${card.key}.title`)}</h2>
-              <p className="mt-3 text-xs leading-5 text-white/90">{t(`cta.${card.key}.description`)}</p>
+            <div className="relative z-20 flex h-full w-[391px] max-w-full flex-col items-start justify-center px-6 py-8 text-white">
+              <div className="flex w-full flex-col items-start gap-2 self-stretch pb-6">
+                <h2 className="text-2xl font-semibold leading-tight">{t(`cta.${card.key}.title`)}</h2>
+                <p className="text-xs leading-5 text-white/90">{t(`cta.${card.key}.description`)}</p>
+              </div>
               <Button
                 asChild
-                variant={card.key === "partner" ? "default" : "brand"}
-                className="mt-5 h-11 w-fit rounded-full p-1.5 pl-5"
+                variant={card.buttonVariant}
+                className={`h-10 w-fit gap-4 rounded-full p-1.5 pl-5 ${
+                  card.key === "partner"
+                    ? "shadow-[0_0_50px_rgba(47,123,196,0.3)]"
+                    : "shadow-[0_0_50px_rgba(239,163,59,0.3)]"
+                }`}
               >
                 <Link href={card.href}>
                   {t(`cta.${card.key}.action`)}

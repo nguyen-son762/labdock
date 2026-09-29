@@ -10,6 +10,7 @@ export type HomeBanner = {
   imageUrl: string;
   linkUrl: string | null;
   title: string | null;
+  buttonLabel: string | null;
 };
 
 export type HomeCategory = {

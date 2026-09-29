@@ -20,7 +20,7 @@ export function SocialProofSection({
       {brands.length ? (
         <section
           id="research-leaders"
-          className="relative overflow-hidden bg-[#f5f8fb] py-14 sm:py-16"
+          className="relative overflow-hidden bg-[#f5f8fb] pt-14 sm:pt-16"
           aria-labelledby="research-leaders-title"
         >
           <span
@@ -28,7 +28,7 @@ export function SocialProofSection({
             aria-hidden="true"
           />
           <div className="container relative">
-            <h2 id="research-leaders-title" className="text-center text-2xl font-semibold text-[#0b2860] sm:text-3xl">
+            <h2 id="research-leaders-title" className="text-center text-2xl font-semibold text-[#0b2860] sm:text-2xl">
               {t("trusted")}
             </h2>
 
@@ -74,11 +74,8 @@ export function SocialProofSection({
       ) : null}
 
       {testimonials.length ? (
-        <section className="bg-[#f5f8fb] py-10" aria-labelledby="research-testimonials-title">
+        <section className="bg-[#f5f8fb] pt-6" aria-labelledby="research-testimonials-title">
           <div className="container">
-            <h2 id="research-testimonials-title" className="text-center text-2xl font-semibold text-[#051a50]">
-              {t("testimonialsTitle")}
-            </h2>
             <TestimonialCarousel testimonials={testimonials} />
           </div>
         </section>
