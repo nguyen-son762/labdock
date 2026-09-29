@@ -204,6 +204,25 @@ describe("profileService", () => {
     expect(httpClient.post).toHaveBeenCalledWith("/auth/change-password", input);
   });
 
+  it("uploads the profile image as multipart form data", async () => {
+    const file = new File(["avatar"], "avatar.png", { type: "image/png" });
+    const controller = new AbortController();
+    httpClient.post.mockResolvedValue({ data: undefined });
+
+    await expect(profileService.uploadAvatar(file, controller.signal)).resolves.toBeUndefined();
+
+    expect(httpClient.post).toHaveBeenCalledWith(
+      "/me/profile/media",
+      expect.any(FormData),
+      expect.objectContaining({
+        headers: { "Content-Type": "multipart/form-data" },
+        signal: controller.signal,
+      }),
+    );
+    const formData = httpClient.post.mock.calls.at(-1)?.[1] as FormData;
+    expect(formData.get("file")).toBe(file);
+  });
+
   it("does not send an invalid password change request", async () => {
     await expect(
       profileService.changePassword({

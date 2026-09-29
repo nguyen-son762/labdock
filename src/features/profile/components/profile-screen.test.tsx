@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -86,5 +86,29 @@ describe("ProfileScreen", () => {
     expect(screen.getByLabelText(/Current password/)).toHaveValue("");
     expect(screen.getByLabelText(/^New password/)).toHaveValue("");
     expect(screen.getByLabelText(/Confirm password/)).toHaveValue("");
+  });
+
+  it("uploads a selected avatar through the profile media API", async () => {
+    vi.spyOn(profileService, "getCurrent").mockResolvedValue(user);
+    const uploadAvatar = vi.spyOn(profileService, "uploadAvatar").mockResolvedValue();
+    const interaction = userEvent.setup();
+
+    render(
+      <AppProviders>
+        <ProfileScreen />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByRole("heading", { name: "Sarah Chen" })).toBeInTheDocument();
+    await interaction.click(screen.getByRole("button", { name: "Change profile picture" }));
+
+    const file = new File(["avatar"], "avatar.png", { type: "image/png" });
+    await interaction.upload(screen.getByLabelText("Choose profile picture"), file);
+    expect(await screen.findByText("avatar.png")).toBeInTheDocument();
+
+    await interaction.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => expect(uploadAvatar).toHaveBeenCalledWith(file));
+    expect(screen.queryByText("avatar.png")).not.toBeInTheDocument();
   });
 });

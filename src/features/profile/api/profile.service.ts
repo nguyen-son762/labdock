@@ -10,7 +10,6 @@ import {
 import { profileResponseSchema, type ProfileResponse } from "../schemas/profile-response.schema";
 import { currentUserSchema, type CurrentUser } from "../schemas/user.schema";
 
-const MOCK_DELAY_MS = 450;
 const DEFAULT_PROFILE_PICTURE_URL = "/auth/company-logo.png";
 
 type UpdateProfileRequest = {
@@ -32,20 +31,6 @@ type UpdateProfileRequest = {
     country: string;
   };
 };
-
-function waitForMockApi(signal?: AbortSignal): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const timeout = globalThis.setTimeout(resolve, MOCK_DELAY_MS);
-    signal?.addEventListener(
-      "abort",
-      () => {
-        globalThis.clearTimeout(timeout);
-        reject(new DOMException("Request aborted", "AbortError"));
-      },
-      { once: true },
-    );
-  });
-}
 
 function resolveProfilePictureUrl(path: string): string {
   if (/^(?:https?:|data:)/i.test(path)) return path;
@@ -120,9 +105,13 @@ export const profileService = {
     await httpClient.post<void>("/auth/change-password", values);
   },
 
-  async updateAvatar(avatarUrl: string, currentUser: CurrentUser): Promise<CurrentUser> {
-    if (!avatarUrl.startsWith("data:image/")) throw new Error("Invalid profile image.");
-    await waitForMockApi();
-    return currentUserSchema.parse({ ...currentUser, avatarUrl });
+  async uploadAvatar(file: File, signal?: AbortSignal): Promise<void> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    await httpClient.post<void>("/me/profile/media", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      ...(signal ? { signal } : {}),
+    });
   },
 };

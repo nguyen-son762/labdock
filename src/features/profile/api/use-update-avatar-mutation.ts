@@ -8,12 +8,14 @@ export function useUpdateAvatarMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (avatarUrl: string) => {
-      const currentUser = queryClient.getQueryData<CurrentUser>(profileKeys.current());
-      if (!currentUser) throw new Error("Load the current profile before updating it.");
-      return profileService.updateAvatar(avatarUrl, currentUser);
+    mutationFn: (file: File) => {
+      if (!queryClient.getQueryData<CurrentUser>(profileKeys.current())) {
+        throw new Error("Load the current profile before updating it.");
+      }
+
+      return profileService.uploadAvatar(file);
     },
     retry: false,
-    onSuccess: (user) => queryClient.setQueryData(profileKeys.current(), user),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: profileKeys.current() }),
   });
 }

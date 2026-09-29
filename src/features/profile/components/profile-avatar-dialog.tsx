@@ -24,35 +24,20 @@ import { useUpdateAvatarMutation } from "../api/use-update-avatar-mutation";
 const MAX_FILE_SIZE = 1024 * 1024;
 const acceptedTypes = new Set(["image/jpeg", "image/png"]);
 
-function readAsDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
-    reader.onerror = () => reject(new Error("Could not read this image."));
-    reader.readAsDataURL(file);
-  });
-}
-
 export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File>();
-  const [preview, setPreview] = useState<string>();
   const [validationError, setValidationError] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
   const updateAvatar = useUpdateAvatarMutation();
 
-  async function selectFile(nextFile: File | undefined) {
+  function selectFile(nextFile: File | undefined) {
     setValidationError(undefined);
     updateAvatar.reset();
     if (!nextFile) return;
     if (!acceptedTypes.has(nextFile.type)) return setValidationError("Upload a PNG or JPG image.");
     if (nextFile.size > MAX_FILE_SIZE) return setValidationError("Profile picture must be 1MB or smaller.");
-    try {
-      setPreview(await readAsDataUrl(nextFile));
-      setFile(nextFile);
-    } catch (error) {
-      setValidationError(getApiErrorMessage(error));
-    }
+    setFile(nextFile);
   }
 
   function handleDrop(event: DragEvent<HTMLDivElement>) {
@@ -60,19 +45,23 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
     void selectFile(event.dataTransfer.files[0]);
   }
 
+  function clearFile() {
+    setFile(undefined);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen);
     if (!nextOpen) {
-      setFile(undefined);
-      setPreview(undefined);
+      clearFile();
       setValidationError(undefined);
       updateAvatar.reset();
     }
   }
 
   function handleSave() {
-    if (!preview) return;
-    updateAvatar.mutate(preview, { onSuccess: () => setOpen(false) });
+    if (!file) return;
+    updateAvatar.mutate(file, { onSuccess: () => setOpen(false) });
   }
 
   return (
@@ -134,10 +123,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
                 size="icon"
                 className="size-8 text-red-600"
                 aria-label="Remove image"
-                onClick={() => {
-                  setFile(undefined);
-                  setPreview(undefined);
-                }}
+                onClick={clearFile}
               >
                 <Trash className="size-5" aria-hidden="true" />
               </Button>
@@ -154,7 +140,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
               Cancel
             </Button>
           </DialogClose>
-          <Button type="button" variant="brand" disabled={!preview || updateAvatar.isPending} onClick={handleSave}>
+          <Button type="button" variant="brand" disabled={!file || updateAvatar.isPending} onClick={handleSave}>
             {updateAvatar.isPending ? <Refresh2 className="size-4 animate-spin" aria-hidden="true" /> : null}
             {updateAvatar.isPending ? "Saving…" : "Save"}
           </Button>
