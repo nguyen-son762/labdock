@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { A11y } from "swiper/modules";
+import { A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperInstance } from "swiper";
 
@@ -36,10 +36,12 @@ export function ProductCarousel({
   return (
     <div>
       <Swiper
-        modules={[A11y]}
+        modules={[A11y, Autoplay]}
         slidesPerView={2}
         spaceBetween={12}
         watchOverflow
+        loop
+        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
         a11y={{ containerMessage: `${label} carousel` }}
         breakpoints={
           compact

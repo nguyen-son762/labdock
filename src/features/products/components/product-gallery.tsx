@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
-import { A11y, Thumbs } from "swiper/modules";
+import { A11y, Autoplay, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button } from "@/components/ui/button";
@@ -50,10 +50,12 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
       </Swiper>
 
       <Swiper
-        modules={[A11y, Thumbs]}
+        modules={[A11y, Autoplay, Thumbs]}
         slidesPerView={1}
         spaceBetween={12}
         thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+        loop
+        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
         a11y={{ containerMessage: `${productName} product images` }}
         onSwiper={setMainSwiper}
         onSlideChange={(instance) => setActiveIndex(instance.activeIndex)}

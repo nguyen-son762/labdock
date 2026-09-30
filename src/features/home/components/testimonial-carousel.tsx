@@ -3,7 +3,7 @@
 import { Star1 } from "iconsax-reactjs";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
-import { A11y } from "swiper/modules";
+import { A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
@@ -22,10 +22,12 @@ export function TestimonialCarousel({ testimonials }: { testimonials: readonly T
   return (
     <div>
       <Swiper
-        modules={[A11y]}
+        modules={[A11y, Autoplay]}
         slidesPerView={1.1}
         spaceBetween={16}
         watchOverflow
+        loop
+        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
         a11y={{ containerMessage: "Research leader testimonials" }}
         breakpoints={{ 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 }, 1280: { slidesPerView: 4 } }}
         onSwiper={(instance) => {

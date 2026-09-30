@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
-import { A11y, Grid } from "swiper/modules";
+import { A11y, Autoplay, Grid } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
@@ -49,11 +49,13 @@ export function CategoryStrip({
         />
       </div>
       <Swiper
-        modules={[A11y, Grid]}
+        modules={[A11y, Autoplay, Grid]}
         slidesPerView={1.4}
         spaceBetween={8}
         grid={{ rows: 2, fill: "row" }}
         watchOverflow
+        loop
+        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
         a11y={{ containerMessage: "Product categories carousel" }}
         breakpoints={{
           640: { slidesPerView: 3, grid: { rows: 2, fill: "row" } },
