@@ -88,8 +88,8 @@ export function NewProductsSection({ products }: { products: readonly Product[] 
   const t = useTranslations("Home");
 
   return (
-    <section id="new-products" className="bg-[#f5f8fb]" aria-labelledby="new-products-title">
-      <div className="container rounded-2xl bg-white px-4 lg:px-5 pb-6">
+    <section id="new-products" aria-labelledby="new-products-title" className="container">
+      <div className="rounded-2xl bg-white pb-6">
         <h2 id="new-products-title" className="mb-6 pt-6 text-center text-2xl font-semibold text-[#051a50]">
           {t("newProducts")}
         </h2>
@@ -141,7 +141,18 @@ export function PersonalizedProducts({ products }: { products: readonly Product[
               />
             </svg>
             <span className="relative z-10 flex items-center gap-2 text-2xl">
-              <Image src="/home/icon/personal.png" alt="" width={40} height={40} />
+              <div className="relative">
+                <Image className="relative z-10" src="/home/icon/personal.png" alt="" width={40} height={40} />
+                <svg className="absolute -top-[1px] right-0" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
+                  <path d="M16.3399 0C7.31561 0 0 7.31561 0 16.3399C0 25.3641 7.31561 32.6797 16.3399 32.6797C25.3641 32.6797 32.6797 25.3641 32.6797 16.3399C32.6797 7.31561 25.3641 0 16.3399 0Z" fill="url(#paint0_linear_106_4260)" />
+                  <defs>
+                    <linearGradient id="paint0_linear_106_4260" x1="0" y1="16.3399" x2="32.6797" y2="16.3399" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#EFA33B" />
+                      <stop offset="1" stop-color="#E57A00" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
               {t("personalized")}
             </span>
           </h2>

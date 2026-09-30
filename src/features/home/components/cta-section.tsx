@@ -12,7 +12,7 @@ const cards = [
     background: "linear-gradient(270deg, #0F3678 0%, #2F7BC4 100%)",
     href: "#new-products",
     buttonVariant: "brand",
-    patternClassName: "left-0 -scale-x-100",
+    patternClassName: "left-0",
   },
   {
     key: "partner",
@@ -33,18 +33,22 @@ export function CtaSection() {
         {cards.map((card) => (
           <article
             key={card.key}
-            className="relative h-[300px] overflow-hidden rounded-[20px]"
-            style={{ background: card.background }}
+            className="relative isolate h-[300px] rounded-[20px]"
           >
-            <Image
-              src="/home/cta-pattern-figma.png"
-              alt=""
-              width={515}
-              height={364}
-              aria-hidden="true"
-              className={`pointer-events-none absolute top-0 z-0 h-[364px] w-[515px] max-w-none opacity-80 mix-blend-lighten ${card.patternClassName}`}
-            />
-            <div className="absolute right-0 top-0 z-10 h-[336px] w-[310px] max-w-[55%]">
+            <div
+              className="absolute inset-0 z-0 overflow-hidden rounded-[20px]"
+              style={{ background: card.background }}
+            >
+              <Image
+                src="/home/cta-pattern-figma.png"
+                alt=""
+                width={515}
+                height={364}
+                aria-hidden="true"
+                className={`pointer-events-none absolute top-0 left-0 h-[364px] w-[515px] max-w-none opacity-80 mix-blend-lighten ${card.patternClassName}`}
+              />
+            </div>
+            <div className="absolute right-0 bottom-0 z-10 h-[336px] w-[310px] max-w-[55%]">
               <Image
                 src={card.image}
                 alt=""
@@ -54,19 +58,18 @@ export function CtaSection() {
                 className="rounded-[20px] object-contain object-right-top"
               />
             </div>
-            <div className="relative z-20 flex h-full w-[391px] max-w-full flex-col items-start justify-center px-6 py-8 text-white">
+            <div className="relative z-20 flex h-full max-w-full flex-col items-start justify-end px-6 py-8 text-white">
               <div className="flex w-full flex-col items-start gap-2 self-stretch pb-6">
                 <h2 className="text-2xl font-semibold leading-tight">{t(`cta.${card.key}.title`)}</h2>
-                <p className="text-xs leading-5 text-white/90">{t(`cta.${card.key}.description`)}</p>
+                <p className="text-sm leading-5 text-white/90">{t(`cta.${card.key}.description`)}</p>
               </div>
               <Button
                 asChild
                 variant={card.buttonVariant}
-                className={`h-10 w-fit gap-4 rounded-full p-1.5 pl-5 ${
-                  card.key === "partner"
-                    ? "shadow-[0_0_50px_rgba(47,123,196,0.3)]"
-                    : "shadow-[0_0_50px_rgba(239,163,59,0.3)]"
-                }`}
+                className={`h-10 w-fit gap-4 rounded-full p-1.5 pl-5 ${card.key === "partner"
+                  ? "shadow-[0_0_50px_rgba(47,123,196,0.3)]"
+                  : "shadow-[0_0_50px_rgba(239,163,59,0.3)]"
+                  }`}
               >
                 <Link href={card.href}>
                   {t(`cta.${card.key}.action`)}
