@@ -48,13 +48,19 @@ function mapHomepageData(homepage: PublicHomepage): HomePageData {
   const outstandingProducts = homepage.newestProducts.some((product) => product.isOutstanding)
     ? homepage.newestProducts.filter((product) => product.isOutstanding).map(mapPublicProduct)
     : newestProducts;
-
   return {
     banners: sortByOrder(homepage.banners).map((banner) => ({
       id: banner.id,
+      type: banner.type,
       imageUrl: resolvePublicAssetUrl(banner.imagePath),
       linkUrl: banner.linkUrl,
       title: banner.title,
+      description: banner.description,
+      showDescription: banner.showDescription,
+      buttonLabel: banner.buttonLabel,
+      dateTime: banner.dateTime,
+      location: banner.location,
+      badge: banner.badge,
     })),
     topBrands: homepage.topBrands.map(mapPublicBrand),
     topCategories: sortByOrder(homepage.topCategories),

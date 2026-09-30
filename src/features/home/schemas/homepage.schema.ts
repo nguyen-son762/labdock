@@ -6,9 +6,35 @@ const guidSchema = z.string().regex(/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12
 
 const homepageBannerSchema = z.object({
   id: guidSchema,
+  type: z.enum(["Left", "Right"]),
   imagePath: z.string().min(1),
   linkUrl: z.string().min(1).nullable(),
   title: z.string().min(1).nullable(),
+  description: z
+    .string()
+    .min(1)
+    .nullish()
+    .transform((value) => value ?? null),
+  showDescription: z.boolean(),
+  buttonLabel: z
+    .string()
+    .min(1)
+    .nullish()
+    .transform((value) => value ?? null),
+  dateTime: z.iso
+    .datetime({ offset: true })
+    .nullish()
+    .transform((value) => value ?? null),
+  location: z
+    .string()
+    .min(1)
+    .nullish()
+    .transform((value) => value ?? null),
+  badge: z
+    .string()
+    .min(1)
+    .nullish()
+    .transform((value) => value ?? null),
   sortOrder: z.number().int(),
 });
 

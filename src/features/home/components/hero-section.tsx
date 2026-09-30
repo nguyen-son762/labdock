@@ -13,9 +13,10 @@ import {
   Verify,
 } from "iconsax-reactjs";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
@@ -82,8 +83,36 @@ function PromoCard({ event = false }: { event?: boolean }) {
   );
 }
 
-function HomepageBannerCard({ banner, isLeft }: { banner: HomeBanner; isLeft: boolean }) {
-  const content = (
+function BannerAction({ href, children, className }: { href: string; children: ReactNode; className: string }) {
+  if (/^https?:\/\//i.test(href)) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
+  const locale = useLocale();
+  const isLeft = banner.type === "Left";
+  const formattedDate = banner.dateTime
+    ? new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(
+      new Date(banner.dateTime),
+    )
+    : null;
+  const hasMetadata = Boolean(banner.location || formattedDate);
+  const hasContent = Boolean(
+    banner.badge || banner.title || (banner.showDescription && banner.description) || hasMetadata || banner.buttonLabel,
+  );
+
+  return (
     <article
       className={cn(
         "group relative min-h-[250px] overflow-hidden rounded-xl text-white shadow-[0_0_10px_rgba(255,255,255,0.5)] lg:min-h-[300px]",
@@ -100,45 +129,52 @@ function HomepageBannerCard({ banner, isLeft }: { banner: HomeBanner; isLeft: bo
       />
       <div className="pointer-events-none absolute inset-px rounded-[10px] bg-[linear-gradient(90deg,rgba(8,38,95,0.72)_0%,rgba(8,38,95,0.2)_55%,rgba(8,38,95,0)_100%)]" />
       <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-white" />
-      {banner.title ? (
-        <div className="absolute bottom-6 left-6">
-          <h2 className="max-w-xl text-xl font-semibold leading-tight lg:text-2xl">{banner.title}</h2>
-          <div className="mt-6">
-            <Button asChild className="h-11 rounded-full p-[6px] pl-5 shadow-none" variant={isLeft ? "brand" : "default"}>
-              <Link href="/products">
-                {banner.buttonLabel}
-                <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
-                  <ArrowRight className="size-4" aria-hidden="true" />
+      {hasContent ? (
+        <div className="absolute inset-x-0 bottom-0 p-6">
+          {banner.badge ? (
+            <span className={cn("mb-2 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase", isLeft ? "bg-[#e57a00]" : "bg-[#2f7bc4]")}>
+              {banner.badge}
+            </span>
+          ) : null}
+          {banner.title ? (
+            <h2 className="max-w-xl text-xl font-semibold leading-tight lg:text-2xl">{banner.title}</h2>
+          ) : null}
+          {banner.showDescription && banner.description ? (
+            <p className="mt-2 max-w-xl text-sm leading-5 text-white/90">{banner.description}</p>
+          ) : null}
+          {hasMetadata ? (
+            <p className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/90">
+              {banner.location ? (
+                <span className="inline-flex items-center gap-1.5 text-[13px]">
+                  <Location className="size-[14px]" variant="Bold" aria-hidden="true" />
+                  {banner.location}
                 </span>
-              </Link>
-            </Button>
-          </div>
+              ) : null}
+              {formattedDate ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Calendar className="size-3.5" variant="Bold" aria-hidden="true" />
+                  {formattedDate}
+                </span>
+              ) : null}
+            </p>
+          ) : null}
+          {banner.buttonLabel && banner.linkUrl ? (
+            <BannerAction
+              href={banner.linkUrl}
+              className={cn(
+                buttonVariants({ variant: isLeft ? "brand" : "default" }),
+                "mt-5 h-11 w-fit rounded-full p-[6px] pl-5 shadow-none",
+              )}
+            >
+              {banner.buttonLabel}
+              <span className="flex size-7 items-center justify-center rounded-full bg-white/10">
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </span>
+            </BannerAction>
+          ) : null}
         </div>
       ) : null}
     </article>
-  );
-
-  if (!banner.linkUrl) return content;
-
-  const linkClassName = "block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]";
-  if (/^https?:\/\//i.test(banner.linkUrl)) {
-    return (
-      <a
-        href={banner.linkUrl}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={banner.title ?? "Homepage banner"}
-        className={linkClassName}
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <Link href={banner.linkUrl} aria-label={banner.title ?? "Homepage banner"} className={linkClassName}>
-      {content}
-    </Link>
   );
 }
 
@@ -155,7 +191,9 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
           >
             {t("heroTitle")}
           </h1>
-          <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]">{t("heroDescription")}</p>
+          <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]" dangerouslySetInnerHTML={{
+            __html: t("heroDescription")
+          }}></p>
           <ul
             className="mt-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-[28px] bg-white p-1.5 pr-3 shadow-[0_6px_24px_rgba(5,26,80,0.04)]"
             aria-label="Procurement guarantees"
@@ -172,9 +210,9 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
         </div>
 
         {banners.length ? (
-          <div className={cn("mt-10 grid gap-5", banners.length > 1 ? "lg:grid-cols-[2fr_1fr]" : "lg:grid-cols-1")}>
-            {banners.map((banner, index) => (
-              <HomepageBannerCard isLeft={index === 0} key={banner.id} banner={banner} />
+          <div className={cn("mt-10 grid gap-5", banners.length > 1 ? "lg:grid-cols-3" : "lg:grid-cols-1")}>
+            {banners.map((banner) => (
+              <HomepageBannerCard key={banner.id} banner={banner} />
             ))}
           </div>
         ) : (

@@ -10,9 +10,16 @@ const homepageResponse = {
   banners: [
     {
       id: "11111111-1111-1111-1111-111111111111",
+      type: "Left",
       imagePath: "public/banners/example.jpg",
       linkUrl: "https://example.com/banner",
       title: "Example banner",
+      description: "Example description",
+      showDescription: true,
+      buttonLabel: "Explore products",
+      dateTime: "2026-08-21T10:00:00+00:00",
+      location: "Singapore",
+      badge: "Featured",
       sortOrder: 1,
     },
   ],
@@ -95,6 +102,23 @@ describe("getPublicHomepage", () => {
 
     await expect(getPublicHomepage()).rejects.toThrow();
   });
+
+  it("rejects unsupported homepage banner types", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            ...homepageResponse,
+            banners: [{ ...homepageResponse.banners[0], type: "Center" }],
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    await expect(getPublicHomepage()).rejects.toThrow();
+  });
 });
 
 describe("getHomePageData", () => {
@@ -106,8 +130,15 @@ describe("getHomePageData", () => {
 
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(result.banners[0]).toMatchObject({
+      type: "Left",
       imageUrl: "https://uat-api-labdock.365studio.vn/media/public/banners/example.jpg",
       title: "Example banner",
+      description: "Example description",
+      showDescription: true,
+      buttonLabel: "Explore products",
+      dateTime: "2026-08-21T10:00:00+00:00",
+      location: "Singapore",
+      badge: "Featured",
     });
     expect(result.topBrands[0]?.name).toBe("Example Brand");
     expect(result.topCategories[0]?.slug).toBe("example-category");

@@ -227,7 +227,7 @@ Detail UI dùng trực tiếp `Product`: gallery lấy media primary/sort order,
 
 `GET /homepage` là request public duy nhất cho nội dung Home, trả về `banners`, `topBrands`, `topCategories`, `newestProducts`, `personalizedOffers` và `testimonials`. Frontend validate toàn bộ payload bằng Zod rồi map sang view model:
 
-- `banners` cấp ảnh/link/title cho Hero.
+- `banners` cấp ảnh, link, title, description, CTA, badge, thời gian và địa điểm cho Hero. `type` chỉ nhận `Left | Right`: banner `Left` chiếm hai cột, banner `Right` chiếm một cột; description chỉ render khi `showDescription=true`.
 - `topBrands` cấp logo và tên cho Research Leaders.
 - `topCategories` cấp tên/slug cho Top Categories.
 - `newestProducts` cấp New Products và dùng các item có `isOutstanding=true` cho Outstanding Products.

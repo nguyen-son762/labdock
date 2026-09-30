@@ -18,6 +18,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 import type { HomeCategory } from "../home.types";
+import { cn } from "@/lib/class-names";
 
 const categoryIcons = [
   Hierarchy3,
@@ -73,12 +74,13 @@ export function CategoriesSection({ categories }: { categories: readonly HomeCat
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {categories.map((category, index) => {
                 const Icon = categoryIcons[index % categoryIcons.length];
+                const isTrending = index >= 2;
                 return (
                   <Link
                     key={category.id}
                     id={`category-${category.slug}`}
                     href={`/categories/${category.slug}`}
-                    className="relative flex min-h-[92px] items-center gap-3 rounded-lg bg-white/90 p-3 text-[#051a50] shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+                    className="relative flex min-h-[92px] items-center gap-3 rounded-lg border border-white bg-[linear-gradient(180deg,#FFF_0%,rgba(255,255,255,0.5)_100%)] p-3 text-[#051a50] transition-[background,box-shadow] duration-300 hover:bg-[linear-gradient(0deg,#FFF_0%,#FFF_100%),linear-gradient(180deg,#FFF_0%,rgba(255,255,255,0.5)_100%)] hover:shadow-[0_0_50px_0_rgba(0,0,0,0.1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
                   >
                     {Icon ? (
                       <Icon className="size-8 shrink-0 text-[#1572ad]" variant="Bulk" aria-hidden="true" />
@@ -86,9 +88,17 @@ export function CategoriesSection({ categories }: { categories: readonly HomeCat
                     <span>
                       <strong className="block text-sm leading-5">{category.name}</strong>
                     </span>
+                    <p></p>
                     {index < 4 ? (
-                      <span className="absolute right-0 top-0 inline-flex items-center gap-1 rounded-bl bg-[#e57a00] px-1.5 py-0.5 text-[9px] text-white">
-                        <StatusUp className="size-2.5" aria-hidden="true" />
+                      <span
+                        className={cn(
+                          "absolute right-0 top-0 inline-flex items-center gap-1 rounded-bl px-1.5 py-0.5 text-xs font-semibold text-white",
+                          isTrending
+                            ? "bg-[linear-gradient(270deg,#217A4F_0%,#4CAF7A_100%)]"
+                            : "bg-[linear-gradient(90deg,#EFA33B_0%,#E57A00_100%)]",
+                        )}
+                      >
+                        {isTrending ? <StatusUp variant='Bold' size={12} /> : <Image src="/home/icon/fire.svg" alt="" width={12} height={12} />}
                         {index < 2 ? t("bestSeller") : t("trending")}
                       </span>
                     ) : null}

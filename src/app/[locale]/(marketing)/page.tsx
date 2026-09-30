@@ -40,7 +40,6 @@ export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   if (isAppLocale(locale)) setRequestLocale(locale);
   const homePageData = await getHomePageData();
-
   return (
     <>
       <script
