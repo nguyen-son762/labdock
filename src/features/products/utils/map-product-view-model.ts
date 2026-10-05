@@ -15,7 +15,7 @@ export function mapProductViewModel(product: ProductViewModel): Product {
     name: product.name,
     slug: product.slug ?? product.id,
     productNo: product.catalogNumber,
-    status: 1,
+    status: "Published",
     brandName: product.brand,
     notes: "",
     description: product.description,

@@ -3,6 +3,7 @@
 import { MainHeader } from "@/components/layout/main-header";
 import { HeaderAccountMenu, useAuthSessionQuery } from "@/features/auth";
 import type { PublicCategoryTreeNode } from "@/features/categories";
+import { CompactCartLink } from "@/features/checkout";
 import { useCurrentUserQuery } from "@/features/profile";
 
 type AuthHeaderProps = {
@@ -22,6 +23,7 @@ export function AuthHeader({ categories, categoriesError = false }: AuthHeaderPr
       account={account}
       accountContent={account ? <HeaderAccountMenu account={account} /> : undefined}
       compactAccountContent={account ? <HeaderAccountMenu account={account} compact /> : undefined}
+      compactCartContent={<CompactCartLink />}
       categories={categories}
       categoriesError={categoriesError}
     />

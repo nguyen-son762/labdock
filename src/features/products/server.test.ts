@@ -34,7 +34,7 @@ const productDetailResponse = {
   name: "Example Name",
   slug: "example-slug",
   productNo: "SKU-001",
-  status: 1,
+  status: "Draft",
   brandName: "Example Brand",
   notes: "Handle with care",
   description: "Example description",

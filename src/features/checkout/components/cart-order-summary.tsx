@@ -27,17 +27,17 @@ export function CartOrderSummary({ items }: { items: CartItem[] }) {
       <h2 id="cart-summary-title" className="text-2xl font-semibold text-[#051a50]">
         Order summary
       </h2>
-      <dl className="mt-5 space-y-4">
+      <dl className="mt-4 space-y-3">
         {rows.map(([label, value]) => (
-          <div key={label} className="flex justify-between gap-4 text-xs">
+          <div key={label} className="flex justify-between gap-4 text-sm leading-5">
             <dt className="text-[#73798f]">{label}</dt>
-            <dd className="font-medium text-[#051a50]">{value}</dd>
+            <dd className="font-semibold text-[#051a50]">{value}</dd>
           </div>
         ))}
       </dl>
       <div className="mt-5 flex items-center justify-between border-t border-[#dde2e8] pt-4">
         <span className="text-sm font-semibold text-[#051a50]">Total</span>
-        <strong className="text-xl text-[#164990]">{formatCurrency(orderTotals.total, currency)}</strong>
+        <strong className="text-lg font-semibold text-[#164990]">{formatCurrency(orderTotals.total, currency)}</strong>
       </div>
       <Button
         asChild
@@ -57,28 +57,33 @@ export function CartOrderSummary({ items }: { items: CartItem[] }) {
       </Button>
       <Button
         asChild
-        variant="outline"
+        variant="default"
         aria-disabled={disabled}
-        className="mt-3 h-11 w-full rounded-full border-[#2474ca] text-[#164990] hover:bg-[#eef6ff] hover:text-[#164990]"
+        className="mt-3 h-11 w-full justify-between pl-5 pr-1.5 shadow-none"
       >
         <Link
           href={disabled ? "#cart-products" : `/request-quote?items=${encodeURIComponent(selectedIds)}`}
           tabIndex={disabled ? -1 : undefined}
         >
-          Request for quote
+          <span className="flex-1 text-center">Request for quote</span>
+          <span className="flex size-8 items-center justify-center rounded-full bg-[#1f5fa8]">
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </span>
         </Link>
       </Button>
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#edf0f2] pt-4">
-        <p className="flex items-center gap-2 text-xs text-[#868da5]">
-          <ShieldTick className="size-4 text-[#e3bf00]" variant="Bold" aria-hidden="true" /> Secured payment
+        <p className="flex items-center gap-2 text-sm text-[#73798f]">
+          <ShieldTick className="size-5 text-[#e3bf00]" variant="Bold" aria-hidden="true" /> Secured payment
         </p>
-        <Image
-          src="/checkout/paynow-logo.svg"
-          alt="PayNow"
-          width={64}
-          height={20}
-          className="h-auto w-16 object-contain"
-        />
+        <span className="flex h-7 w-[46px] items-center justify-center rounded-[5px] border border-[#dde2e8] bg-white p-px">
+          <Image
+            src="/checkout/paynow-logo.svg"
+            alt="PayNow"
+            width={31}
+            height={28}
+            className="size-[30px] object-contain"
+          />
+        </span>
       </div>
     </aside>
   );

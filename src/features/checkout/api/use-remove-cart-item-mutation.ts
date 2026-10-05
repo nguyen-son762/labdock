@@ -8,10 +8,12 @@ export function useRemoveCartItemMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: cartService.remove,
+    retry: false,
     onSuccess: (_, input) => {
       queryClient.setQueryData<CartItem[]>(cartQueryKeys.detail(), (cart = []) =>
         cart.filter((item) => item.id !== input.itemId),
       );
+      void queryClient.invalidateQueries({ queryKey: cartQueryKeys.detail() });
     },
   });
 }

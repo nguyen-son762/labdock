@@ -40,13 +40,13 @@ export function PaymentMethodSection({ form }: { form: UseFormReturn<CheckoutFor
                       <span className="block text-xs text-[#73798f]">{method.description}</span>
                     </span>
                     {method.value === "paynow" ? (
-                      <span className="relative size-8 overflow-hidden rounded border bg-white">
+                      <span className="relative w-10 h-6  overflow-hidden rounded border bg-white">
                         <Image
                           src="/checkout/paynow-logo.svg"
                           alt="PayNow"
                           fill
                           sizes="32px"
-                          className="object-contain p-0.5"
+                          className="object-contain"
                         />
                       </span>
                     ) : (

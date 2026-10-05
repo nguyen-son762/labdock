@@ -36,7 +36,7 @@ export function CartScreen({ forceEmpty = false }: { forceEmpty?: boolean }) {
   }
 
   return (
-    <div className="min-h-[675px] bg-[#f5f8fb] py-10">
+    <div className="min-h-[675px] bg-[#f9fcff] py-10">
       <div className="container">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Cart" }]} />
         <h1 className="mt-3 text-3xl font-semibold text-[#164990]">Cart</h1>
@@ -55,9 +55,14 @@ export function CartScreen({ forceEmpty = false }: { forceEmpty?: boolean }) {
             items={items}
             selectedIds={selectedIds}
             onSelectedIdsChange={setSelection}
-            pendingItemId={(updateCart.variables ?? removeCart.variables)?.itemId}
+            pendingItemId={
+              updateCart.isPending
+                ? updateCart.variables?.itemId
+                : removeCart.isPending
+                  ? removeCart.variables?.itemId
+                  : undefined
+            }
             onQuantityChange={(itemId, quantity) => updateCart.mutate({ itemId, quantity })}
-            onSizeChange={(itemId, size) => updateCart.mutate({ itemId, size })}
             onRemove={(itemId) => removeCart.mutate({ itemId })}
           />
           <CartOrderSummary items={selectedItems} />

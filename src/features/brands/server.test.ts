@@ -25,6 +25,15 @@ const brandsResponse = [
     logoPath: "/media/public/brands/regular-brand.jpg",
     isTopBrand: false,
   },
+  {
+    id: "33333333-3333-3333-3333-333333333333",
+    name: "Top Brand Without Logo",
+    brandCode: "TOP-002",
+    country: null,
+    websiteUrl: null,
+    logoPath: null,
+    isTopBrand: true,
+  },
 ];
 
 afterEach(() => {
@@ -64,7 +73,7 @@ describe("getPublicBrands", () => {
 });
 
 describe("getTopBrands", () => {
-  it("keeps top brands and normalizes the logo path returned by UAT", async () => {
+  it("keeps top brands with logos and normalizes the logo path returned by UAT", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(brandsResponse), { status: 200 })));
 
     await expect(getTopBrands()).resolves.toEqual([

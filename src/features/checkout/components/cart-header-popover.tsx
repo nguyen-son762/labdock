@@ -45,7 +45,7 @@ export function CartHeaderPopover() {
           <span className="flex flex-col text-left leading-none">
             <span className="text-[13px] leading-[17px]">Cart</span>
             <strong className="whitespace-nowrap text-sm leading-[18px]">
-              {formatCurrency(totals.total, items[0]?.currency)}
+              {formatCurrency(totals.subtotal, items[0]?.currency)}
             </strong>
           </span>
         </Button>
@@ -97,7 +97,7 @@ export function CartHeaderPopover() {
                   {formatCurrency(item.unitPrice, item.currency)}
                 </strong>
                 <p className="mt-1 text-[11px] text-[#868da5]">
-                  {item.size ? `${item.size} · ` : ""}x{item.quantity}
+                  SKU: {item.catalogNumber} · x{item.quantity}
                 </p>
               </div>
               <Button
@@ -113,6 +113,11 @@ export function CartHeaderPopover() {
               </Button>
             </div>
           ))}
+          {removeCartItem.isError ? (
+            <p role="alert" className="py-2 text-center text-xs text-[#d92d20]">
+              We could not remove this item. Please try again.
+            </p>
+          ) : null}
         </div>
         <div className="grid grid-cols-2 gap-3 border-t border-[#edf0f2] p-4">
           <Button

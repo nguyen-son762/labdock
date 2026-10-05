@@ -16,25 +16,27 @@ export function ProductDetailScreen({ product }: { product: Product }) {
   return (
     <div className="bg-[#f5f8fb]">
       <div className="container py-12">
-        <Breadcrumbs
-          items={[{ label: "Home", href: "/" }, { label: "Products", href: "/products" }, { label: product.name }]}
-        />
-        <div className="mt-6 grid items-start gap-5 lg:grid-cols-[minmax(0,1.55fr)_450px]">
-          <div className="min-w-0">
-            <ProductGallery images={gallery} productName={product.name} />
+        <div className="mx-auto max-w-[1280px]">
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }, { label: "Products", href: "/products" }, { label: product.name }]}
+          />
+          <div className="mt-6 grid items-stretch gap-6 xl:grid-cols-12">
+            <div className="flex min-w-0 flex-col gap-4 xl:col-span-8">
+              <ProductGallery images={gallery} productName={product.name} />
+              <ProductInformation product={product} />
+            </div>
+            <div className="min-w-0 xl:col-span-4">
+              <ProductPurchasePanel key={product.id} product={product} />
+            </div>
           </div>
-          <div className="lg:col-start-2 lg:row-start-1">
-            <ProductPurchasePanel key={product.id} product={product} />
-          </div>
-          <div className="min-w-0 lg:col-start-1">
-            <ProductInformation product={product} />
-          </div>
+          {relatedProducts.length ? (
+            <div className="mt-12 grid gap-5 xl:grid-cols-2">
+              <div className="min-w-0 xl:col-start-2">
+                <ProductShelf title="Related Products" products={relatedProducts} tone="orange" />
+              </div>
+            </div>
+          ) : null}
         </div>
-        {relatedProducts.length ? (
-          <div className="mt-10">
-            <ProductShelf title="Related Products" products={relatedProducts} tone="orange" />
-          </div>
-        ) : null}
       </div>
       <ServiceGuarantees />
     </div>

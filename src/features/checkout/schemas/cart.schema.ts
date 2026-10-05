@@ -25,6 +25,8 @@ export const cartResponseSchema = z.object({
 
 export const cartItemSchema = z.object({
   id: z.string().min(1),
+  variantId: z.string().optional(),
+  productId: z.string().optional(),
   name: z.string().min(1),
   catalogNumber: z.string().min(1),
   image: z.string().startsWith("/").optional(),
@@ -32,8 +34,6 @@ export const cartItemSchema = z.object({
   originalPrice: z.number().positive().optional(),
   quantity: z.number().int().min(1).max(999_999),
   size: z.string().min(1).optional(),
-  variantId: z.string().optional(),
-  productId: z.string().optional(),
   currency: z.string().length(3).optional(),
   lineTotal: z.number().nonnegative().optional(),
   stockQty: z.number().int().nonnegative().optional(),
@@ -43,12 +43,11 @@ export const cartItemsSchema = z.array(cartItemSchema);
 
 export const updateCartItemSchema = z.object({
   itemId: z.string().min(1),
-  quantity: z.number().int().min(1).max(999_999).optional(),
-  size: z.string().min(1).optional(),
+  quantity: z.number().int().min(1).max(999_999),
 });
 
 export const removeCartItemSchema = z.object({ itemId: z.string().min(1) });
-export const addCartItemSchema = cartItemSchema.extend({ size: z.string().min(1) });
+export const addCartItemSchema = z.object({ variantId: guidSchema, quantity: z.number().int().min(1).max(999_999) });
 
 export type CartApiItem = z.infer<typeof cartApiItemSchema>;
 export type CartResponse = z.infer<typeof cartResponseSchema>;

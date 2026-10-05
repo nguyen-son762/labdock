@@ -44,7 +44,9 @@ function FilterGroup({
   return (
     <fieldset className="border-b border-[#e5e9ef] pb-5">
       <legend className="flex w-full items-center justify-between py-2 text-sm font-semibold text-[#051a50]">
-        {title} <ArrowUp className="size-4" aria-hidden="true" />
+        {title} <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <path d="M8.75 4.75L4.75 0.75L0.75 4.75" stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
       </legend>
       <div className="relative mt-1">
         <SearchNormal1
@@ -132,7 +134,7 @@ export function CatalogFilters({
   return (
     <aside aria-label="Product filters" className="rounded-xl bg-white p-4 lg:rounded-none lg:bg-transparent lg:p-0">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <h2 className="text-xl font-semibold text-[#051a50]">More filter</h2>
+        <h2 className="text-base font-semibold text-[#051a50] border-b w-full pb-2 border-[#ECF0F3]">More filter</h2>
         {hasFilters ? (
           <Button
             type="button"

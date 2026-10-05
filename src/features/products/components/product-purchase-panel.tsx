@@ -1,6 +1,7 @@
 "use client";
 
-import { Add, Bookmark, Box, Minus, ShoppingCart, Verify, Warning2 } from "iconsax-reactjs";
+import { Add, ArrowRight, Bookmark, Box1, LocationTick, Minus, ShoppingCart, Verify } from "iconsax-reactjs";
+import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { useAddCartItemMutation } from "@/features/checkout";
 import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
-import type { Product, ProductVariant } from "../products.types";
+import type { Product } from "../products.types";
 import { createCartItemFromProduct } from "../utils/product-cart";
 import {
   getDefaultProductVariant,
@@ -17,27 +18,21 @@ import {
   getProductVariantPresentation,
 } from "../utils/product-display";
 
-function ProductFacts({ product, variant }: { product: Product; variant?: ProductVariant }) {
+function ProductFacts({ product }: { product: Product }) {
   const facts = [
     { label: "Brand", value: product.brandName, icon: Bookmark },
-    { label: "Product no.", value: product.productNo, icon: Box },
-    { label: "CAS no.", value: product.casNumber || "N/A", icon: Box },
-    {
-      label: "Availability",
-      value: variant?.isActive && variant.stockQty > 0 ? `${variant.stockQty} in stock` : "Unavailable",
-      icon: Box,
-    },
+    { label: "Category no.", value: product.productNo, icon: Box1 },
+    { label: "Origin", value: product.brandName || "N/A", icon: LocationTick },
+    { label: "CAS no.", value: product.casNumber || "N/A", icon: Box1 },
   ];
 
   return (
-    <dl className="grid grid-cols-2 gap-x-5 gap-y-4 border-y border-[#e8edf2] py-5">
+    <dl className="grid grid-cols-1 gap-x-4 gap-y-2 border-y border-[#e9eaeb] py-4 sm:grid-cols-2">
       {facts.map(({ label, value, icon: Icon }) => (
-        <div key={label} className="flex min-w-0 gap-2">
-          <Icon className="mt-0.5 size-4 shrink-0 text-[#2f7bc4]" aria-hidden="true" />
-          <div className="min-w-0">
-            <dt className="text-[10px] text-[#868da5]">{label}</dt>
-            <dd className="truncate text-xs font-medium text-[#051a50]">{value}</dd>
-          </div>
+        <div key={label} className="flex min-w-0 items-center gap-1 text-sm">
+          <Icon className="size-4 shrink-0 text-[#868da5]" aria-hidden="true" />
+          <dt className="shrink-0 text-[#868da5]">{label}</dt>
+          <dd className="truncate font-semibold text-[#051a50]">{value}</dd>
         </div>
       ))}
     </dl>
@@ -54,19 +49,29 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
   const selectedVariant = product.variants.find((variant) => variant.id === selectedVariantId) ?? defaultVariant;
   const presentation = getProductVariantPresentation(product, selectedVariant);
   const maxQuantity = Math.min(999, selectedVariant?.stockQty ?? 0);
+  const variantLabel =
+    selectedVariant?.selections
+      .map((selection) => selection.attributeName)
+      .filter((value, index, values) => Boolean(value) && values.indexOf(value) === index)
+      .join(" / ") || "Product option";
   const notices = [
-    product.notes,
     product.restrictedCondition ? "This product is restricted. Contact us to verify eligibility before ordering." : "",
-    product.specialRequirement ? "Special requirements and additional checkout steps may apply." : "",
+    product.specialRequirement ? "This product has special requirements. Additional steps may apply at checkout." : "",
+    product.notes,
   ].filter(Boolean);
 
   function addProduct(destination?: "/checkout" | "/request-quote") {
     if (addCartItem.isPending || !presentation.canPurchase || !selectedVariant) return;
     setStatus("");
     addCartItem.mutate(createCartItemFromProduct(product, { quantity, variantId: selectedVariant.id }), {
-      onSuccess: () => {
+      onSuccess: (items) => {
         if (destination) {
-          router.push(`${destination}?items=${encodeURIComponent(product.id)}`);
+          const cartItem = items.find((item) => item.productId === product.id && item.variantId === selectedVariant.id);
+          if (cartItem) {
+            router.push(`${destination}?items=${encodeURIComponent(cartItem.id)}`);
+          } else {
+            router.push("/cart");
+          }
           return;
         }
         setStatus(`${product.name} added to cart.`);
@@ -76,158 +81,184 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
   }
 
   return (
-    <aside className="rounded-xl border border-[#e3e8ee] bg-white p-5 shadow-sm lg:p-6" aria-label="Purchase options">
-      {presentation.discount ? (
-        <span className="inline-flex rounded bg-[#dc2626] px-2 py-1 text-xs font-semibold text-white">
-          {presentation.discount}
-        </span>
-      ) : null}
-      <h1 className="mt-3 text-2xl font-semibold leading-tight text-[#051a50]">{product.name}</h1>
-      <p className="mt-4 flex items-center gap-2 text-2xl font-bold text-[#e57a00]">
-        {presentation.price}
-        {presentation.originalPrice ? (
-          <span className="text-sm font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
+    <aside
+      className="h-full overflow-hidden rounded-2xl border border-[#eaecf0] bg-white"
+      aria-label="Purchase options"
+    >
+      <div className="p-5 lg:p-6">
+        {presentation.discount ? (
+          <span className="inline-flex rounded bg-gradient-to-l from-[#e16555] to-[#ce2823] px-1.5 py-1 text-sm font-medium leading-none text-white shadow-[0_0_25px_rgba(239,163,59,0.3)] mb-2">
+            {presentation.discount}
+          </span>
         ) : null}
-      </p>
-      <div className="mt-5">
-        <ProductFacts product={product} variant={selectedVariant} />
-      </div>
+        <h1 className="text-2xl font-semibold leading-[1.3] text-[#051a50]">{product.name}</h1>
+        <p className="mt-4 flex flex-wrap items-baseline gap-2 text-[32px] font-bold leading-tight text-[#e57a00]">
+          {presentation.price}
+          {presentation.originalPrice ? (
+            <span className="text-lg font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
+          ) : null}
+        </p>
+        <div className="mt-5">
+          <ProductFacts product={product} />
+        </div>
 
-      {product.variants.length ? (
-        <fieldset className="mt-5">
-          <legend className="text-xs font-semibold text-[#051a50]">Product option</legend>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {product.variants.map((variant) => {
-              const label = getProductVariantLabel(variant);
-              return (
-                <Button
-                  key={variant.id}
-                  type="button"
-                  variant="outline"
-                  aria-pressed={selectedVariant?.id === variant.id}
-                  onClick={() => {
-                    setSelectedVariantId(variant.id);
-                    setQuantity((value) => Math.min(value, Math.max(1, variant.stockQty)));
-                  }}
-                  className={cn(
-                    "h-9 min-w-[72px] rounded-lg border-[#dfe5eb] text-xs",
-                    selectedVariant?.id === variant.id && "border-[#2f7bc4] bg-[#eef6fc] text-[#164990]",
-                  )}
-                >
-                  {label}
-                  {!variant.isActive || variant.stockQty <= 0 ? " (Out of stock)" : ""}
-                </Button>
-              );
-            })}
+        {product.variants.length ? (
+          <fieldset className="mt-4 flex flex-col gap-3 border-b border-[#e9eaeb] pb-4 sm:flex-row sm:items-center">
+            <legend className="contents">
+              <span className="flex-1 text-sm font-semibold text-[#051a50]">{variantLabel}</span>
+            </legend>
+            <div className="flex w-full flex-wrap gap-2 sm:w-[240px]">
+              {product.variants.map((variant) => {
+                const label = getProductVariantLabel(variant);
+                return (
+                  <Button
+                    key={variant.id}
+                    type="button"
+                    variant="outline"
+                    aria-pressed={selectedVariant?.id === variant.id}
+                    onClick={() => {
+                      setSelectedVariantId(variant.id);
+                      setQuantity((value) => Math.min(value, Math.max(1, variant.stockQty)));
+                    }}
+                    className={cn(
+                      "h-8 min-w-[72px] flex-1 rounded-lg border-[#d4d4d4] bg-white px-2 text-sm text-[#404040] shadow-none",
+                      selectedVariant?.id === variant.id &&
+                        "border-[#164990] bg-[#164990] text-white hover:bg-[#164990] hover:text-white",
+                    )}
+                  >
+                    {label}
+                    {!variant.isActive || variant.stockQty <= 0 ? " — Out" : ""}
+                  </Button>
+                );
+              })}
+            </div>
+          </fieldset>
+        ) : null}
+
+        <div className="mt-4 flex flex-col gap-3 border-b border-[#e9eaeb] pb-4 sm:flex-row sm:items-center">
+          <Label className="flex-1 text-sm font-semibold text-[#051a50]">Quantity</Label>
+          <div className="flex h-11 w-full items-center rounded-lg border border-[#e9eaeb] sm:w-[240px]">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Decrease quantity"
+              disabled={!presentation.canPurchase || quantity <= 1}
+              onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+              className="h-full w-10 rounded-none border-r border-[#e9eaeb] text-[#164990]"
+            >
+              <Minus className="size-4" aria-hidden="true" />
+            </Button>
+            <output
+              aria-label="Quantity"
+              aria-live="polite"
+              className="min-w-20 flex-1 text-center text-base font-semibold text-[#051a50]"
+            >
+              {quantity}
+            </output>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Increase quantity"
+              disabled={!presentation.canPurchase || quantity >= maxQuantity}
+              onClick={() => setQuantity((value) => Math.min(maxQuantity, value + 1))}
+              className="h-full w-10 rounded-none border-l border-[#e9eaeb] text-[#164990]"
+            >
+              <Add className="size-4" aria-hidden="true" />
+            </Button>
           </div>
-        </fieldset>
-      ) : null}
+        </div>
 
-      <div className="mt-5">
-        <Label className="text-xs font-semibold text-[#051a50]">Quantity</Label>
-        <div className="mt-2 flex h-10 w-[126px] items-center rounded-lg border border-[#dfe5eb]">
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Button
             type="button"
-            variant="ghost"
-            size="icon"
-            aria-label="Decrease quantity"
-            disabled={!presentation.canPurchase || quantity <= 1}
-            onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-            className="size-9"
+            variant="brand"
+            disabled={addCartItem.isPending || !presentation.canPurchase}
+            onClick={() => addProduct("/checkout")}
+            className="h-11 justify-between pl-5 pr-1.5"
           >
-            <Minus className="size-4" aria-hidden="true" />
+            <span className="flex-1">{addCartItem.isPending ? "Updating…" : "Buy now"}</span>
+            <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b] shadow-[0_0_15px_rgba(229,122,0,0.5)]">
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </span>
           </Button>
-          <output aria-label="Quantity" className="flex-1 text-center text-sm font-semibold text-[#051a50]">
-            {quantity}
-          </output>
           <Button
             type="button"
-            variant="ghost"
-            size="icon"
-            aria-label="Increase quantity"
-            disabled={!presentation.canPurchase || quantity >= maxQuantity}
-            onClick={() => setQuantity((value) => Math.min(maxQuantity, value + 1))}
-            className="size-9"
+            disabled={addCartItem.isPending || !presentation.canPurchase}
+            onClick={() => addProduct()}
+            className="h-11 justify-between rounded-full bg-gradient-to-r from-[#2f7bc4] to-[#0f3678] pl-5 pr-1.5"
           >
-            <Add className="size-4" aria-hidden="true" />
+            <span className="flex-1">Add to cart</span>
+            <span className="flex size-8 items-center justify-center rounded-full bg-[#1f5fa8]">
+              <ShoppingCart className="size-4" aria-hidden="true" />
+            </span>
           </Button>
         </div>
-      </div>
-
-      <div className="mt-6 grid grid-cols-2 gap-3">
+        <p className="my-2 text-center text-sm text-[#051a50]">OR</p>
         <Button
           type="button"
-          variant="brand"
-          disabled={addCartItem.isPending || !presentation.canPurchase}
-          onClick={() => addProduct("/checkout")}
-          className="h-11 shadow-none"
+          variant="outline"
+          disabled={addCartItem.isPending}
+          onClick={() => {
+            if (!presentation.canPurchase) {
+              router.push(`/contact-us?type=quote&product=${encodeURIComponent(product.slug)}`);
+              return;
+            }
+            addProduct("/request-quote");
+          }}
+          className="h-11 w-full rounded-full border-[#2f7bc4] text-[#164990] hover:bg-[#eef6fc] hover:text-[#164990]"
         >
-          {addCartItem.isPending ? "Updating…" : "Buy now"}
+          Request a Quote
         </Button>
-        <Button
-          type="button"
-          disabled={addCartItem.isPending || !presentation.canPurchase}
-          onClick={() => addProduct()}
-          className="h-11 rounded-full bg-gradient-to-r from-[#164990] to-[#2f7bc4] shadow-none"
-        >
-          <ShoppingCart className="size-4" variant="Bold" aria-hidden="true" /> Add to cart
-        </Button>
-      </div>
-      <div className="my-4 flex items-center gap-3 text-[10px] text-[#a3abbd]">
-        <span className="h-px flex-1 bg-[#e5e9ef]" />
-        <span>OR</span>
-        <span className="h-px flex-1 bg-[#e5e9ef]" />
-      </div>
-      <Button
-        type="button"
-        variant="outline"
-        disabled={addCartItem.isPending}
-        onClick={() => {
-          if (!presentation.canPurchase) {
-            router.push(`/contact-us?type=quote&product=${encodeURIComponent(product.slug)}`);
-            return;
-          }
-          addProduct("/request-quote");
-        }}
-        className="h-11 w-full rounded-full border-[#2f7bc4] text-[#164990] hover:bg-[#eef6fc] hover:text-[#164990]"
-      >
-        Request a Quote
-      </Button>
-      <p role="status" aria-live="polite" className="mt-3 min-h-4 text-xs text-[#299a86]">
-        {status}
-      </p>
+        {status ? (
+          <p role="status" aria-live="polite" className="mt-3 text-xs text-[#299a86]">
+            {status}
+          </p>
+        ) : null}
 
-      {product.certificates.length ? (
-        <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#5e6375]" aria-label="Product certificates">
-          {product.certificates.map((certificate) => (
-            <span key={certificate.id} className="inline-flex items-center gap-1">
-              <Verify className="size-3.5 text-[#3eb584]" variant="Bold" aria-hidden="true" />
-              {certificate.name}
-            </span>
+        {product.certificates.length ? (
+          <div
+            className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-[6px] bg-[#effaf3] px-2 py-1 text-sm text-[#1a1a1a]"
+            aria-label="Product certificates"
+          >
+            {product.certificates.map((certificate) => (
+              <span key={certificate.id} className="inline-flex items-center gap-2.5">
+                <Verify className="size-4 text-[#3eb584]" variant="Bold" aria-hidden="true" />
+                {certificate.name}
+              </span>
+            ))}
+          </div>
+        ) : null}
+        <div
+          className="mt-2 flex items-center gap-2 rounded-md bg-[#f5f7f8] py-1 pl-3 pr-1"
+          aria-label="Accepted payment methods"
+        >
+          <span className="min-w-0 flex-1 text-sm text-[#5e6375]">Secured your payment with</span>
+          {[
+            { name: "Visa", src: "/icon/visa.svg" },
+            { name: "PayNow", src: "/icon/pay_now.svg" },
+            { name: "Mastercard", src: "/icon/pay.svg" },
+          ].map((payment) => (
+            <Image
+              src={payment.src}
+              alt={payment.name}
+              key={payment.name}
+              width={40}
+              height={28}
+              className="h-7 w-10 object-cover"
+            />
           ))}
         </div>
-      ) : null}
-      <div
-        className="mt-4 flex items-center gap-2 text-[9px] font-bold text-[#164990]"
-        aria-label="Accepted payment methods"
-      >
-        {["VISA", "PAY NOW", "Mastercard"].map((payment) => (
-          <span key={payment} className="rounded border px-2 py-1">
-            {payment}
-          </span>
-        ))}
       </div>
       {notices.length ? (
-        <div className="mt-5 rounded-lg bg-[#fff7ed] p-3 text-[10px] leading-4 text-[#8a4b09]">
-          <div className="flex gap-2">
-            <Warning2 className="mt-0.5 size-4 shrink-0 text-[#e57a00]" variant="Bold" aria-hidden="true" />
-            <div>
-              <strong>Product notice</strong>
-              {notices.map((notice) => (
-                <p key={notice}>{notice}</p>
-              ))}
-            </div>
-          </div>
+        <div className="border-t border-[#e9eaeb] p-6 pt-4">
+          <h2 className="text-sm font-semibold text-[#051a50]">Note (optional)</h2>
+          <ol className="mt-4 list-decimal space-y-1 rounded-md bg-[#fff0f1] py-2 pl-8 pr-3 text-sm leading-5 text-[#770b23]">
+            {notices.map((notice) => (
+              <li key={notice}>{notice}</li>
+            ))}
+          </ol>
         </div>
       ) : null}
     </aside>

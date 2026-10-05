@@ -4,12 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft2 } from "iconsax-reactjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { Alert } from "@/components/ui/alert";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCountryCallingCode, resolveCountryCode } from "@/features/auth";
+import { useCurrentUserQuery } from "@/features/profile";
 
 import { useCartQuery } from "../api/use-cart-query";
 import { useCreateCheckoutMutation } from "../api/use-create-checkout-mutation";
@@ -25,6 +28,7 @@ import { EmptyCartScreen } from "./empty-cart-screen";
 export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }) {
   const router = useRouter();
   const cartQuery = useCartQuery();
+  const profileQuery = useCurrentUserQuery();
   const checkoutMutation = useCreateCheckoutMutation();
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -35,13 +39,38 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
       companyName: "Biogenix Pte Ltd",
       address: "745 Lor. 5 Toa Payoh, #03-03, The Lifeline Building",
       postalCode: "319455",
-      country: "Singapore",
+      country: "SG",
       billingSameAsDelivery: true,
       billingAddress: "",
       billingPostalCode: "",
       paymentMethod: "paynow",
     },
   });
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    const user = profileQuery.data;
+    if (!user || isDirty) return;
+
+    const country = resolveCountryCode(user.country) ?? "SG";
+    const callingCode = getCountryCallingCode(country);
+    const phone = user.phone.trim();
+    const nationalPhone = callingCode && phone.startsWith(callingCode) ? phone.slice(callingCode.length).trim() : phone;
+
+    form.reset({
+      fullName: user.fullName,
+      email: user.email,
+      phone: [callingCode, nationalPhone].filter(Boolean).join(" "),
+      companyName: user.companyName,
+      address: user.deliveryAddress,
+      postalCode: user.postalCode,
+      country,
+      billingSameAsDelivery: user.billingSameAsDelivery,
+      billingAddress: user.billingAddress.address,
+      billingPostalCode: user.billingAddress.postalCode,
+      paymentMethod: "paynow",
+    });
+  }, [form, isDirty, profileQuery.data]);
   const cartItems = cartQuery.data ?? [];
   const items = initialItemIds?.length ? cartItems.filter((item) => initialItemIds.includes(item.id)) : cartItems;
   const orderTotals = calculateOrderTotals(items);

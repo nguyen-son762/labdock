@@ -13,16 +13,16 @@ export function ProductShelf({ title, products, tone }: ProductShelfProps) {
   return (
     <section
       className={cn(
-        "rounded-2xl p-4 sm:p-5",
+        "rounded-2xl px-4 py-6",
         tone === "blue"
-          ? "bg-gradient-to-b from-[#d9eefb] to-[#f4f9fc]"
-          : "bg-gradient-to-b from-[#fde4b8] to-[#fff8ec]",
+          ? "bg-gradient-to-b from-[#2f7bc44d] to-transparent"
+          : "bg-gradient-to-b from-[#e57a004d] to-transparent",
       )}
       aria-labelledby={`${title.toLowerCase().replaceAll(" ", "-")}-title`}
     >
       <h2
         id={`${title.toLowerCase().replaceAll(" ", "-")}-title`}
-        className="mb-4 text-xl font-semibold text-[#051a50]"
+        className="mb-4 text-center text-2xl font-semibold leading-8 text-[#051a50]"
       >
         {title}
       </h2>

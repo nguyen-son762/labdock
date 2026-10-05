@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BucketSquare, FlashCircle, ShoppingCart, Verify } from "iconsax-reactjs";
+import { ArrowRight, BucketSquare, ShoppingCart, Verify } from "iconsax-reactjs";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -61,7 +61,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
             )}
           >
             {!presentation.outOfStock && presentation.badge === "Best Seller" ? (
-              <Image src='/home/icon/fire.svg' alt="Best Seller" width={12} height={12} />
+              <Image src="/home/icon/fire.svg" alt="Best Seller" width={12} height={12} />
             ) : null}
             {presentation.outOfStock
               ? t("outOfStock")
@@ -123,7 +123,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
             className={cn(
               "h-8 flex-1 rounded-full px-2 text-xs shadow-none",
               !presentation.canPurchase &&
-              "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
+                "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
             )}
           >
             <Link href={productHref}>

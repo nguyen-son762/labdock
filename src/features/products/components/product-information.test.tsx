@@ -12,7 +12,7 @@ const product: Product = {
   name: "Example Product",
   slug: "example-product",
   productNo: "SKU-001",
-  status: 1,
+  status: "Published",
   brandName: "Example Brand",
   notes: "",
   description: "Product description from the API.",
@@ -48,8 +48,11 @@ describe("ProductInformation", () => {
     expect(screen.getByText("Purity")).toBeInTheDocument();
     expect(screen.getByText("99%")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "References" }));
+    const specificationsTab = screen.getByRole("tab", { name: "Specifications" });
+    specificationsTab.focus();
+    await user.keyboard("{ArrowRight}");
 
+    expect(screen.getByRole("tab", { name: "References" })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("link", { name: /Safety sheet/ })).toHaveAttribute(
       "href",
       "https://uat-api-labdock.365studio.vn/media/public/safety-sheet.pdf",

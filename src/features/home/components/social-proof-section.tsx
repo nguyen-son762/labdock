@@ -32,19 +32,18 @@ export function SocialProofSection({
               {t("trusted")}
             </h2>
 
-            <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6 lg:gap-5">
+            <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3  lg:grid-cols-6">
               {brands.map((brand) => {
                 const content = (
                   <span className="flex min-w-0 items-center justify-center gap-2">
                     <Image
                       src={brand.logoUrl}
                       alt=""
-                      width={44}
-                      height={44}
+                      width={132}
+                      height={32}
                       unoptimized
-                      className="size-10 shrink-0 object-contain"
+                      className="w-[132px] h-[32px] shrink-0 object-contain"
                     />
-                    <span className="truncate text-sm font-semibold text-[#171a21]">{brand.name}</span>
                   </span>
                 );
 
@@ -56,12 +55,12 @@ export function SocialProofSection({
                         target="_blank"
                         rel="noreferrer"
                         aria-label={t("visitBrandWebsite", { name: brand.name })}
-                        className="flex h-[100px] items-center justify-center rounded-xl hover:bg-white/55 px-4 transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:h-[80px]"
+                        className="flex h-[100px] items-center justify-center rounded-xl bg-white/30 hover:bg-white px-4 transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:h-[80px]"
                       >
                         {content}
                       </a>
                     ) : (
-                      <div className="flex h-[100px] items-center justify-center rounded-xl hover:bg-white/55 px-4 sm:h-[80px]">
+                      <div className="flex h-[100px] items-center justify-center rounded-xl hover:bg-white/55 px-4 sm:h-[80px] bg-white/30 hover:bg-white">
                         {content}
                       </div>
                     )}

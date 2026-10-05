@@ -65,9 +65,14 @@ export function RequestQuoteScreen({ initialItemIds }: { initialItemIds?: string
             items={items}
             selectedIds={selectedIds}
             onSelectedIdsChange={setSelection}
-            pendingItemId={(updateCart.variables ?? removeCart.variables)?.itemId}
+            pendingItemId={
+              updateCart.isPending
+                ? updateCart.variables?.itemId
+                : removeCart.isPending
+                  ? removeCart.variables?.itemId
+                  : undefined
+            }
             onQuantityChange={(itemId, quantity) => updateCart.mutate({ itemId, quantity })}
-            onSizeChange={(itemId, size) => updateCart.mutate({ itemId, size })}
             onRemove={(itemId) => removeCart.mutate({ itemId })}
           />
           <QuoteContactForm

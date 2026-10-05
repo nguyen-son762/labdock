@@ -8,7 +8,7 @@ export const publicBrandSchema = z.object({
   brandCode: z.string().min(1),
   country: z.string().min(1).nullable(),
   websiteUrl: z.string().min(1).nullable(),
-  logoPath: z.string().min(1),
+  logoPath: z.string().min(1).nullable(),
   isTopBrand: z.boolean(),
 });
 

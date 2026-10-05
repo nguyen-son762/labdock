@@ -8,7 +8,7 @@ const productDetailResponse: Product = {
   name: "Example Name",
   slug: "example-slug",
   productNo: "SKU-001",
-  status: 1,
+  status: "Draft",
   brandName: "sample-brand-name",
   notes: "Example description",
   description: "Example description",
@@ -88,6 +88,10 @@ describe("publicProductDetailSchema", () => {
     };
 
     expect(() => publicProductDetailSchema.parse(malformed)).toThrow();
+  });
+
+  it("accepts the numeric status still returned by the current product detail endpoint", () => {
+    expect(publicProductDetailSchema.parse({ ...productDetailResponse, status: 1 }).status).toBe(1);
   });
 
   it("normalizes hidden UAT prices and an empty related collection", () => {

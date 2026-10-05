@@ -17,7 +17,6 @@ describe("CartItemsTable", () => {
         selectedIds={[item.id]}
         onSelectedIdsChange={vi.fn()}
         onQuantityChange={onQuantityChange}
-        onSizeChange={vi.fn()}
         onRemove={vi.fn()}
       />,
     );

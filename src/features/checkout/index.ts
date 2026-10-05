@@ -1,5 +1,6 @@
 export { CheckoutScreen } from "./components/checkout-screen";
 export { CartHeaderPopover } from "./components/cart-header-popover";
+export { CompactCartLink } from "./components/compact-cart-link";
 export { CartScreen } from "./components/cart-screen";
 export { PaymentScreen } from "./components/payment-screen";
 export { PaymentSuccessScreen } from "./components/payment-success-screen";

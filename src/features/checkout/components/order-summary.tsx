@@ -46,7 +46,7 @@ export function OrderSummary({
         type="submit"
         variant="brand"
         disabled={pending}
-        className="mt-5 h-11 w-full justify-between pl-5 pr-1.5 shadow-none"
+        className="mt-5 h-11 w-full justify-between pl-5 pr-1.5"
       >
         <span className="flex-1 text-center">{pending ? "Preparing payment…" : "Make payment"}</span>
         <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b]">

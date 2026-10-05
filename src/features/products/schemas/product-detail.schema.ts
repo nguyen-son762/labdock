@@ -86,7 +86,7 @@ export const publicProductDetailSchema: z.ZodType<Product> = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
   productNo: z.string().min(1),
-  status: z.number().int(),
+  status: z.union([z.string().min(1), z.number().int()]),
   brandName: z.string().min(1),
   notes: z.string(),
   description: z.string(),

@@ -15,7 +15,7 @@ type BreadcrumbsProps = {
 
 export function Breadcrumbs({ items, appearance = "current-primary" }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs text-[#73798f]">
+    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-[#164990] font-medium">
       {items.map((item, index) => (
         <span key={item.label} className="inline-flex items-center gap-2">
           {index > 0 ? <ArrowRight2 className="size-3.5 text-[#a3abbd]" aria-hidden="true" /> : null}
@@ -24,13 +24,13 @@ export function Breadcrumbs({ items, appearance = "current-primary" }: Breadcrum
               href={item.href}
               className={cn(
                 "rounded hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
-                appearance === "parent-primary" && "text-[#164990]",
+                appearance === "parent-primary" && "text-[#868DA5]",
               )}
             >
               {item.label}
             </Link>
           ) : (
-            <span aria-current="page" className={appearance === "parent-primary" ? "text-[#b1bac8]" : "text-[#164990]"}>
+            <span aria-current="page" className={appearance !== "parent-primary" ? "text-[#868DA5]" : "text-[#164990]"}>
               {item.label}
             </span>
           )}

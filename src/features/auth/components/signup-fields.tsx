@@ -5,17 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/class-names";
 
-import callingCodeData from "../data/calling-codes.json";
-import countryData from "../data/countries.json";
+import { callingCodes, countryOptions } from "../data/country-options";
 import { type SignupValues } from "../schemas/signup.schema";
 
 export const inputClassName =
   "h-[42px] rounded-lg border-[#d5d7da] px-3.5 py-2.5 text-base shadow-[0_1px_2px_rgba(10,13,18,0.05)]";
-export const countries = countryData.map(({ code, name }) => ({ value: code, label: name }));
-export const callingCodes = [...new Set(callingCodeData.map(({ dialCode }) => dialCode))].map((dialCode) => ({
-  value: dialCode,
-  label: dialCode,
-}));
+export const countries = countryOptions;
 
 export function Field({
   name,

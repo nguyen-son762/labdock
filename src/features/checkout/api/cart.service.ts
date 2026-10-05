@@ -11,12 +11,6 @@ import {
   type UpdateCartItemInput,
 } from "../schemas/cart.schema";
 
-const MOCK_DELAY_MS = 300;
-
-function waitForMockApi(): Promise<void> {
-  return new Promise((resolve) => globalThis.setTimeout(resolve, MOCK_DELAY_MS));
-}
-
 function mapCartResponse(input: unknown): CartItem[] {
   const cart = cartResponseSchema.parse(input);
   return cart.items.map((item) => ({
@@ -39,18 +33,20 @@ export const cartService = {
     return mapCartResponse(response.data);
   },
 
-  async add(input: AddCartItemInput): Promise<void> {
-    addCartItemSchema.parse(input);
-    await waitForMockApi();
+  async add(input: AddCartItemInput): Promise<CartItem[]> {
+    const body = addCartItemSchema.parse(input);
+    const response = await httpClient.post<unknown>("/cart/items", body);
+    return mapCartResponse(response.data);
   },
 
-  async update(input: UpdateCartItemInput): Promise<void> {
-    updateCartItemSchema.parse(input);
-    await waitForMockApi();
+  async update(input: UpdateCartItemInput): Promise<CartItem[]> {
+    const { itemId, ...body } = updateCartItemSchema.parse(input);
+    const response = await httpClient.patch<unknown>(`/cart/items/${encodeURIComponent(itemId)}`, body);
+    return mapCartResponse(response.data);
   },
 
   async remove(input: RemoveCartItemInput): Promise<void> {
-    removeCartItemSchema.parse(input);
-    await waitForMockApi();
+    const { itemId } = removeCartItemSchema.parse(input);
+    await httpClient.delete(`/cart/items/${encodeURIComponent(itemId)}`);
   },
 };

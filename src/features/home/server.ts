@@ -1,6 +1,6 @@
 import { clientEnv } from "@/config/client-env";
 import type { Brand } from "@/features/brands";
-import { mapPublicBrand } from "@/features/brands/utils/map-public-brand";
+import { hasBrandLogo, mapPublicBrand } from "@/features/brands/utils/map-public-brand";
 import type { Product } from "@/features/products/products.types";
 import { mapPublicProduct } from "@/features/products/utils/map-public-product";
 import { createServerApiRequestInit } from "@/lib/server-api-request";
@@ -62,7 +62,7 @@ function mapHomepageData(homepage: PublicHomepage): HomePageData {
       location: banner.location,
       badge: banner.badge,
     })),
-    topBrands: homepage.topBrands.map(mapPublicBrand),
+    topBrands: homepage.topBrands.filter(hasBrandLogo).map(mapPublicBrand),
     topCategories: sortByOrder(homepage.topCategories),
     outstandingProducts,
     newestProducts,

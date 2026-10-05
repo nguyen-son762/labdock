@@ -30,11 +30,11 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
       <h2 id="checkout-products-title" className="sr-only">
         Products in this order
       </h2>
-      <div className="hidden grid-cols-[2.2fr_1fr_0.75fr_1fr] border-b border-[#ecf0f3] pb-3 text-xs font-semibold text-[#051a50] sm:grid">
+      <div className="hidden grid-cols-[2.2fr_1fr_0.75fr_1fr] border-b border-[#ecf0f3] pb-3 text-sm font-semibold text-[#051a50] sm:grid">
         <span>Product</span>
         <span>Price</span>
         <span>Qty</span>
-        <span>Option</span>
+        <span>Size</span>
       </div>
       <div className="divide-y divide-[#ecf0f3]">
         {items.map((item) => (
@@ -56,8 +56,8 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
               <span>×{item.quantity}</span>
             </div>
             <div className="flex items-center justify-between text-xs text-[#051a50] sm:block">
-              <span className="text-[10px] font-medium text-[#868da5] sm:hidden">Option</span>
-              <span>{item.size ?? "Default"}</span>
+              <span className="text-[10px] font-medium text-[#868da5] sm:hidden">Size</span>
+              <span>{item.size}</span>
             </div>
           </article>
         ))}

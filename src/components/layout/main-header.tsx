@@ -33,6 +33,7 @@ type HeaderAccount = { fullName: string; email: string };
 
 type MainHeaderProps = {
   cartContent?: ReactNode;
+  compactCartContent?: ReactNode;
   account?: HeaderAccount;
   accountContent?: ReactNode;
   compactAccountContent?: ReactNode;
@@ -116,6 +117,7 @@ function SearchBox({ className }: { className?: string }) {
 
 export function MainHeader({
   cartContent,
+  compactCartContent,
   account,
   accountContent,
   compactAccountContent,
@@ -239,16 +241,15 @@ export function MainHeader({
                 <ProfileCircle className="size-5" variant="Bold" aria-hidden="true" />
               </Link>
             )}
-            <Link
-              href="/cart"
-              aria-label={t("cart")}
-              className="relative flex size-10 items-center justify-center rounded-full bg-white/10"
-            >
-              <ShoppingCart className="size-5" variant="Bold" aria-hidden="true" />
-              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#e57a00] text-[10px] font-semibold">
-                2
-              </span>
-            </Link>
+            {compactCartContent ?? (
+              <Link
+                href="/cart"
+                aria-label={t("cart")}
+                className="relative flex size-10 items-center justify-center rounded-full bg-white/10"
+              >
+                <ShoppingCart className="size-5" variant="Bold" aria-hidden="true" />
+              </Link>
+            )}
           </div>
         </div>
       </div>

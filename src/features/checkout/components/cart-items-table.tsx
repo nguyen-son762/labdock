@@ -15,23 +15,17 @@ type CartItemsTableProps = {
   selectedIds: string[];
   onSelectedIdsChange: (ids: string[]) => void;
   onQuantityChange: (itemId: string, quantity: number) => void;
-  onSizeChange: (itemId: string, size: string) => void;
   onRemove: (itemId: string) => void;
   pendingItemId?: string;
 };
 
-const sizeOptions: Record<string, string[]> = {
-  "beaker-griffin": ["Standard 5mL", "Standard 10mL"],
-  "digital-microscope": ["White", "Black"],
-};
-
 function ProductImage({ item }: { item: CartItem }) {
   return (
-    <div className="flex size-[88px] shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#e7e9ed] bg-[#f8f9fa]">
+    <div className="flex size-[60px] shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-[#dde2e8] bg-[#f3f4f6]">
       {item.image ? (
-        <Image src={item.image} alt="" width={88} height={88} className="size-full object-contain" />
+        <Image src={item.image} alt="" width={60} height={60} className="size-full object-contain" />
       ) : (
-        <Gallery className="size-8 text-[#a3abbd]" aria-hidden="true" />
+        <Gallery className="size-6 text-[#a3abbd]" aria-hidden="true" />
       )}
     </div>
   );
@@ -40,16 +34,23 @@ function ProductImage({ item }: { item: CartItem }) {
 function ProductDetails({ item }: { item: CartItem }) {
   return (
     <div className="min-w-0">
-      <p className="font-semibold leading-5 text-[#051a50]">{item.name}</p>
-      <p className="mt-1 text-xs text-[#868da5]">Catalog no.: {item.catalogNumber}</p>
-      <div className="mt-3 flex flex-wrap items-baseline gap-2">
-        <strong className="text-base text-[#e57a00]">{formatCurrency(item.unitPrice, item.currency)}</strong>
-        {item.originalPrice ? (
-          <span className="text-xs text-[#a3abbd] line-through">
-            {formatCurrency(item.originalPrice, item.currency)}
-          </span>
-        ) : null}
-      </div>
+      <p className="line-clamp-2 text-sm font-semibold leading-5 text-[#1f5fa8]">{item.name}</p>
+      <p className="mt-1 text-xs leading-4 text-[#73798f]">SKU: {item.catalogNumber}</p>
+    </div>
+  );
+}
+
+function ProductPrice({ item }: { item: CartItem }) {
+  return (
+    <div className="flex min-w-0 flex-col items-start">
+      <span className="text-sm font-medium leading-5 text-[#051a50]">
+        {formatCurrency(item.unitPrice, item.currency)}
+      </span>
+      {item.originalPrice ? (
+        <span className="text-xs leading-4 text-[#a3abbd] line-through">
+          {formatCurrency(item.originalPrice, item.currency)}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -65,7 +66,9 @@ function QuantityInput({
 }) {
   const [draftQuantity, setDraftQuantity] = useState<number | undefined>(item.quantity);
   const focusedRef = useRef(false);
-  const maximumQuantity = Math.max(1, item.stockQty ?? 999_999);
+  // Keep an over-stock cart item editable so the customer can reduce it. The API
+  // remains the source of truth for the final quantity validation.
+  const maximumQuantity = Math.max(1, item.stockQty ?? 999_999, item.quantity);
 
   useEffect(() => {
     if (!focusedRef.current) setDraftQuantity(item.quantity);
@@ -88,8 +91,8 @@ function QuantityInput({
       inputMode="numeric"
       aria-label={`Quantity for ${item.name}`}
       aria-busy={pending}
-      disabled={pending || item.stockQty === 0}
-      className="h-10 bg-white text-center text-[#051a50]"
+      disabled={pending}
+      className="h-11 bg-white text-center text-sm text-[#051a50]"
       isAllowed={({ floatValue }) => floatValue === undefined || floatValue <= maximumQuantity}
       onFocus={() => {
         focusedRef.current = true;
@@ -108,7 +111,6 @@ export function CartItemsTable({
   selectedIds,
   onSelectedIdsChange,
   onQuantityChange,
-  onSizeChange,
   onRemove,
   pendingItemId,
 }: CartItemsTableProps) {
@@ -118,16 +120,21 @@ export function CartItemsTable({
   };
 
   return (
-    <section className="overflow-hidden rounded-xl border border-[#dde2e8] bg-white" aria-label="Cart products">
-      <div className="hidden grid-cols-[32px_1fr_112px_160px_48px] items-center gap-4 border-b border-[#dde2e8] bg-[#f8f9fa] px-4 py-3 text-xs font-semibold text-[#73798f] md:grid">
+    <section
+      className="overflow-hidden rounded-xl border border-[#e9eaeb] bg-white px-4 py-6"
+      aria-label="Cart products"
+    >
+      <div className="hidden grid-cols-[24px_minmax(0,1.7fr)_minmax(90px,0.7fr)_80px_minmax(120px,0.85fr)_32px] items-center gap-2 border-b border-[#dde2e8] pb-2 text-sm font-semibold text-[#051a50] md:grid">
         <Checkbox
+          className="size-4 rounded-[4px] border-[#c8d0d9] bg-white shadow-none data-[state=checked]:border-[#596ab7] data-[state=checked]:bg-[#f2f7fd] data-[state=checked]:text-[#596ab7]"
           checked={allSelected}
           onCheckedChange={(checked) => onSelectedIdsChange(checked ? items.map(({ id }) => id) : [])}
           aria-label="Select all products"
         />
-        <span>Product</span>
-        <span>Quantity</span>
-        <span>Option</span>
+        <span>Select all ({items.length})</span>
+        <span>Price</span>
+        <span>Qty</span>
+        <span>Size</span>
         <span className="sr-only">Remove</span>
       </div>
 
@@ -137,47 +144,49 @@ export function CartItemsTable({
         return (
           <article
             key={item.id}
-            className="grid gap-4 border-b border-[#edf0f2] p-4 last:border-b-0 md:grid-cols-[32px_1fr_112px_160px_48px] md:items-center"
+            className="grid grid-cols-[24px_minmax(0,1fr)_32px] items-center gap-x-3 gap-y-3 border-b border-[#dde2e8] py-4 last:border-b-0 md:grid-cols-[24px_minmax(0,1.7fr)_minmax(90px,0.7fr)_80px_minmax(120px,0.85fr)_32px] md:gap-2 md:py-3"
           >
             <Checkbox
+              className="size-4 rounded-[4px] border-[#c8d0d9] bg-white shadow-none data-[state=checked]:border-[#596ab7] data-[state=checked]:bg-[#f2f7fd] data-[state=checked]:text-[#596ab7] md:col-auto"
               checked={selected}
               onCheckedChange={(checked) => toggleItem(item.id, checked === true)}
               aria-label={`Select ${item.name}`}
             />
-            <div className="flex min-w-0 gap-4">
+            <div className="col-start-2 row-start-1 flex min-w-0 items-center gap-3 md:col-auto md:row-auto">
               <ProductImage item={item} />
               <ProductDetails item={item} />
             </div>
-            <label className="space-y-1 text-xs text-[#73798f] md:block">
-              <span className="md:sr-only">Quantity</span>
+            <div className="col-start-2 row-start-2 md:col-auto md:row-auto">
+              <ProductPrice item={item} />
+            </div>
+            <label className="col-start-1 row-start-2 min-w-0 text-xs text-[#73798f] md:col-auto md:row-auto">
+              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">Qty</span>
               <QuantityInput item={item} pending={pending} onCommit={onQuantityChange} />
             </label>
-            {item.size ? (
-              <Select value={item.size} disabled={pending} onValueChange={(value) => onSizeChange(item.id, value)}>
-                <SelectTrigger className="h-10 bg-white" aria-label={`Option for ${item.name}`}>
+            <div className="col-span-3 col-start-1 row-start-3 min-w-0 md:col-auto md:row-auto">
+              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">Size</span>
+              <Select value={item.size ?? item.catalogNumber}>
+                <SelectTrigger
+                  aria-label={`Size for ${item.name}`}
+                  className="h-11 rounded-lg border-[#dde2e8] bg-white px-3 text-sm text-[#051a50] shadow-[0_1px_1px_rgba(10,13,18,0.05)]"
+                >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-white">
-                  {(sizeOptions[item.id] ?? [item.size]).map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
+                <SelectContent>
+                  <SelectItem value={item.size ?? item.catalogNumber}>{item.size ?? item.catalogNumber}</SelectItem>
                 </SelectContent>
               </Select>
-            ) : (
-              <span className="text-xs text-[#73798f]">Default option</span>
-            )}
+            </div>
             <Button
               type="button"
               variant="ghost"
               size="icon"
+              className="col-start-3 row-start-1 size-8 justify-self-end rounded-full text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20] md:col-auto md:row-auto md:justify-self-center"
               disabled={pending}
               onClick={() => onRemove(item.id)}
               aria-label={`Remove ${item.name}`}
-              className="size-10 justify-self-end rounded-full text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20] md:justify-self-center"
             >
-              <Trash className="size-5" aria-hidden="true" />
+              <Trash className="size-4" aria-hidden="true" />
             </Button>
           </article>
         );

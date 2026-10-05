@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
-import { A11y, Autoplay, Thumbs } from "swiper/modules";
+import { A11y, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button } from "@/components/ui/button";
@@ -18,20 +18,20 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section aria-label={`${productName} gallery`} className="grid gap-3 sm:grid-cols-[100px_minmax(0,1fr)]">
+    <section aria-label={`${productName} gallery`} className="grid gap-4 sm:grid-cols-[100px_minmax(0,1fr)]">
       <Swiper
         modules={[A11y]}
         direction="horizontal"
-        slidesPerView={Math.min(4, images.length)}
-        spaceBetween={12}
+        slidesPerView="auto"
+        spaceBetween={16}
         watchSlidesProgress
         a11y={{ containerMessage: `${productName} thumbnails` }}
-        breakpoints={{ 640: { direction: "vertical", slidesPerView: Math.min(4, images.length) } }}
+        breakpoints={{ 640: { direction: "vertical" } }}
         onSwiper={setThumbsSwiper}
-        className="w-full sm:h-[500px]"
+        className={cn("w-full sm:h-[500px]", images.length <= 4 && "[&_.swiper-wrapper]:justify-center")}
       >
         {images.map((image, index) => (
-          <SwiperSlide key={image} className="!h-auto">
+          <SwiperSlide key={image} className="!h-auto !w-20 sm:!w-full">
             <Button
               type="button"
               variant="outline"
@@ -50,19 +50,17 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
       </Swiper>
 
       <Swiper
-        modules={[A11y, Autoplay, Thumbs]}
+        modules={[A11y, Thumbs]}
         slidesPerView={1}
         spaceBetween={12}
         thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-        loop
-        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
         a11y={{ containerMessage: `${productName} product images` }}
         onSwiper={setMainSwiper}
-        onSlideChange={(instance) => setActiveIndex(instance.activeIndex)}
-        className="min-h-[430px] w-full overflow-hidden rounded-xl border border-[#e3e8ee] bg-white sm:min-h-[500px]"
+        onSlideChange={(instance) => setActiveIndex(instance.realIndex)}
+        className="h-[430px] w-full overflow-hidden rounded-2xl border border-[#ecf0f3] bg-white sm:h-[500px]"
       >
         {images.map((image, index) => (
-          <SwiperSlide key={`main-${image}`} className="relative min-h-[430px] sm:min-h-[500px]">
+          <SwiperSlide key={`main-${image}`} className="relative h-[430px] sm:h-[500px]">
             <Image
               src={image}
               alt={index === 0 ? productName : `${productName}, image ${index + 1}`}
@@ -70,7 +68,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
               unoptimized
               priority={index === 0}
               sizes="(min-width: 1024px) 590px, 90vw"
-              className="object-contain p-8"
+              className="object-contain p-8 sm:p-16"
             />
           </SwiperSlide>
         ))}

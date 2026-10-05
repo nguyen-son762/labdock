@@ -14,7 +14,7 @@ const product: Product = {
   name: "Round Bottom Flask",
   slug: "round-bottom-flask",
   productNo: "BK-00120",
-  status: 1,
+  status: "Published",
   brandName: "Medisafe",
   notes: "",
   description: "Laboratory flask",
@@ -89,16 +89,13 @@ describe("ProductCard", () => {
   });
 
   it("adds the selected product to the shared cart", async () => {
-    const addSpy = vi.spyOn(cartService, "add").mockResolvedValue();
+    const addSpy = vi.spyOn(cartService, "add").mockResolvedValue([]);
     const user = userEvent.setup();
     renderWithProviders(<ProductCard product={product} />);
 
     await user.click(screen.getByRole("button", { name: `Add ${product.name} to cart` }));
 
-    expect(addSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: product.id, quantity: 1, size: "50ml", unitPrice: 1000 }),
-      expect.anything(),
-    );
+    expect(addSpy).toHaveBeenCalledWith({ variantId: product.variants[0]!.id, quantity: 1 });
     expect(await screen.findByText(`${product.name} added to cart.`)).toBeInTheDocument();
   });
 });

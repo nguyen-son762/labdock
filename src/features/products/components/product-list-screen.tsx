@@ -33,11 +33,11 @@ export function ProductListScreen({
   brandsError,
 }: ProductListScreenProps) {
   return (
-    <div className="bg-[#f5f8fb]">
+    <div className="bg-white">
       <CatalogBanner total={total} />
       <div className="container py-12">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "All categories" }]} />
-        <div className="mt-5">
+        <div className="mt-6">
           <CategoryStrip
             categories={categories.filter((category) => category.depth === 0)}
             selectedCategoryId={filters.categoryId}

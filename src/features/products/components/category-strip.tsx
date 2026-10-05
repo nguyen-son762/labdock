@@ -85,7 +85,7 @@ export function CategoryStrip({
                 aria-current={selected ? "true" : undefined}
                 className={cn(
                   "flex min-h-[66px] items-center gap-2 rounded-lg border p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
-                  selected ? "border-[#2f7bc4] bg-[#eaf2f9]" : "border-transparent bg-[#f5f7f8] hover:bg-[#eaf2f9]",
+                  selected ? "border-[#2f7bc4] bg-[#eaf2f9]" : "border-transparent bg-[#F5F7F8] hover:bg-[#eaf2f9]",
                 )}
               >
                 <span className="relative size-8 shrink-0 overflow-hidden rounded bg-white">

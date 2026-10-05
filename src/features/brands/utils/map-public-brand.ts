@@ -3,6 +3,12 @@ import { clientEnv } from "@/config/client-env";
 import type { Brand } from "../brand.types";
 import type { PublicBrand } from "../schemas/brand.schema";
 
+export type PublicBrandWithLogo = PublicBrand & { logoPath: string };
+
+export function hasBrandLogo(brand: PublicBrand): brand is PublicBrandWithLogo {
+  return brand.logoPath !== null;
+}
+
 function resolveLogoUrl(logoPath: string): string {
   if (/^https?:\/\//i.test(logoPath)) return logoPath;
 
@@ -25,7 +31,7 @@ function resolveWebsiteUrl(websiteUrl: string | null): string | null {
   }
 }
 
-export function mapPublicBrand(brand: PublicBrand): Brand {
+export function mapPublicBrand(brand: PublicBrandWithLogo): Brand {
   return {
     id: brand.id,
     name: brand.name,

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight2, Box, Menu } from "iconsax-reactjs";
+import { ArrowRight2, Box, HamburgerMenu } from "iconsax-reactjs";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
@@ -178,10 +178,10 @@ export function CategoryPopover({
           onMouseLeave={scheduleClose}
           className={cn(
             "h-11 shrink-0 gap-2 shadow-none",
-            compact ? "size-10 rounded-full p-0" : "w-[134px] rounded-l-full rounded-r-none px-4",
+            compact ? "size-10 rounded-full p-0" : "rounded-l-full rounded-r-none px-4",
           )}
         >
-          <Menu className="size-4" aria-hidden="true" />
+          <HamburgerMenu size={16} aria-hidden="true" />
           {compact ? null : <span>{t("allCategories")}</span>}
         </Button>
       </PopoverTrigger>

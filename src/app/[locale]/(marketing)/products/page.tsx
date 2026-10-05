@@ -82,8 +82,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const brands =
     brandsResult.status === "fulfilled"
       ? brandsResult.value
-          .map(({ id, name }) => ({ id, name }))
-          .sort((left, right) => left.name.localeCompare(right.name))
+        .map(({ id, name }) => ({ id, name }))
+        .sort((left, right) => left.name.localeCompare(right.name))
       : [];
 
   return (

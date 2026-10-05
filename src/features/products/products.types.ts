@@ -63,7 +63,7 @@ export type Product = {
   name: string;
   slug: string;
   productNo: string;
-  status: number;
+  status: string | number;
   brandName: string;
   notes: string;
   description: string;
