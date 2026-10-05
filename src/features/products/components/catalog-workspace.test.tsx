@@ -10,6 +10,7 @@ import { mapPublicProduct } from "../utils/map-public-product";
 import { CatalogWorkspace } from "./catalog-workspace";
 
 const routerReplace = vi.hoisted(() => vi.fn());
+const routerPush = vi.hoisted(() => vi.fn());
 const categoryId = "22222222-2222-2222-2222-222222222222";
 const brandId = "33333333-3333-3333-3333-333333333333";
 
@@ -20,7 +21,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, ...props }: ComponentProps<"a"> & { href: string }) => <a href={href} {...props} />,
   usePathname: () => "/products",
-  useRouter: () => ({ replace: routerReplace }),
+  useRouter: () => ({ replace: routerReplace, push: routerPush }),
 }));
 
 vi.mock("./product-card", () => ({
@@ -54,6 +55,7 @@ const filters: ProductCatalogFilters = {
 
 beforeEach(() => {
   routerReplace.mockReset();
+  routerPush.mockReset();
 });
 
 describe("CatalogWorkspace", () => {
@@ -104,5 +106,32 @@ describe("CatalogWorkspace", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("We could not load products");
     expect(screen.getByRole("radiogroup", { name: "Filter by brands" })).toBeInTheDocument();
     expect(screen.getByRole("radiogroup", { name: "Filter by categories" })).toBeInTheDocument();
+  });
+
+  it("opens a category page when a category is selected from the filter", async () => {
+    const user = userEvent.setup();
+    const categorySlug = "laboratory-glassware";
+
+    renderWithProviders(
+      <CatalogWorkspace
+        products={[product]}
+        categories={[
+          { id: categoryId, name: "Chemicals", slug: "chemicals", depth: 0, imageUrl: null },
+          { id: brandId, name: "Laboratory Glassware", slug: categorySlug, depth: 1, imageUrl: null },
+        ]}
+        brands={[{ id: "44444444-4444-4444-4444-444444444444", name: "Example Brand" }]}
+        filters={filters}
+        page={1}
+        pageSize={20}
+        total={40}
+        productsError={false}
+        categoriesError={false}
+        brandsError={false}
+      />,
+    );
+
+    await user.click(screen.getByLabelText("Laboratory Glassware"));
+
+    expect(routerPush).toHaveBeenCalledWith(`/products/category/${categorySlug}`);
   });
 });

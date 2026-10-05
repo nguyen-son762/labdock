@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
 
 import { getPublicBrands } from "@/features/brands/server";
-import { type PublicCategoryTreeNode } from "@/features/categories";
 import { getPublicCategories } from "@/features/categories/server";
-import {
-  parseProductCatalogFilters,
-  ProductListScreen,
-  type CatalogCategoryOption,
-  type ProductCatalogSearchParams,
-} from "@/features/products";
+import { parseProductCatalogFilters, ProductListScreen, type ProductCatalogSearchParams } from "@/features/products";
 import { getProductCatalogPage } from "@/features/products/server";
+import { flattenCatalogCategories } from "@/features/products/utils/flatten-catalog-categories";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 
 const PRODUCT_PAGE_SIZE = 20;
@@ -18,27 +13,6 @@ type ProductsPageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<ProductCatalogSearchParams>;
 };
-
-function flattenCategories(nodes: readonly PublicCategoryTreeNode[], depth = 0): CatalogCategoryOption[] {
-  return [...nodes]
-    .sort((left, right) => left.sortOrder - right.sortOrder || left.name.localeCompare(right.name))
-    .flatMap((category) => {
-      const primaryMedia =
-        category.media.find((media) => media.isPrimary) ??
-        [...category.media].sort((left, right) => left.sortOrder - right.sortOrder)[0];
-
-      return [
-        {
-          id: category.id,
-          name: category.name,
-          slug: category.slug,
-          depth,
-          imageUrl: primaryMedia?.url ?? null,
-        },
-        ...flattenCategories(category.children, depth + 1),
-      ];
-    });
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -78,12 +52,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     productsResult.status === "fulfilled"
       ? productsResult.value
       : { items: [], page: filters.page, pageSize: PRODUCT_PAGE_SIZE, total: 0 };
-  const categories = categoriesResult.status === "fulfilled" ? flattenCategories(categoriesResult.value) : [];
+  const categories = categoriesResult.status === "fulfilled" ? flattenCatalogCategories(categoriesResult.value) : [];
   const brands =
     brandsResult.status === "fulfilled"
       ? brandsResult.value
-        .map(({ id, name }) => ({ id, name }))
-        .sort((left, right) => left.name.localeCompare(right.name))
+          .map(({ id, name }) => ({ id, name }))
+          .sort((left, right) => left.name.localeCompare(right.name))
       : [];
 
   return (

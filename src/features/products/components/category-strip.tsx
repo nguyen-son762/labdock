@@ -20,9 +20,13 @@ import "swiper/css/grid";
 export function CategoryStrip({
   categories,
   selectedCategoryId,
+  title = "All categories",
+  headingLevel = "h2",
 }: {
   categories: readonly CatalogCategoryOption[];
   selectedCategoryId?: string;
+  title?: string;
+  headingLevel?: "h1" | "h2";
 }) {
   const searchParams = useSearchParams();
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
@@ -32,13 +36,14 @@ export function CategoryStrip({
   };
 
   if (categories.length === 0) return null;
+  const Heading = headingLevel;
 
   return (
     <section aria-labelledby="categories-title">
       <div className="mb-2 flex items-center justify-between">
-        <h2 id="categories-title" className="text-xl font-semibold text-[#051a50]">
-          All categories
-        </h2>
+        <Heading id="categories-title" className="text-xl font-semibold text-[#051a50]">
+          {title}
+        </Heading>
         <SwiperNavigation
           label="categories"
           tone="orange"
@@ -71,8 +76,10 @@ export function CategoryStrip({
       >
         {categories.map((category) => {
           const params = new URLSearchParams(searchParams.toString());
-          params.set("categoryId", category.id);
+          params.delete("categoryId");
           params.delete("page");
+          const query = params.toString();
+          const href = `/products/category/${category.slug}${query ? `?${query}` : ""}`;
           const selected = selectedCategoryId === category.id;
           const thumbnail = category.imageUrl
             ? resolveProductMediaUrl(category.imageUrl)
@@ -81,7 +88,7 @@ export function CategoryStrip({
           return (
             <SwiperSlide key={category.id} className="!h-auto">
               <Link
-                href={`/products?${params.toString()}`}
+                href={href}
                 aria-current={selected ? "true" : undefined}
                 className={cn(
                   "flex min-h-[66px] items-center gap-2 rounded-lg border p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",

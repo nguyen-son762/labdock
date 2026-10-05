@@ -25,6 +25,7 @@ type CatalogWorkspaceProps = {
   productsError: boolean;
   categoriesError: boolean;
   brandsError: boolean;
+  categoryPage?: boolean;
 };
 
 export function CatalogWorkspace({
@@ -38,6 +39,7 @@ export function CatalogWorkspace({
   productsError,
   categoriesError,
   brandsError,
+  categoryPage = false,
 }: CatalogWorkspaceProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -60,6 +62,26 @@ export function CatalogWorkspace({
     startTransition(() => router.replace(buildHref(updates), { scroll: false }));
   }
 
+  function changeCategory(categoryId: string | null) {
+    const selectedCategory = categories.find((category) => category.id === categoryId);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("categoryId");
+    params.delete("page");
+    const query = params.toString();
+    const basePath = selectedCategory ? `/products/category/${selectedCategory.slug}` : "/products";
+    startTransition(() => {
+      router.push(query ? `${basePath}?${query}` : basePath);
+    });
+  }
+
+  function clearFilters() {
+    if (categoryPage) {
+      startTransition(() => router.push("/products"));
+      return;
+    }
+    updateParams({ brandId: null, categoryId: null, sort: null, page: null });
+  }
+
   return (
     <div className="grid gap-8 lg:grid-cols-[238px_minmax(0,1fr)]">
       <CatalogFilters
@@ -70,8 +92,8 @@ export function CatalogWorkspace({
         categoriesError={categoriesError}
         brandsError={brandsError}
         onBrandChange={(brandId) => updateParams({ brandId, page: null })}
-        onCategoryChange={(categoryId) => updateParams({ categoryId, page: null })}
-        onClear={() => updateParams({ brandId: null, categoryId: null, sort: null, page: null })}
+        onCategoryChange={changeCategory}
+        onClear={clearFilters}
       />
 
       <section
@@ -129,7 +151,7 @@ export function CatalogWorkspace({
                 type="button"
                 variant="ghost"
                 disabled={isPending}
-                onClick={() => updateParams({ brandId: null, categoryId: null, sort: null, page: null })}
+                onClick={clearFilters}
                 className="mt-3 text-[#164990]"
               >
                 Clear filters

@@ -18,6 +18,7 @@ type ProductListScreenProps = {
   productsError: boolean;
   categoriesError: boolean;
   brandsError: boolean;
+  activeCategory?: CatalogCategoryOption & { children: readonly CatalogCategoryOption[] };
 };
 
 export function ProductListScreen({
@@ -31,16 +32,35 @@ export function ProductListScreen({
   productsError,
   categoriesError,
   brandsError,
+  activeCategory,
 }: ProductListScreenProps) {
+  const topLevelCategories = categories.filter((category) => category.depth === 0);
+  const visibleCategories = activeCategory ? activeCategory.children : topLevelCategories;
+
   return (
     <div className="bg-white">
       <CatalogBanner total={total} />
       <div className="container py-12">
-        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "All categories" }]} />
+        <Breadcrumbs
+          items={
+            activeCategory
+              ? [
+                  { label: "Home", href: "/" },
+                  { label: "All categories", href: "/products" },
+                  { label: activeCategory.name },
+                ]
+              : [{ label: "Home", href: "/" }, { label: "All categories" }]
+          }
+        />
+        {activeCategory && !activeCategory.children.length ? (
+          <h1 className="mt-6 text-2xl font-semibold text-[#051a50]">{activeCategory.name}</h1>
+        ) : null}
         <div className="mt-6">
           <CategoryStrip
-            categories={categories.filter((category) => category.depth === 0)}
-            selectedCategoryId={filters.categoryId}
+            categories={visibleCategories}
+            selectedCategoryId={activeCategory ? undefined : filters.categoryId}
+            title={activeCategory ? activeCategory.name : "All categories"}
+            headingLevel={activeCategory ? "h1" : "h2"}
           />
         </div>
         <div className="mt-8">
@@ -55,6 +75,7 @@ export function ProductListScreen({
             productsError={productsError}
             categoriesError={categoriesError}
             brandsError={brandsError}
+            categoryPage={Boolean(activeCategory)}
           />
         </div>
       </div>
