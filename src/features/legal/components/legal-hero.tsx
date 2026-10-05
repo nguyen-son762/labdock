@@ -16,7 +16,7 @@ export function LegalHero({ document }: { document: LegalDocument }) {
     >
       <Image src="/legal/legal-hero.png" alt="" fill priority sizes="100vw" className="object-cover object-center" />
       <div className={cn("relative flex flex-col items-center", document.kind === "terms" ? "gap-3" : "gap-4")}>
-        <Breadcrumbs appearance="parent-primary" items={[{ label: "Home", href: "/" }, { label: document.title }]} />
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: document.title }]} />
         <h1 id="legal-page-title" className="text-[32px] font-semibold leading-none text-[#0f3678]">
           {document.title}
         </h1>

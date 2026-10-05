@@ -1,6 +1,6 @@
 "use client";
 
-import { Global, TickCircle } from "iconsax-reactjs";
+import { ArrowDown2, TickCircle } from "iconsax-reactjs";
 import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -31,9 +31,8 @@ export function LanguageSwitcher() {
           aria-label={t("language")}
           className="h-auto gap-1.5 rounded p-0 font-medium text-white hover:bg-transparent hover:text-white hover:opacity-80"
         >
-          <Global className="size-3.5" aria-hidden="true" />
-          <span aria-hidden="true">{localeFlags[locale]}</span>
           {locale === "vi" ? t("vietnamese") : t("english")}
+          <ArrowDown2 className="size-3.5" aria-hidden="true" />
         </Button>
       </PopoverTrigger>
       <PopoverContent

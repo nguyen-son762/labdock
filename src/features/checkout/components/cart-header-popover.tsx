@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useCartQuery } from "../api/use-cart-query";
 import { useRemoveCartItemMutation } from "../api/use-remove-cart-item-mutation";
 import { calculateOrderTotals, formatCurrency } from "../data/checkout-data";
+import { useTranslations } from "next-intl";
 
 function createSelectionHref(pathname: string, selectedIds: string[]) {
   return selectedIds.length ? `${pathname}?items=${encodeURIComponent(selectedIds.join(","))}` : "#cart-products";
@@ -19,6 +20,7 @@ function createSelectionHref(pathname: string, selectedIds: string[]) {
 
 export function CartHeaderPopover() {
   const cartQuery = useCartQuery();
+  const t = useTranslations("Header");
   const removeCartItem = useRemoveCartItemMutation();
   const [selection, setSelection] = useState<string[] | null>(null);
   const items = cartQuery.data ?? [];
@@ -33,7 +35,7 @@ export function CartHeaderPopover() {
         <Button
           type="button"
           variant="ghost"
-          className="h-9 w-[114px] shrink-0 justify-start gap-2 rounded-full p-0 font-normal text-white hover:bg-white/10 hover:text-white focus-visible:ring-white"
+          className="h-9 shrink-0 justify-start gap-2 rounded-full p-0 font-normal text-white hover:bg-white/10 hover:text-white focus-visible:ring-white"
           aria-label={`Cart with ${items.length} products`}
         >
           <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-white/10">
@@ -43,7 +45,7 @@ export function CartHeaderPopover() {
             </span>
           </span>
           <span className="flex flex-col text-left leading-none">
-            <span className="text-[13px] leading-[17px]">Cart</span>
+            <span className="text-[13px] leading-[17px]">{t("orders")}</span>
             <strong className="whitespace-nowrap text-sm leading-[18px]">
               {formatCurrency(totals.subtotal, items[0]?.currency)}
             </strong>

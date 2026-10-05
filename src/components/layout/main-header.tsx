@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  ArrowDown,
+  ArrowDown2,
   Building,
   Call,
   Home,
@@ -168,10 +168,10 @@ export function MainHeader({
             ))}
           </nav>
           <div className="hidden h-5 items-center sm:flex">
-            <span className="inline-flex items-center gap-1.5">
+            <a href="mailto:info@i-dna.sg" className="inline-flex items-center gap-1.5">
               <Sms className="size-3.5" variant="Bold" aria-hidden="true" />
               info@i-dna.sg
-            </span>
+            </a>
             <span className="mx-5 h-5 w-px bg-white/20" aria-hidden="true" />
             <LanguageSwitcher />
             <Button
@@ -179,7 +179,7 @@ export function MainHeader({
               variant="ghost"
               className="ml-5 h-auto gap-1.5 rounded p-0 font-medium text-white hover:bg-transparent hover:text-white hover:opacity-80"
             >
-              <span aria-hidden="true">🇸🇬</span> SGD <ArrowDown className="size-3.5" aria-hidden="true" />
+              <span aria-hidden="true">🇸🇬</span> SGD <ArrowDown2 className="size-3.5" aria-hidden="true" />
             </Button>
           </div>
         </div>
