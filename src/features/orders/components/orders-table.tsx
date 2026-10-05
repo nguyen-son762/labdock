@@ -8,21 +8,21 @@ import type { OrderSummary } from "../schemas/order.schema";
 import { formatCurrency, formatOrderDate } from "../utils/order-formatters";
 import { OrderStatusBadge } from "./order-status-badge";
 
-const PAGE_SIZE = 10;
-
 export function OrdersTable({
   orders,
   total,
   page,
+  pageSize,
   onPageChange,
 }: {
   orders: OrderSummary[];
   total: number;
   page: number;
+  pageSize: number;
   onPageChange: (page: number) => void;
 }) {
-  const start = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
-  const end = Math.min(page * PAGE_SIZE, total);
+  const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const end = Math.min((page - 1) * pageSize + orders.length, total);
 
   if (orders.length === 0) return null;
 
@@ -46,14 +46,16 @@ export function OrdersTable({
                     href={`/orders/${order.id}`}
                     className="font-medium text-[#164990] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
                   >
-                    #{order.id}
+                    #{order.orderNumber}
                   </Link>
                 </TableCell>
-                <TableCell className="px-6 py-2 text-[#051a50]">{formatOrderDate(order.orderedAt)}</TableCell>
+                <TableCell className="px-6 py-2 text-[#051a50]">{formatOrderDate(order.createdAt)}</TableCell>
                 <TableCell className="px-6 py-2">
                   <OrderStatusBadge status={order.status} />
                 </TableCell>
-                <TableCell className="px-6 py-2 text-[#051a50]">{formatCurrency(order.total)}</TableCell>
+                <TableCell className="px-6 py-2 text-[#051a50]">
+                  {formatCurrency(order.total, order.currency)}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -64,16 +66,16 @@ export function OrdersTable({
           <article key={order.id} className="space-y-3 p-4">
             <div className="flex items-center justify-between gap-3">
               <Link href={`/orders/${order.id}`} className="font-semibold text-[#164990]">
-                #{order.id}
+                #{order.orderNumber}
               </Link>
               <OrderStatusBadge status={order.status} />
             </div>
             <div className="flex items-end justify-between gap-3 text-sm">
               <div>
                 <p className="text-xs text-[#73798f]">Order date</p>
-                <p className="text-[#051a50]">{formatOrderDate(order.orderedAt)}</p>
+                <p className="text-[#051a50]">{formatOrderDate(order.createdAt)}</p>
               </div>
-              <strong className="text-[#051a50]">{formatCurrency(order.total)}</strong>
+              <strong className="text-[#051a50]">{formatCurrency(order.total, order.currency)}</strong>
             </div>
             <Button asChild variant="ghost" className="h-8 w-full justify-end px-0 font-normal text-[#164990]">
               <Link href={`/orders/${order.id}`}>
@@ -103,7 +105,7 @@ export function OrdersTable({
             variant="outline"
             size="sm"
             className="rounded-full border-[#dde2e8]"
-            disabled={end >= total}
+            disabled={page >= Math.ceil(total / pageSize)}
             onClick={() => onPageChange(page + 1)}
           >
             Next

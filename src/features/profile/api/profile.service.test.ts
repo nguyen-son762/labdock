@@ -24,6 +24,15 @@ const profileResponse = {
   memberSince: "2025-08-21T10:00:00+00:00",
 };
 
+const uploadedMedia = {
+  id: "809a5c87-566d-493b-b589-59f2431ced40",
+  relativePath: "public/buyers/temp/2026/10/05/809a5c87-566d-493b-b589-59f2431ced40.jpg",
+  url: "/media/public/buyers/temp/2026/10/05/809a5c87-566d-493b-b589-59f2431ced40.jpg",
+  contentType: "image/jpeg",
+  sizeBytes: 12725,
+  isTemporary: true,
+};
+
 const currentUser: CurrentUser = {
   fullName: profileResponse.fullName,
   phone: profileResponse.phoneNumber,
@@ -207,9 +216,9 @@ describe("profileService", () => {
   it("uploads the profile image as multipart form data", async () => {
     const file = new File(["avatar"], "avatar.png", { type: "image/png" });
     const controller = new AbortController();
-    httpClient.post.mockResolvedValue({ data: undefined });
+    httpClient.post.mockResolvedValue({ data: uploadedMedia });
 
-    await expect(profileService.uploadAvatar(file, controller.signal)).resolves.toBeUndefined();
+    await expect(profileService.uploadAvatar(file, controller.signal)).resolves.toEqual(uploadedMedia);
 
     expect(httpClient.post).toHaveBeenCalledWith(
       "/me/profile/media",
@@ -221,6 +230,33 @@ describe("profileService", () => {
     );
     const formData = httpClient.post.mock.calls.at(-1)?.[1] as FormData;
     expect(formData.get("file")).toBe(file);
+  });
+
+  it("saves the uploaded media id on the profile after the media upload succeeds", async () => {
+    const file = new File(["avatar"], "avatar.png", { type: "image/png" });
+    httpClient.post.mockResolvedValue({ data: uploadedMedia });
+    httpClient.put.mockResolvedValue({ data: profileResponse });
+
+    await profileService.updateAvatar(file, currentUser);
+
+    expect(httpClient.post).toHaveBeenCalledWith("/me/profile/media", expect.any(FormData), expect.any(Object));
+    expect(httpClient.put).toHaveBeenCalledWith("/me/profile", {
+      fullName: currentUser.fullName,
+      phoneNumber: currentUser.phone,
+      email: currentUser.email,
+      companyName: currentUser.companyName,
+      companyPhone: currentUser.companyPhone,
+      businessRegistrationNumber: currentUser.businessRegistrationNumber,
+      deliveryAddress: {
+        address: currentUser.deliveryAddress,
+        postalCode: currentUser.postalCode,
+        country: currentUser.country,
+      },
+      sameAsDeliveryAddress: currentUser.billingSameAsDelivery,
+      billingAddress: currentUser.billingAddress,
+      profilePictureMediaId: uploadedMedia.id,
+    });
+    expect(httpClient.post.mock.invocationCallOrder[0]).toBeLessThan(httpClient.put.mock.invocationCallOrder[0]!);
   });
 
   it("does not send an invalid password change request", async () => {

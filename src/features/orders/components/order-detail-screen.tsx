@@ -12,7 +12,6 @@ import { useOrderDetailQuery } from "../api/use-order-detail-query";
 import { OrderInformationCards } from "./order-information-cards";
 import { OrderItemsCard } from "./order-items-card";
 import { OrderStatusBadge } from "./order-status-badge";
-import { OrderTracking } from "./order-tracking";
 
 export function OrderDetailScreen({ orderId }: { orderId: string }) {
   const orderQuery = useOrderDetailQuery(orderId);
@@ -20,7 +19,11 @@ export function OrderDetailScreen({ orderId }: { orderId: string }) {
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-12 pt-6 sm:px-10 xl:px-[100px]">
       <Breadcrumbs
-        items={[{ label: "Home", href: "/" }, { label: "My orders", href: "/orders" }, { label: `#${orderId}` }]}
+        items={[
+          { label: "Home", href: "/" },
+          { label: "My orders", href: "/orders" },
+          { label: `#${orderQuery.data?.orderNumber ?? orderId}` },
+        ]}
       />
       {orderQuery.isPending ? (
         <div className="mt-4 space-y-4" aria-label="Loading order details" aria-busy="true">
@@ -40,10 +43,9 @@ export function OrderDetailScreen({ orderId }: { orderId: string }) {
       {orderQuery.data ? (
         <div className="mt-3 space-y-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-[32px] font-semibold leading-none text-[#0f3678]">#{orderQuery.data.id}</h1>
+            <h1 className="text-[32px] font-semibold leading-none text-[#0f3678]">#{orderQuery.data.orderNumber}</h1>
             <OrderStatusBadge status={orderQuery.data.status} />
           </div>
-          <OrderTracking tracking={orderQuery.data.tracking} />
           <OrderItemsCard order={orderQuery.data} />
           <OrderInformationCards order={orderQuery.data} />
         </div>

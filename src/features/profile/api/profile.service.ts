@@ -7,7 +7,12 @@ import {
   type PasswordFormValues,
   type ProfileFormValues,
 } from "../schemas/profile-form.schema";
-import { profileResponseSchema, type ProfileResponse } from "../schemas/profile-response.schema";
+import {
+  profilePictureMediaUploadResponseSchema,
+  profileResponseSchema,
+  type ProfilePictureMediaUploadResponse,
+  type ProfileResponse,
+} from "../schemas/profile-response.schema";
 import { currentUserSchema, type CurrentUser } from "../schemas/user.schema";
 
 const DEFAULT_PROFILE_PICTURE_URL = "/auth/company-logo.png";
@@ -30,6 +35,7 @@ type UpdateProfileRequest = {
     postalCode: string;
     country: string;
   };
+  profilePictureMediaId?: string;
 };
 
 function resolveProfilePictureUrl(path: string): string {
@@ -63,7 +69,11 @@ function mapProfileResponse(input: ProfileResponse): CurrentUser {
   });
 }
 
-function mapUpdateProfileRequest(input: ProfileFormValues, currentUser: CurrentUser): UpdateProfileRequest {
+function mapUpdateProfileRequest(
+  input: ProfileFormValues,
+  currentUser: CurrentUser,
+  profilePictureMediaId?: string,
+): UpdateProfileRequest {
   const deliveryAddress = {
     address: input.deliveryAddress,
     postalCode: input.postalCode,
@@ -80,6 +90,28 @@ function mapUpdateProfileRequest(input: ProfileFormValues, currentUser: CurrentU
     deliveryAddress,
     sameAsDeliveryAddress: input.billingSameAsDelivery,
     billingAddress: input.billingSameAsDelivery ? deliveryAddress : currentUser.billingAddress,
+    ...(profilePictureMediaId ? { profilePictureMediaId } : {}),
+  };
+}
+
+function mapProfilePictureUpdateRequest(currentUser: CurrentUser, profilePictureMediaId: string): UpdateProfileRequest {
+  const deliveryAddress = {
+    address: currentUser.deliveryAddress,
+    postalCode: currentUser.postalCode,
+    country: currentUser.country,
+  };
+
+  return {
+    fullName: currentUser.fullName,
+    phoneNumber: currentUser.phone,
+    email: currentUser.email,
+    companyName: currentUser.companyName,
+    companyPhone: currentUser.companyPhone,
+    businessRegistrationNumber: currentUser.businessRegistrationNumber,
+    deliveryAddress,
+    sameAsDeliveryAddress: currentUser.billingSameAsDelivery,
+    billingAddress: currentUser.billingSameAsDelivery ? deliveryAddress : currentUser.billingAddress,
+    profilePictureMediaId,
   };
 }
 
@@ -89,12 +121,16 @@ export const profileService = {
     return mapProfileResponse(profileResponseSchema.parse(response.data));
   },
 
-  async updateCurrent(input: ProfileFormValues, currentUser: CurrentUser): Promise<CurrentUser> {
+  async updateCurrent(
+    input: ProfileFormValues,
+    currentUser: CurrentUser,
+    profilePictureMediaId?: string,
+  ): Promise<CurrentUser> {
     const validatedInput = profileFormSchema.parse(input);
     const validatedCurrentUser = currentUserSchema.parse(currentUser);
     const response = await httpClient.put<unknown>(
       "/me/profile",
-      mapUpdateProfileRequest(validatedInput, validatedCurrentUser),
+      mapUpdateProfileRequest(validatedInput, validatedCurrentUser, profilePictureMediaId),
     );
 
     return mapProfileResponse(profileResponseSchema.parse(response.data));
@@ -105,13 +141,25 @@ export const profileService = {
     await httpClient.post<void>("/auth/change-password", values);
   },
 
-  async uploadAvatar(file: File, signal?: AbortSignal): Promise<void> {
+  async uploadAvatar(file: File, signal?: AbortSignal): Promise<ProfilePictureMediaUploadResponse> {
     const formData = new FormData();
     formData.append("file", file);
 
-    await httpClient.post<void>("/me/profile/media", formData, {
+    const response = await httpClient.post<unknown>("/me/profile/media", formData, {
       headers: { "Content-Type": "multipart/form-data" },
       ...(signal ? { signal } : {}),
     });
+    return profilePictureMediaUploadResponseSchema.parse(response.data);
+  },
+
+  async updateAvatar(file: File, currentUser: CurrentUser): Promise<CurrentUser> {
+    const validatedCurrentUser = currentUserSchema.parse(currentUser);
+    const media = await profileService.uploadAvatar(file);
+    const response = await httpClient.put<unknown>(
+      "/me/profile",
+      mapProfilePictureUpdateRequest(validatedCurrentUser, media.id),
+    );
+
+    return mapProfileResponse(profileResponseSchema.parse(response.data));
   },
 };

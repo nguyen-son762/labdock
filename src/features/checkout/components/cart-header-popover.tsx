@@ -57,9 +57,14 @@ export function CartHeaderPopover() {
       >
         <div className="flex items-center justify-between border-b border-[#edf0f2] px-4 py-3">
           <h2 className="text-lg font-semibold">Cart</h2>
-          <Link href="/cart" className="text-xs font-semibold text-[#164990] hover:underline">
-            View cart
-          </Link>
+          <nav aria-label="Cart shortcuts" className="flex items-center gap-4">
+            <Link href="/cart" className="text-xs font-semibold text-[#164990] hover:underline">
+              View cart
+            </Link>
+            <Link href="/orders" className="text-xs font-semibold text-[#164990] hover:underline">
+              View orders
+            </Link>
+          </nav>
         </div>
         <div className="divide-y divide-[#edf0f2] px-4">
           {cartQuery.isPending ? <p className="py-6 text-center text-xs text-[#73798f]">Loading cart…</p> : null}

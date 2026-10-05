@@ -5,24 +5,24 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import type { RfqSummary } from "../schemas/rfq.schema";
-import { formatRfqCurrency, formatRfqDate } from "../utils/rfq-formatters";
+import { formatRfqDate } from "../utils/rfq-formatters";
 import { RfqStatusBadge } from "./rfq-status-badge";
-
-const PAGE_SIZE = 10;
 
 export function RfqsTable({
   rfqs,
   total,
   page,
+  pageSize,
   onPageChange,
 }: {
   rfqs: RfqSummary[];
   total: number;
   page: number;
+  pageSize: number;
   onPageChange: (page: number) => void;
 }) {
-  const start = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
-  const end = Math.min(page * PAGE_SIZE, total);
+  const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const end = Math.min((page - 1) * pageSize + rfqs.length, total);
 
   if (rfqs.length === 0) return null;
 
@@ -34,10 +34,10 @@ export function RfqsTable({
             <TableRow className="hover:bg-[#ecf0f3]">
               <TableHead>RFQ No.</TableHead>
               <TableHead>Date submitted</TableHead>
-              <TableHead>Total products</TableHead>
-              <TableHead>Total est. value</TableHead>
+              <TableHead>Last updated</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead>Supplier</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Valid until</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -48,17 +48,20 @@ export function RfqsTable({
                     href={`/rfqs/${rfq.id}`}
                     className="font-medium text-[#164990] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
                   >
-                    #{rfq.id}
+                    #{rfq.rfqNumber}
                   </Link>
                 </TableCell>
-                <TableCell className="px-6 py-2 text-[#051a50]">{formatRfqDate(rfq.submittedAt)}</TableCell>
-                <TableCell className="px-6 py-2 text-[#051a50]">{rfq.totalProducts}</TableCell>
-                <TableCell className="px-6 py-2 text-[#051a50]">{formatRfqCurrency(rfq.estimatedValue)}</TableCell>
+                <TableCell className="px-6 py-2 text-[#051a50]">{formatRfqDate(rfq.createdAt)}</TableCell>
+                <TableCell className="px-6 py-2 text-[#051a50]">{formatRfqDate(rfq.updatedAt)}</TableCell>
+                <TableCell className="px-6 py-2 text-[#051a50]">{rfq.source}</TableCell>
+                <TableCell
+                  className="max-w-40 truncate px-6 py-2 font-mono text-xs text-[#73798f]"
+                  title={rfq.supplierId}
+                >
+                  {rfq.supplierId}
+                </TableCell>
                 <TableCell className="px-6 py-2">
                   <RfqStatusBadge status={rfq.status} />
-                </TableCell>
-                <TableCell className="px-6 py-2 text-[#051a50]">
-                  {rfq.validUntil ? formatRfqDate(rfq.validUntil) : "-"}
                 </TableCell>
               </TableRow>
             ))}
@@ -70,26 +73,28 @@ export function RfqsTable({
           <article key={rfq.id} className="space-y-3 p-4">
             <div className="flex items-center justify-between gap-3">
               <Link href={`/rfqs/${rfq.id}`} className="font-semibold text-[#164990]">
-                #{rfq.id}
+                #{rfq.rfqNumber}
               </Link>
               <RfqStatusBadge status={rfq.status} />
             </div>
             <dl className="grid grid-cols-2 gap-3 text-sm">
               <div>
                 <dt className="text-xs text-[#73798f]">Date submitted</dt>
-                <dd className="text-[#051a50]">{formatRfqDate(rfq.submittedAt)}</dd>
+                <dd className="text-[#051a50]">{formatRfqDate(rfq.createdAt)}</dd>
               </div>
               <div>
-                <dt className="text-xs text-[#73798f]">Total products</dt>
-                <dd className="text-[#051a50]">{rfq.totalProducts}</dd>
+                <dt className="text-xs text-[#73798f]">Last updated</dt>
+                <dd className="text-[#051a50]">{formatRfqDate(rfq.updatedAt)}</dd>
               </div>
               <div>
-                <dt className="text-xs text-[#73798f]">Estimated value</dt>
-                <dd className="font-semibold text-[#051a50]">{formatRfqCurrency(rfq.estimatedValue)}</dd>
+                <dt className="text-xs text-[#73798f]">Source</dt>
+                <dd className="text-[#051a50]">{rfq.source}</dd>
               </div>
-              <div>
-                <dt className="text-xs text-[#73798f]">Valid until</dt>
-                <dd className="text-[#051a50]">{rfq.validUntil ? formatRfqDate(rfq.validUntil) : "-"}</dd>
+              <div className="min-w-0">
+                <dt className="text-xs text-[#73798f]">Supplier</dt>
+                <dd className="truncate font-mono text-xs text-[#051a50]" title={rfq.supplierId}>
+                  {rfq.supplierId}
+                </dd>
               </div>
             </dl>
             <Button asChild variant="ghost" className="h-8 w-full justify-end px-0 font-normal text-[#164990]">
@@ -120,7 +125,7 @@ export function RfqsTable({
             variant="outline"
             size="sm"
             className="rounded-full border-[#dde2e8]"
-            disabled={end >= total}
+            disabled={page >= Math.ceil(total / pageSize)}
             onClick={() => onPageChange(page + 1)}
           >
             Next

@@ -88,9 +88,12 @@ describe("ProfileScreen", () => {
     expect(screen.getByLabelText(/Confirm password/)).toHaveValue("");
   });
 
-  it("uploads a selected avatar through the profile media API", async () => {
+  it("uploads and saves a selected avatar on the profile", async () => {
     vi.spyOn(profileService, "getCurrent").mockResolvedValue(user);
-    const uploadAvatar = vi.spyOn(profileService, "uploadAvatar").mockResolvedValue();
+    const updateAvatar = vi.spyOn(profileService, "updateAvatar").mockResolvedValue({
+      ...user,
+      avatarUrl: "/media/public/updated-avatar.jpg",
+    });
     const interaction = userEvent.setup();
 
     render(
@@ -108,7 +111,7 @@ describe("ProfileScreen", () => {
 
     await interaction.click(screen.getByRole("button", { name: "Save" }));
 
-    await waitFor(() => expect(uploadAvatar).toHaveBeenCalledWith(file));
+    await waitFor(() => expect(updateAvatar).toHaveBeenCalledWith(file, user));
     expect(screen.queryByText("avatar.png")).not.toBeInTheDocument();
   });
 });

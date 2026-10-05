@@ -85,7 +85,7 @@ function OrderSummary() {
         </span>
       </span>
       <span className="flex flex-col text-left leading-none">
-        <span className="text-[13px] leading-[17px]">{t("cart")}</span>
+        <span className="text-[13px] leading-[17px]">{t("orders")}</span>
         <strong className="whitespace-nowrap text-sm leading-[18px]">S$200.00</strong>
       </span>
     </Link>

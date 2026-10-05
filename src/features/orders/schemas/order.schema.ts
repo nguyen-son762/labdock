@@ -1,72 +1,70 @@
 import { z } from "zod";
 
-export const orderStatusSchema = z.enum(["awaiting-shipment", "shipped", "delivered", "cancelled"]);
+// The API's documented sample IDs don't include an RFC UUID variant nibble,
+// so validate GUID shape without enforcing the UUID version/variant bits.
+const guidSchema = z.guid();
+const currencySchema = z.string().length(3);
+const dateTimeSchema = z.iso.datetime({ offset: true });
+
+export const orderStatusSchema = z.string().trim().min(1);
 
 export const orderSummarySchema = z.object({
-  id: z.string().regex(/^OR-\d{4}$/),
-  orderedAt: z.string().datetime(),
+  id: guidSchema,
+  orderNumber: z.string().min(1),
   status: orderStatusSchema,
-  total: z.number().nonnegative(),
-});
-
-export const orderItemSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  catalogNumber: z.string().min(1),
-  image: z.string().min(1),
-  unitPrice: z.number().nonnegative(),
-  size: z.string().min(1),
-  quantity: z.number().int().positive(),
   subtotal: z.number().nonnegative(),
-});
-
-export const orderDetailSchema = orderSummarySchema.extend({
-  items: z.array(orderItemSchema).min(1),
-  subtotal: z.number().nonnegative(),
-  deliveryFee: z.number().nonnegative(),
   tax: z.number().nonnegative(),
-  tracking: z.object({
-    number: z.string().min(1),
-    carrier: z.string().min(1),
-    confirmedAt: z.string().datetime(),
-    awaitingAt: z.string().datetime(),
-    shippedAt: z.string().datetime(),
-    estimatedDeliveryAt: z.string().datetime(),
-  }),
-  delivery: z.object({ name: z.string(), company: z.string(), address: z.string(), phone: z.string() }),
-  payment: z.object({
-    cardLastFour: z.string().length(4),
-    chargedAt: z.string().datetime(),
-    invoiceNumber: z.string(),
-  }),
-});
-
-export const orderFilterStatusSchema = z.union([orderStatusSchema, z.literal("all")]);
-
-export const orderFiltersSchema = z.object({
-  search: z.string().trim().max(80).default(""),
-  status: orderFilterStatusSchema.default("all"),
-  month: z
-    .string()
-    .regex(/^\d{4}-\d{2}$/)
-    .optional(),
-  page: z.number().int().positive().default(1),
+  shippingFee: z.number().nonnegative(),
+  additionalFeeTotal: z.number().nonnegative(),
+  platformFee: z.number().nonnegative(),
+  total: z.number().nonnegative(),
+  currency: currencySchema,
+  createdAt: dateTimeSchema,
 });
 
 export const orderListResponseSchema = z.object({
-  orders: z.array(orderSummarySchema),
+  items: z.array(orderSummarySchema),
+  page: z.number().int().positive(),
+  pageSize: z.number().int().positive(),
   total: z.number().int().nonnegative(),
-  summary: z.object({
-    totalSpent: z.number(),
-    totalOrders: z.number(),
-    awaitingShipment: z.number(),
-    shipped: z.number(),
-    delivered: z.number(),
+});
+
+export const orderInvoiceLineSchema = z.object({
+  productName: z.string().min(1),
+  sku: z.string().min(1),
+  unitPrice: z.number().nonnegative(),
+  quantity: z.number().int().positive(),
+  lineTotal: z.number().nonnegative(),
+});
+
+export const orderDetailSchema = orderSummarySchema.omit({ subtotal: true, tax: true, platformFee: true }).extend({
+  subtotal: z.number().nonnegative(),
+  tax: z.number().nonnegative(),
+  platformFee: z.number().nonnegative(),
+  platformFeeRateSnap: z.number().nonnegative(),
+  shippingSnapshotJson: z.string(),
+  invoice: z.object({
+    orderNumber: z.string().min(1),
+    createdAt: dateTimeSchema,
+    buyerEmail: z.string().min(1),
+    lines: z.array(orderInvoiceLineSchema),
+    subtotal: z.number().nonnegative(),
+    tax: z.number().nonnegative(),
+    platformFee: z.number().nonnegative(),
+    total: z.number().nonnegative(),
+    currency: currencySchema,
+    status: orderStatusSchema,
   }),
+});
+
+export const orderFiltersSchema = z.object({
+  page: z.number().int().positive().default(1),
+  pageSize: z.number().int().positive().max(100).default(10),
 });
 
 export type OrderStatus = z.infer<typeof orderStatusSchema>;
 export type OrderSummary = z.infer<typeof orderSummarySchema>;
+export type OrderInvoiceLine = z.infer<typeof orderInvoiceLineSchema>;
 export type OrderDetail = z.infer<typeof orderDetailSchema>;
 export type OrderFilters = z.infer<typeof orderFiltersSchema>;
 export type OrderListResponse = z.infer<typeof orderListResponseSchema>;

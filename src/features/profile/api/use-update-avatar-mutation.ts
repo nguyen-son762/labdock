@@ -9,13 +9,14 @@ export function useUpdateAvatarMutation() {
 
   return useMutation({
     mutationFn: (file: File) => {
-      if (!queryClient.getQueryData<CurrentUser>(profileKeys.current())) {
+      const currentUser = queryClient.getQueryData<CurrentUser>(profileKeys.current());
+      if (!currentUser) {
         throw new Error("Load the current profile before updating it.");
       }
 
-      return profileService.uploadAvatar(file);
+      return profileService.updateAvatar(file, currentUser);
     },
     retry: false,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: profileKeys.current() }),
+    onSuccess: (user) => queryClient.setQueryData(profileKeys.current(), user),
   });
 }

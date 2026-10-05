@@ -1,22 +1,71 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+const httpClient = vi.hoisted(() => ({ get: vi.fn() }));
+
+vi.mock("@/lib/http-client", () => ({ httpClient }));
 
 import { ordersService } from "./orders.service";
 
-describe("ordersService", () => {
-  it("filters private mock orders by status and search", async () => {
-    const result = await ordersService.list({
-      search: "3000",
-      status: "shipped",
-      month: "2026-01",
-      page: 1,
-    });
+const order = {
+  id: "11111111-1111-1111-1111-111111111111",
+  orderNumber: "ORD-001",
+  status: "Draft",
+  subtotal: 99.5,
+  tax: 9.95,
+  shippingFee: 0,
+  additionalFeeTotal: 0,
+  platformFee: 0,
+  total: 109.45,
+  currency: "SGD",
+  createdAt: "2026-08-21T10:00:00+00:00",
+};
 
-    expect(result.orders).toHaveLength(1);
-    expect(result.orders[0]?.id).toBe("OR-3000");
-    expect(result.summary.totalSpent).toBe(13905);
+describe("ordersService", () => {
+  afterEach(() => httpClient.get.mockReset());
+
+  it("fetches a paginated order list and validates the response", async () => {
+    httpClient.get.mockResolvedValue({ data: { items: [order], page: 2, pageSize: 10, total: 11 } });
+    const controller = new AbortController();
+
+    const result = await ordersService.list({ page: 2, pageSize: 10 }, controller.signal);
+
+    expect(httpClient.get).toHaveBeenCalledWith("/orders", {
+      params: { page: 2, pageSize: 10 },
+      signal: controller.signal,
+    });
+    expect(result.items).toEqual([order]);
+    expect(result.total).toBe(11);
   });
 
-  it("rejects an unknown order id", async () => {
-    await expect(ordersService.getById("OR-9999")).rejects.toThrow("Order not found");
+  it("fetches order detail by id and validates invoice data", async () => {
+    const detail = {
+      ...order,
+      platformFeeRateSnap: 0,
+      shippingSnapshotJson: "{}",
+      invoice: {
+        orderNumber: "ORD-001",
+        createdAt: "2026-08-21T10:00:00+00:00",
+        buyerEmail: "sample-buyer-email",
+        lines: [{ productName: "Example product", sku: "SKU-001", unitPrice: 99.5, quantity: 1, lineTotal: 99.5 }],
+        subtotal: 99.5,
+        tax: 9.95,
+        platformFee: 0,
+        total: 109.45,
+        currency: "SGD",
+        status: "Draft",
+      },
+    };
+    httpClient.get.mockResolvedValue({ data: detail });
+
+    const result = await ordersService.getById(order.id);
+
+    expect(httpClient.get).toHaveBeenCalledWith(`/orders/${order.id}`, { signal: undefined });
+    expect(result.invoice.lines[0]?.sku).toBe("SKU-001");
+    expect(result.shippingSnapshotJson).toBe("{}");
+  });
+
+  it("rejects an invalid order id before making a request", async () => {
+    await expect(ordersService.getById("not-an-id")).rejects.toThrow();
+    expect(httpClient.get).not.toHaveBeenCalled();
   });
 });

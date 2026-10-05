@@ -33,3 +33,14 @@ export const profileResponseSchema = z.object({
 });
 
 export type ProfileResponse = z.infer<typeof profileResponseSchema>;
+
+export const profilePictureMediaUploadResponseSchema = z.object({
+  id: z.uuid(),
+  relativePath: z.string().min(1),
+  url: z.string().min(1),
+  contentType: z.string().min(1),
+  sizeBytes: z.number().int().nonnegative(),
+  isTemporary: z.boolean(),
+});
+
+export type ProfilePictureMediaUploadResponse = z.infer<typeof profilePictureMediaUploadResponseSchema>;
