@@ -47,8 +47,18 @@ const homepageCategorySchema = z.object({
 
 const homepageTestimonialSchema = z.object({
   id: guidSchema,
-  author: z.string().min(1),
+  authorName: z.string().min(1),
+  authorSubtitle: z
+    .string()
+    .nullish()
+    .transform((value) => value ?? null),
+  profileImageUrl: z
+    .string()
+    .min(1)
+    .nullish()
+    .transform((value) => value ?? null),
   content: z.string().min(1),
+  rating: z.number().min(0).max(5),
   sortOrder: z.number().int(),
 });
 

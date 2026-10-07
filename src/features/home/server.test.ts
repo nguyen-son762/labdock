@@ -63,8 +63,11 @@ const homepageResponse = {
   testimonials: [
     {
       id: "55555555-5555-5555-5555-555555555555",
-      author: "Example Author",
-      content: "Example testimonial",
+      authorName: "Example Author",
+      authorSubtitle: null,
+      profileImageUrl: "/media/public/testimonials/example.jpg",
+      content: "Example testimonial content",
+      rating: 2,
       sortOrder: 1,
     },
   ],
@@ -145,7 +148,10 @@ describe("getHomePageData", () => {
     expect(result.outstandingProducts[0]?.slug).toBe("example-new-product");
     expect(result.newestProducts[0]?.slug).toBe("example-new-product");
     expect(result.personalizedProducts).toEqual([]);
-    expect(result.testimonials[0]?.author).toBe("Example Author");
+    expect(result.testimonials[0]).toEqual({
+      ...homepageResponse.testimonials[0],
+      profileImageUrl: "https://uat-api-labdock.365studio.vn/media/public/testimonials/example.jpg",
+    });
   });
 
   it("returns empty sections when the single homepage request fails", async () => {

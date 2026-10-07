@@ -67,7 +67,10 @@ function mapHomepageData(homepage: PublicHomepage): HomePageData {
     outstandingProducts,
     newestProducts,
     personalizedProducts: homepage.personalizedOffers.map(mapPublicProduct),
-    testimonials: sortByOrder(homepage.testimonials),
+    testimonials: sortByOrder(homepage.testimonials).map((testimonial) => ({
+      ...testimonial,
+      profileImageUrl: testimonial.profileImageUrl ? resolvePublicAssetUrl(testimonial.profileImageUrl) : null,
+    })),
   };
 }
 

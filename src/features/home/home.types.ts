@@ -1,7 +1,10 @@
 export type Testimonial = {
   id: string;
-  author: string;
+  authorName: string;
+  authorSubtitle: string | null;
+  profileImageUrl: string | null;
   content: string;
+  rating: number;
   sortOrder: number;
 };
 
