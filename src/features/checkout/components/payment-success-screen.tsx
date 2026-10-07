@@ -1,12 +1,14 @@
 import { ArrowRight, TickCircle } from "iconsax-reactjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
 import { formatCurrency } from "../data/checkout-data";
 
 export function PaymentSuccessScreen({ orderId, amount }: { orderId: string; amount: number }) {
+  const t = useTranslations("Checkout");
   return (
     <section className="relative isolate min-h-[490px] overflow-hidden" aria-labelledby="payment-success-title">
       <Image
@@ -24,17 +26,17 @@ export function PaymentSuccessScreen({ orderId, amount }: { orderId: string; amo
           <TickCircle className="size-7" variant="Bold" aria-hidden="true" />
         </span>
         <h1 id="payment-success-title" className="mt-4 text-3xl font-semibold text-[#0f3678]">
-          Payment successful!
+          {t("paymentSuccess")}
         </h1>
-        <p className="mt-7 text-sm">Thank you for your order.</p>
-        <p className="mt-2 text-sm">A confirmation email has been sent to sarah_chen@biogenix.com.sg</p>
+        <p className="mt-7 text-sm">{t("thankYou")}</p>
+        <p className="mt-2 text-sm">{t("confirmationEmail", { email: "sarah_chen@biogenix.com.sg" })}</p>
         <div className="mt-4 w-full max-w-[550px] rounded-2xl border border-white bg-gradient-to-b from-white to-white/50 px-4 py-4">
-          <p className="font-semibold">Order total</p>
+          <p className="font-semibold">{t("orderTotal")}</p>
           <strong className="mt-1 block text-xl text-[#164990]">{formatCurrency(amount)}</strong>
         </div>
         <div className="mt-4 flex flex-wrap justify-center gap-3">
           <Button asChild variant="outline" className="rounded-full border-[#c8d0d9] bg-white text-[#73798f]">
-            <Link href="/">Back to home</Link>
+            <Link href="/">{t("backHome")}</Link>
           </Button>
           <Button asChild variant="brand" className="rounded-full pl-5 pr-1.5 shadow-none">
             <Link href="/products">

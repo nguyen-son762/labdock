@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { OrdersScreen } from "@/features/orders";
 
-export const metadata: Metadata = { title: "My orders", robots: { index: false, follow: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RouteMetadata");
+  return { title: t("orders"), robots: { index: false, follow: false } };
+}
 
 export default function OrdersPage() {
   return (

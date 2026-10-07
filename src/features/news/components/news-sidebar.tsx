@@ -1,6 +1,7 @@
 import { ArrowRight, CalendarTick, Clock, Location } from "iconsax-reactjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
@@ -37,17 +38,18 @@ function EventRow({ event }: { event: NewsEvent }) {
 }
 
 export function NewsSidebar() {
+  const t = useTranslations("News");
   return (
-    <aside aria-label="Upcoming scientific events" className="space-y-4">
+    <aside aria-label={t("upcomingEvents")} className="space-y-4">
       <section className="rounded-xl bg-gradient-to-b from-[#80bde8] to-[#edf8ff] p-4 text-[#051a50]">
         <div className="flex items-center gap-3">
           <span className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-white/70">
             <CalendarTick className="size-8 text-[#1f5fa8]" variant="Bold" aria-hidden="true" />
           </span>
-          <h2 className="text-lg font-semibold">Upcoming events</h2>
+          <h2 className="text-lg font-semibold">{t("upcoming")}</h2>
         </div>
         <h3 className="mt-4 text-sm font-semibold">LabFriend Expo</h3>
-        <p className="mt-1 text-xs leading-4">Discover cutting-edge lab solutions and connect with industry experts.</p>
+        <p className="mt-1 text-xs leading-4">{t("eventDescription")}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           <EventBadge icon={CalendarTick}>01 Sep 2026</EventBadge>
           <EventBadge icon={Clock}>09:00 AM</EventBadge>
@@ -56,7 +58,7 @@ export function NewsSidebar() {
       </section>
 
       <section className="rounded-xl bg-white p-4">
-        <h2 className="text-2xl font-semibold leading-8 text-[#092661]">Other events</h2>
+        <h2 className="text-2xl font-semibold leading-8 text-[#092661]">{t("otherEvents")}</h2>
         <ul className="mt-4 space-y-2">
           {upcomingEvents.map((event) => (
             <EventRow key={`${event.month}-${event.day}-${event.title}`} event={event} />
@@ -67,11 +69,11 @@ export function NewsSidebar() {
       <section className="relative isolate overflow-hidden rounded-xl px-3 py-6 text-center text-white">
         <Image src="/news/research-cta.png" alt="" fill sizes="404px" className="-z-10 object-cover" />
         <h2 className="mx-auto max-w-[340px] text-2xl font-semibold leading-8">
-          Powering 200+ research institutions across Southeast Asia
+          {t("researchInstitutions")}
         </h2>
         <Button asChild variant="brand" className="mt-4 h-14 pl-[18px] pr-1.5 text-base font-normal">
           <Link href="/products">
-            Explore products
+            {t("exploreProducts")}
             <span className="flex size-11 items-center justify-center rounded-full bg-[#efa33b]">
               <ArrowRight className="size-6" aria-hidden="true" />
             </span>

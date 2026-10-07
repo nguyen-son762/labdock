@@ -3,6 +3,7 @@
 import { Add, ArrowRight, Bookmark, Box1, LocationTick, Minus, ShoppingCart, Verify } from "iconsax-reactjs";
 import Image from "next/image";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -19,11 +20,12 @@ import {
 } from "../utils/product-display";
 
 function ProductFacts({ product }: { product: Product }) {
+  const t = useTranslations("Product");
   const facts = [
-    { label: "Brand", value: product.brandName, icon: Bookmark },
-    { label: "Category no.", value: product.productNo, icon: Box1 },
-    { label: "Origin", value: product.brandName || "N/A", icon: LocationTick },
-    { label: "CAS no.", value: product.casNumber || "N/A", icon: Box1 },
+    { label: t("brand"), value: product.brandName, icon: Bookmark },
+    { label: t("categoryNumberLabel"), value: product.productNo, icon: Box1 },
+    { label: t("origin"), value: product.brandName || t("notAvailable"), icon: LocationTick },
+    { label: t("casNumber"), value: product.casNumber || t("notAvailable"), icon: Box1 },
   ];
 
   return (
@@ -40,6 +42,8 @@ function ProductFacts({ product }: { product: Product }) {
 }
 
 export function ProductPurchasePanel({ product }: { product: Product }) {
+  const t = useTranslations("Product");
+  const productCardT = useTranslations("ProductCard");
   const router = useRouter();
   const addCartItem = useAddCartItemMutation();
   const defaultVariant = getDefaultProductVariant(product);
@@ -53,10 +57,10 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
     selectedVariant?.selections
       .map((selection) => selection.attributeName)
       .filter((value, index, values) => Boolean(value) && values.indexOf(value) === index)
-      .join(" / ") || "Product option";
+      .join(" / ") || t("productOption");
   const notices = [
-    product.restrictedCondition ? "This product is restricted. Contact us to verify eligibility before ordering." : "",
-    product.specialRequirement ? "This product has special requirements. Additional steps may apply at checkout." : "",
+    product.restrictedCondition ? t("restrictedNotice") : "",
+    product.specialRequirement ? t("specialRequirementNotice") : "",
     product.notes,
   ].filter(Boolean);
 
@@ -74,16 +78,16 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
           }
           return;
         }
-        setStatus(`${product.name} added to cart.`);
+        setStatus(productCardT("added", { name: product.name }));
       },
-      onError: () => setStatus("We could not update your cart. Please try again."),
+      onError: () => setStatus(productCardT("error")),
     });
   }
 
   return (
     <aside
       className="h-full overflow-hidden rounded-2xl border border-[#eaecf0] bg-white"
-      aria-label="Purchase options"
+      aria-label={t("purchaseOptions")}
     >
       <div className="p-5 lg:p-6">
         {presentation.discount ? (
@@ -127,7 +131,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
                     )}
                   >
                     {label}
-                    {!variant.isActive || variant.stockQty <= 0 ? " — Out" : ""}
+                    {!variant.isActive || variant.stockQty <= 0 ? ` ${t("out")}` : ""}
                   </Button>
                 );
               })}
@@ -136,13 +140,13 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         ) : null}
 
         <div className="mt-4 flex flex-col gap-3 border-b border-[#e9eaeb] pb-4 sm:flex-row sm:items-center">
-          <Label className="flex-1 text-sm font-semibold text-[#051a50]">Quantity</Label>
+          <Label className="flex-1 text-sm font-semibold text-[#051a50]">{t("quantity")}</Label>
           <div className="flex h-11 w-full items-center rounded-lg border border-[#e9eaeb] sm:w-[240px]">
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              aria-label="Decrease quantity"
+              aria-label={t("decreaseQuantity")}
               disabled={!presentation.canPurchase || quantity <= 1}
               onClick={() => setQuantity((value) => Math.max(1, value - 1))}
               className="h-full w-10 rounded-none border-r border-[#e9eaeb] text-[#164990]"
@@ -150,7 +154,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
               <Minus className="size-4" aria-hidden="true" />
             </Button>
             <output
-              aria-label="Quantity"
+              aria-label={t("quantity")}
               aria-live="polite"
               className="min-w-20 flex-1 text-center text-base font-semibold text-[#051a50]"
             >
@@ -160,7 +164,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
               type="button"
               variant="ghost"
               size="icon"
-              aria-label="Increase quantity"
+              aria-label={t("increaseQuantity")}
               disabled={!presentation.canPurchase || quantity >= maxQuantity}
               onClick={() => setQuantity((value) => Math.min(maxQuantity, value + 1))}
               className="h-full w-10 rounded-none border-l border-[#e9eaeb] text-[#164990]"
@@ -178,7 +182,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
             onClick={() => addProduct("/checkout")}
             className="h-11 justify-between pl-5 pr-1.5"
           >
-            <span className="flex-1">{addCartItem.isPending ? "Updating…" : "Buy now"}</span>
+            <span className="flex-1">{addCartItem.isPending ? t("updating") : productCardT("buyNow")}</span>
             <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b] shadow-[0_0_15px_rgba(229,122,0,0.5)]">
               <ArrowRight className="size-4" aria-hidden="true" />
             </span>
@@ -189,13 +193,13 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
             onClick={() => addProduct()}
             className="h-11 justify-between rounded-full bg-gradient-to-r from-[#2f7bc4] to-[#0f3678] pl-5 pr-1.5"
           >
-            <span className="flex-1">Add to cart</span>
+            <span className="flex-1">{t("addToCartAction")}</span>
             <span className="flex size-8 items-center justify-center rounded-full bg-[#1f5fa8]">
               <ShoppingCart className="size-4" aria-hidden="true" />
             </span>
           </Button>
         </div>
-        <p className="my-2 text-center text-sm text-[#051a50]">OR</p>
+        <p className="my-2 text-center text-sm text-[#051a50]">{t("or")}</p>
         <Button
           type="button"
           variant="outline"
@@ -209,7 +213,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
           }}
           className="h-11 w-full rounded-full border-[#2f7bc4] text-[#164990] hover:bg-[#eef6fc] hover:text-[#164990]"
         >
-          Request a Quote
+          {t("quoteAction")}
         </Button>
         {status ? (
           <p role="status" aria-live="polite" className="mt-3 text-xs text-[#299a86]">
@@ -220,7 +224,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         {product.certificates.length ? (
           <div
             className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-[6px] bg-[#effaf3] px-2 py-1 text-sm text-[#1a1a1a]"
-            aria-label="Product certificates"
+            aria-label={t("certificates")}
           >
             {product.certificates.map((certificate) => (
               <span key={certificate.id} className="inline-flex items-center gap-2.5">
@@ -232,9 +236,9 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         ) : null}
         <div
           className="mt-2 flex items-center gap-2 rounded-md bg-[#f5f7f8] py-1 pl-3 pr-1"
-          aria-label="Accepted payment methods"
+          aria-label={t("paymentMethods")}
         >
-          <span className="min-w-0 flex-1 text-sm text-[#5e6375]">Secured your payment with</span>
+          <span className="min-w-0 flex-1 text-sm text-[#5e6375]">{t("securedPaymentWith")}</span>
           {[
             { name: "Visa", src: "/icon/visa.svg" },
             { name: "PayNow", src: "/icon/pay_now.svg" },
@@ -253,7 +257,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
       </div>
       {notices.length ? (
         <div className="border-t border-[#e9eaeb] p-6 pt-4">
-          <h2 className="text-sm font-semibold text-[#051a50]">Note (optional)</h2>
+          <h2 className="text-sm font-semibold text-[#051a50]">{t("noteOptional")}</h2>
           <ol className="mt-4 list-decimal space-y-1 rounded-md bg-[#fff0f1] py-2 pl-8 pr-3 text-sm leading-5 text-[#770b23]">
             {notices.map((notice) => (
               <li key={notice}>{notice}</li>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -13,14 +14,14 @@ type TextFieldName = "fullName" | "email" | "company";
 
 const contactFields: Array<{
   name: TextFieldName;
-  label: string;
-  placeholder: string;
+  label: "fullName" | "email" | "company";
+  placeholder: "enterFullName" | "enterEmail" | "enterCompany";
   required?: boolean;
   type?: "email";
 }> = [
-  { name: "fullName", label: "Full name", placeholder: "Enter full name", required: true },
-  { name: "email", label: "Email address", placeholder: "Enter email address", required: true, type: "email" },
-  { name: "company", label: "Company / Lab", placeholder: "Enter company / lab" },
+  { name: "fullName", label: "fullName", placeholder: "enterFullName", required: true },
+  { name: "email", label: "email", placeholder: "enterEmail", required: true, type: "email" },
+  { name: "company", label: "company", placeholder: "enterCompany" },
 ];
 
 function RequiredMark() {
@@ -28,6 +29,7 @@ function RequiredMark() {
 }
 
 export function ContactInfoFields() {
+  const t = useTranslations("Contact");
   const form = useFormContext<ContactFormValues>();
 
   const renderField = (name: TextFieldName) => {
@@ -41,12 +43,12 @@ export function ContactInfoFields() {
         render={({ field }) => (
           <FormItem className="space-y-1.5">
             <FormLabel className="text-xs text-[#051a50]">
-              {config.label} {config.required ? <RequiredMark /> : null}
+              {t(config.label)} {config.required ? <RequiredMark /> : null}
             </FormLabel>
             <FormControl>
               <Input
                 type={config.type ?? "text"}
-                placeholder={config.placeholder}
+                placeholder={t(config.placeholder)}
                 autoComplete={name === "fullName" ? "name" : name === "email" ? "email" : "organization"}
                 className="h-11 border-[#d5dce5] bg-white"
                 {...field}
@@ -65,7 +67,7 @@ export function ContactInfoFields() {
       {renderField("email")}
       <div className="space-y-1.5">
         <Label htmlFor="contact-phone" className="text-xs text-[#051a50]">
-          Phone no. <RequiredMark />
+          {t("phone")} <RequiredMark />
         </Label>
         <div className="grid grid-cols-[74px_1fr]">
           <FormField
@@ -76,7 +78,7 @@ export function ContactInfoFields() {
                 <Select value={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger
-                      aria-label="Phone country code"
+                      aria-label={t("phoneCountryCode")}
                       className="h-11 rounded-r-none border-[#d5dce5] bg-white px-2"
                     >
                       <SelectValue />
@@ -101,7 +103,7 @@ export function ContactInfoFields() {
                     id="contact-phone"
                     inputMode="tel"
                     autoComplete="tel-national"
-                    placeholder="Enter phone no."
+                    placeholder={t("enterPhone")}
                     className="h-11 rounded-l-none border-[#d5dce5] bg-white"
                     {...field}
                   />

@@ -1,5 +1,6 @@
 import { Bank } from "iconsax-reactjs";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type { UseFormReturn } from "react-hook-form";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -14,6 +15,7 @@ const methods = [
 ] as const;
 
 export function PaymentMethodSection({ form }: { form: UseFormReturn<CheckoutFormValues> }) {
+  const t = useTranslations("Checkout");
   return (
     <section className="rounded-xl border border-[#dde2e8] bg-white p-4">
       <FormField
@@ -21,7 +23,7 @@ export function PaymentMethodSection({ form }: { form: UseFormReturn<CheckoutFor
         name="paymentMethod"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-2xl font-semibold text-[#051a50]">Payment method</FormLabel>
+            <FormLabel className="text-2xl font-semibold text-[#051a50]">{t("paymentMethod")}</FormLabel>
             <FormControl>
               <RadioGroup value={field.value} onValueChange={field.onChange} className="mt-5 gap-3">
                 {methods.map((method) => (

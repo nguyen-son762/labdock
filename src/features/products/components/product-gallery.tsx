@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
 import { A11y, Thumbs } from "swiper/modules";
@@ -13,19 +14,20 @@ import "swiper/css";
 import "swiper/css/thumbs";
 
 export function ProductGallery({ images, productName }: { images: string[]; productName: string }) {
+  const t = useTranslations("Product");
   const [mainSwiper, setMainSwiper] = useState<SwiperInstance | null>(null);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperInstance | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section aria-label={`${productName} gallery`} className="grid gap-4 sm:grid-cols-[100px_minmax(0,1fr)]">
+    <section aria-label={t("gallery", { name: productName })} className="grid gap-4 sm:grid-cols-[100px_minmax(0,1fr)]">
       <Swiper
         modules={[A11y]}
         direction="horizontal"
         slidesPerView="auto"
         spaceBetween={16}
         watchSlidesProgress
-        a11y={{ containerMessage: `${productName} thumbnails` }}
+        a11y={{ containerMessage: t("thumbnails", { name: productName }) }}
         breakpoints={{ 640: { direction: "vertical" } }}
         onSwiper={setThumbsSwiper}
         className={cn("w-full sm:h-[500px]", images.length <= 4 && "[&_.swiper-wrapper]:justify-center")}
@@ -35,7 +37,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
             <Button
               type="button"
               variant="outline"
-              aria-label={`View product image ${index + 1}`}
+              aria-label={t("viewImage", { index: index + 1 })}
               aria-pressed={activeIndex === index}
               onClick={() => mainSwiper?.slideTo(index)}
               className={cn(
@@ -54,7 +56,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
         slidesPerView={1}
         spaceBetween={12}
         thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-        a11y={{ containerMessage: `${productName} product images` }}
+        a11y={{ containerMessage: t("productImages", { name: productName }) }}
         onSwiper={setMainSwiper}
         onSlideChange={(instance) => setActiveIndex(instance.realIndex)}
         className="h-[430px] w-full overflow-hidden rounded-2xl border border-[#ecf0f3] bg-white sm:h-[500px]"
@@ -63,7 +65,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
           <SwiperSlide key={`main-${image}`} className="relative h-[430px] sm:h-[500px]">
             <Image
               src={image}
-              alt={index === 0 ? productName : `${productName}, image ${index + 1}`}
+              alt={index === 0 ? productName : t("imageAlt", { name: productName, index: index + 1 })}
               fill
               unoptimized
               priority={index === 0}

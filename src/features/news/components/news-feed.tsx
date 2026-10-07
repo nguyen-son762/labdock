@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from "iconsax-reactjs";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,6 +18,7 @@ type CategoryFilter = (typeof categories)[number];
 type SortOrder = "latest" | "oldest";
 
 export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
+  const t = useTranslations("News");
   const [category, setCategory] = useState<CategoryFilter>("All");
   const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [page, setPage] = useState(1);
@@ -41,7 +43,7 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
     <section aria-labelledby="latest-updates-heading">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 id="latest-updates-heading" className="text-[32px] font-semibold leading-none text-[#0f3678]">
-          Latest updates
+          {t("latestUpdates")}
         </h2>
         <Select
           value={sortOrder}
@@ -51,19 +53,19 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
           }}
         >
           <SelectTrigger
-            aria-label="Sort news"
+            aria-label={t("sortNews")}
             className="h-11 w-[120px] rounded-full border-[#c8d0d9] bg-white pl-4 text-[#0f3678]"
           >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="latest">Latest</SelectItem>
-            <SelectItem value="oldest">Oldest</SelectItem>
+            <SelectItem value="latest">{t("latest")}</SelectItem>
+            <SelectItem value="oldest">{t("oldest")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-1" aria-label="Filter news by category">
+      <div className="mt-4 flex flex-wrap gap-1" aria-label={t("filterCategories")}>
         {categories.map((item) => (
           <Button
             key={item}
@@ -77,7 +79,7 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
               category === item ? "bg-[#d1ecfa] text-[#092661] hover:bg-[#c5e7f8]" : "bg-[#ecf0f3] text-[#73798f]",
             )}
           >
-            {item}
+            {t(({ All: "all", News: "categoryNews", Events: "events", "Company updates": "companyUpdates", Features: "features" } as const)[item])}
           </Button>
         ))}
       </div>
@@ -86,10 +88,10 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
         {visibleArticles.length > 0 ? (
           visibleArticles.map((article) => <NewsArticleRow key={article.slug} article={article} />)
         ) : (
-          <p className="py-16 text-center text-sm text-[#73798f]">No articles in this category yet.</p>
+          <p className="py-16 text-center text-sm text-[#73798f]">{t("noArticles")}</p>
         )}
 
-        <nav aria-label="News pagination" className="flex items-center justify-between border-t border-[#e9eaeb] py-4">
+        <nav aria-label={t("pagination")} className="flex items-center justify-between border-t border-[#e9eaeb] py-4">
           <Button
             type="button"
             variant="ghost"
@@ -98,7 +100,7 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
             onClick={() => setPage((current) => Math.max(1, current - 1))}
             className="gap-2 px-0 text-[#73798f]"
           >
-            <ArrowLeft className="size-4" aria-hidden="true" /> Previous
+            <ArrowLeft className="size-4" aria-hidden="true" /> {t("previous")}
           </Button>
           <div className="flex items-center gap-1">
             {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => (
@@ -107,7 +109,7 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
                 type="button"
                 variant="ghost"
                 size="icon"
-                aria-label={`Go to page ${pageNumber}`}
+                aria-label={t("goToPage", { page: pageNumber })}
                 aria-current={page === pageNumber ? "page" : undefined}
                 onClick={() => setPage(pageNumber)}
                 className={cn(
@@ -127,7 +129,7 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
             onClick={() => setPage((current) => Math.min(pageCount, current + 1))}
             className="gap-2 px-0 text-[#73798f]"
           >
-            Next <ArrowRight className="size-4" aria-hidden="true" />
+            {t("next")} <ArrowRight className="size-4" aria-hidden="true" />
           </Button>
         </nav>
       </div>

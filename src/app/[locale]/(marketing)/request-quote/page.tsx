@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { RequestQuoteScreen } from "@/features/checkout";
 
-export const metadata: Metadata = { title: "Request for quote | Labdock", robots: { index: false, follow: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RouteMetadata");
+  return { title: t("quote"), robots: { index: false, follow: false } };
+}
 
 export default async function RequestQuotePage({ searchParams }: { searchParams: Promise<{ items?: string }> }) {
   const { items } = await searchParams;

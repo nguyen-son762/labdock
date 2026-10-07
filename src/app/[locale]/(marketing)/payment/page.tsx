@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import { paymentMethodSchema, PaymentScreen } from "@/features/checkout";
 
-export const metadata: Metadata = {
-  title: "Payment",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RouteMetadata");
+  return { title: t("payment"), robots: { index: false, follow: false } };
+}
 
 type PaymentPageProps = {
   searchParams: Promise<{ method?: string; reference?: string; amount?: string }>;

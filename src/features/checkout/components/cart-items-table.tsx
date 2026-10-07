@@ -1,6 +1,7 @@
 import { Gallery, Trash } from "iconsax-reactjs";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -32,10 +33,11 @@ function ProductImage({ item }: { item: CartItem }) {
 }
 
 function ProductDetails({ item }: { item: CartItem }) {
+  const t = useTranslations("Checkout");
   return (
     <div className="min-w-0">
       <p className="line-clamp-2 text-sm font-semibold leading-5 text-[#1f5fa8]">{item.name}</p>
-      <p className="mt-1 text-xs leading-4 text-[#73798f]">SKU: {item.catalogNumber}</p>
+      <p className="mt-1 text-xs leading-4 text-[#73798f]">{t("productNumber", { number: item.catalogNumber })}</p>
     </div>
   );
 }
@@ -64,6 +66,7 @@ function QuantityInput({
   pending: boolean;
   onCommit: (itemId: string, quantity: number) => void;
 }) {
+  const t = useTranslations("Checkout");
   const [draftQuantity, setDraftQuantity] = useState<number | undefined>(item.quantity);
   const focusedRef = useRef(false);
   // Keep an over-stock cart item editable so the customer can reduce it. The API
@@ -89,7 +92,7 @@ function QuantityInput({
       allowNegative={false}
       allowLeadingZeros={false}
       inputMode="numeric"
-      aria-label={`Quantity for ${item.name}`}
+      aria-label={t("quantityForProduct", { name: item.name })}
       aria-busy={pending}
       disabled={pending}
       className="h-11 bg-white text-center text-sm text-[#051a50]"
@@ -114,6 +117,7 @@ export function CartItemsTable({
   onRemove,
   pendingItemId,
 }: CartItemsTableProps) {
+  const t = useTranslations("Checkout");
   const allSelected = items.length > 0 && selectedIds.length === items.length;
   const toggleItem = (id: string, checked: boolean) => {
     onSelectedIdsChange(checked ? [...selectedIds, id] : selectedIds.filter((itemId) => itemId !== id));
@@ -122,20 +126,20 @@ export function CartItemsTable({
   return (
     <section
       className="overflow-hidden rounded-xl border border-[#e9eaeb] bg-white px-4 py-6"
-      aria-label="Cart products"
+      aria-label={t("cartProducts")}
     >
       <div className="hidden grid-cols-[24px_minmax(0,1.7fr)_minmax(90px,0.7fr)_80px_minmax(120px,0.85fr)_32px] items-center gap-2 border-b border-[#dde2e8] pb-2 text-sm font-semibold text-[#051a50] md:grid">
         <Checkbox
           className="size-4 rounded-[4px] border-[#c8d0d9] bg-white shadow-none data-[state=checked]:border-[#596ab7] data-[state=checked]:bg-[#f2f7fd] data-[state=checked]:text-[#596ab7]"
           checked={allSelected}
           onCheckedChange={(checked) => onSelectedIdsChange(checked ? items.map(({ id }) => id) : [])}
-          aria-label="Select all products"
+          aria-label={t("selectAllProducts")}
         />
-        <span>Select all ({items.length})</span>
-        <span>Price</span>
-        <span>Qty</span>
-        <span>Size</span>
-        <span className="sr-only">Remove</span>
+        <span>{t("selectAll", { count: items.length })}</span>
+        <span>{t("price")}</span>
+        <span>{t("quantity")}</span>
+        <span>{t("size")}</span>
+        <span className="sr-only">{t("remove")}</span>
       </div>
 
       {items.map((item) => {
@@ -150,7 +154,7 @@ export function CartItemsTable({
               className="size-4 rounded-[4px] border-[#c8d0d9] bg-white shadow-none data-[state=checked]:border-[#596ab7] data-[state=checked]:bg-[#f2f7fd] data-[state=checked]:text-[#596ab7] md:col-auto"
               checked={selected}
               onCheckedChange={(checked) => toggleItem(item.id, checked === true)}
-              aria-label={`Select ${item.name}`}
+              aria-label={t("selectProduct", { name: item.name })}
             />
             <div className="col-start-2 row-start-1 flex min-w-0 items-center gap-3 md:col-auto md:row-auto">
               <ProductImage item={item} />
@@ -160,14 +164,14 @@ export function CartItemsTable({
               <ProductPrice item={item} />
             </div>
             <label className="col-start-1 row-start-2 min-w-0 text-xs text-[#73798f] md:col-auto md:row-auto">
-              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">Qty</span>
+              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">{t("quantity")}</span>
               <QuantityInput item={item} pending={pending} onCommit={onQuantityChange} />
             </label>
             <div className="col-span-3 col-start-1 row-start-3 min-w-0 md:col-auto md:row-auto">
-              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">Size</span>
+              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">{t("size")}</span>
               <Select value={item.size ?? item.catalogNumber}>
                 <SelectTrigger
-                  aria-label={`Size for ${item.name}`}
+                  aria-label={t("sizeForProduct", { name: item.name })}
                   className="h-11 rounded-lg border-[#dde2e8] bg-white px-3 text-sm text-[#051a50] shadow-[0_1px_1px_rgba(10,13,18,0.05)]"
                 >
                   <SelectValue />
@@ -184,7 +188,7 @@ export function CartItemsTable({
               className="col-start-3 row-start-1 size-8 justify-self-end rounded-full text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20] md:col-auto md:row-auto md:justify-self-center"
               disabled={pending}
               onClick={() => onRemove(item.id)}
-              aria-label={`Remove ${item.name}`}
+              aria-label={t("removeProduct", { name: item.name })}
             >
               <Trash className="size-4" aria-hidden="true" />
             </Button>

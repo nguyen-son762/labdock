@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft2 } from "iconsax-reactjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -26,6 +27,7 @@ import { PaymentMethodSection } from "./payment-method-section";
 import { EmptyCartScreen } from "./empty-cart-screen";
 
 export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }) {
+  const t = useTranslations("Checkout");
   const router = useRouter();
   const cartQuery = useCartQuery();
   const profileQuery = useCurrentUserQuery();
@@ -108,12 +110,12 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
         <Breadcrumbs
           items={[{ label: "Home", href: "/" }, { label: "Shopping cart", href: "/cart" }, { label: "Checkout" }]}
         />
-        <h1 className="mt-3 text-3xl font-semibold text-[#164990]">Checkout</h1>
+        <h1 className="mt-3 text-3xl font-semibold text-[#164990]">{t("checkout")}</h1>
         <Link
           href="/products"
           className="mt-6 inline-flex items-center gap-2 rounded text-xs text-[#164990] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
         >
-          <ArrowLeft2 className="size-4" aria-hidden="true" /> Back to product listing
+          <ArrowLeft2 className="size-4" aria-hidden="true" /> {t("backToProducts")}
         </Link>
         <Form {...form}>
           <form
@@ -124,10 +126,10 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
           >
             <div className="space-y-4">
               {checkoutMutation.isError ? (
-                <Alert>We could not prepare your payment. Please review the details and try again.</Alert>
+                <Alert>{t("preparePaymentError")}</Alert>
               ) : null}
               {cartQuery.isError ? (
-                <Alert>We could not load your cart. Please return to cart and try again.</Alert>
+                <Alert>{t("returnToCartError")}</Alert>
               ) : null}
               <CheckoutItems items={items} />
               <DeliveryAddressFields form={form} />

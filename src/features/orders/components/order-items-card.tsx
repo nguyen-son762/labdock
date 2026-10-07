@@ -1,4 +1,5 @@
 import { Gallery } from "iconsax-reactjs";
+import { useTranslations } from "next-intl";
 
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -21,9 +22,10 @@ function ProductIdentity({ item }: { item: OrderDetail["invoice"]["lines"][numbe
 }
 
 export function OrderItemsCard({ order }: { order: OrderDetail }) {
+  const t = useTranslations("Orders");
   return (
     <Card className="overflow-hidden border-[#dde2e8] shadow-none">
-      <h2 className="border-b border-[#dde2e8] px-4 py-3 text-lg font-semibold text-[#1f5fa8]">Items ordered</h2>
+      <h2 className="border-b border-[#dde2e8] px-4 py-3 text-lg font-semibold text-[#1f5fa8]">{t("itemsOrdered")}</h2>
       <div className="p-4">
         {order.invoice.lines.length ? (
           <>
@@ -31,10 +33,10 @@ export function OrderItemsCard({ order }: { order: OrderDetail }) {
               <Table>
                 <TableHeader className="bg-[#ecf0f3]">
                   <TableRow className="hover:bg-[#ecf0f3]">
-                    <TableHead className="w-[42%]">Product</TableHead>
-                    <TableHead>Unit price</TableHead>
-                    <TableHead>Qty.</TableHead>
-                    <TableHead>Line total</TableHead>
+                    <TableHead className="w-[42%]">{t("product")}</TableHead>
+                    <TableHead>{t("unitPrice")}</TableHead>
+                    <TableHead>{t("quantity")}</TableHead>
+                    <TableHead>{t("lineTotal")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -57,15 +59,15 @@ export function OrderItemsCard({ order }: { order: OrderDetail }) {
                   <ProductIdentity item={item} />
                   <dl className="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                      <dt className="text-xs text-[#73798f]">Unit price</dt>
+                      <dt className="text-xs text-[#73798f]">{t("unitPrice")}</dt>
                       <dd>{formatCurrency(item.unitPrice, order.currency)}</dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-[#73798f]">Qty.</dt>
+                      <dt className="text-xs text-[#73798f]">{t("quantity")}</dt>
                       <dd>{item.quantity}</dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-[#73798f]">Line total</dt>
+                      <dt className="text-xs text-[#73798f]">{t("lineTotal")}</dt>
                       <dd>{formatCurrency(item.lineTotal, order.currency)}</dd>
                     </div>
                   </dl>
@@ -74,7 +76,7 @@ export function OrderItemsCard({ order }: { order: OrderDetail }) {
             </div>
           </>
         ) : (
-          <p className="py-8 text-center text-sm text-[#73798f]">No invoice lines are available for this order.</p>
+          <p className="py-8 text-center text-sm text-[#73798f]">{t("noInvoiceLines")}</p>
         )}
 
         <dl className="mt-4 space-y-2 rounded-xl bg-[#f5f7f8] p-4 text-sm text-[#73798f]">
@@ -84,7 +86,7 @@ export function OrderItemsCard({ order }: { order: OrderDetail }) {
           <Amount label="Platform fee" value={order.platformFee} currency={order.currency} />
           <Amount label="Tax" value={order.tax} currency={order.currency} />
           <div className="flex justify-between border-t border-[#dde2e8] pt-3 text-xl text-[#051a50]">
-            <dt>Total</dt>
+            <dt>{t("total")}</dt>
             <dd className="font-semibold text-[#1f5fa8]">{formatCurrency(order.total, order.currency)}</dd>
           </div>
         </dl>

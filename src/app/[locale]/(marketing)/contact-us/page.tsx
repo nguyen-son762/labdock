@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { ContactScreen, type InquiryType } from "@/features/contact";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
@@ -11,15 +12,15 @@ type ContactUsPageProps = {
 export async function generateMetadata({ params }: ContactUsPageProps): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
-  const description =
-    "Contact Labdock for product inquiries, technical support and custom laboratory equipment quotations.";
+  const t = await getTranslations("RouteMetadata");
+  const description = t("contactDescription");
 
   return {
-    title: "Contact us",
+    title: t("contact"),
     description,
     alternates: getLocalizedAlternates("/contact-us", locale),
     openGraph: {
-      title: "Contact us | Labdock",
+      title: `${t("contact")} | Labdock`,
       description,
       url: getLocalizedPath("/contact-us", locale),
       locale: locale === "vi" ? "vi_VN" : "en_SG",

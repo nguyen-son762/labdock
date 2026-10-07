@@ -1,6 +1,7 @@
 import { ArrowLeft, Refresh } from "iconsax-reactjs";
 import type { ClipboardEvent, KeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { UseFormReturn } from "react-hook-form";
 
 import { Alert } from "@/components/ui/alert";
@@ -52,10 +53,11 @@ export function SignupVerificationForm({
   resendError,
   expiresAt,
   errorMessage,
-  title = "Verify your email",
-  description = "We’ve sent a 6-digit code to your registered email address",
-  backLabel = "Back to account details",
+  title,
+  description,
+  backLabel,
 }: SignupVerificationFormProps) {
+  const t = useTranslations("Auth");
   const [resendSeconds, setResendSeconds] = useState(() => getRemainingSeconds(expiresAt));
   const otpInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -129,8 +131,10 @@ export function SignupVerificationForm({
   return (
     <>
       <div className="w-full pt-8 sm:pt-10">
-        <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{title}</h2>
-        <p className="mt-2 text-base leading-6 text-[#868da5]">{description}</p>
+        <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{title ?? t("verifyEmail")}</h2>
+        <p className="mt-2 text-base leading-6 text-[#868da5]">
+          {description ?? t("verificationDescription")}
+        </p>
       </div>
       <Form {...form}>
         <form className="space-y-5 pt-6" noValidate onSubmit={form.handleSubmit(onSubmit)}>
@@ -143,7 +147,7 @@ export function SignupVerificationForm({
               const digits = Array.from({ length: 6 }, (_, index) => field.value[index] ?? "");
               return (
                 <FormItem>
-                  <FormLabel>Secure code</FormLabel>
+                  <FormLabel>{t("secureCode")}</FormLabel>
                   <div className="flex items-center gap-2 sm:gap-3">
                     {digits.map((digit, index) => (
                       <div key={index} className="contents">
@@ -160,7 +164,7 @@ export function SignupVerificationForm({
                             otpInputRefs.current[index] = node;
                           }}
                           value={digit}
-                          aria-label={`Secure code digit ${index + 1}`}
+                          aria-label={t("secureCodeDigit", { digit: index + 1 })}
                           autoComplete={index === 0 ? "one-time-code" : "off"}
                           inputMode="numeric"
                           maxLength={1}
@@ -178,9 +182,9 @@ export function SignupVerificationForm({
                     ))}
                   </div>
                   {isIncorrect ? (
-                    <p className="text-sm font-medium text-[#f04438]">Incorrect code. Please try again.</p>
+                    <p className="text-sm font-medium text-[#f04438]">{t("incorrectCode")}</p>
                   ) : null}
-                  {isExpired ? <p className="text-sm font-medium text-[#dc6803]">Your code has expired.</p> : null}
+                  {isExpired ? <p className="text-sm font-medium text-[#dc6803]">{t("codeExpired")}</p> : null}
                   {!isKnownCodeError ? <FormMessage /> : null}
                 </FormItem>
               );
@@ -189,7 +193,7 @@ export function SignupVerificationForm({
           <div className="flex flex-wrap items-center gap-1 text-sm text-[#868da5]">
             {isExpired ? (
               <>
-                <span>Code expired.</span>
+                <span>{t("expired")}</span>
                 <Button
                   type="button"
                   variant="ghost"
@@ -197,17 +201,17 @@ export function SignupVerificationForm({
                   disabled={resendPending}
                   className="h-auto rounded-none p-0 font-medium text-[#2f7ac6] hover:bg-transparent hover:underline"
                 >
-                  {resendPending ? "Sending…" : "Resend now"}
+                  {resendPending ? t("sending") : t("resendNow")}
                 </Button>
               </>
             ) : resendSeconds > 0 ? (
               <>
-                <span>Didn’t receive the code?</span>
-                <span className="font-medium text-[#051a50]">Resend in {formatCountdown(resendSeconds)}</span>
+                <span>{t("didNotReceiveCode")}</span>
+                <span className="font-medium text-[#051a50]">{t("resendIn", { time: formatCountdown(resendSeconds) })}</span>
               </>
             ) : (
               <>
-                <span>Didn’t receive the code?</span>
+                <span>{t("didNotReceiveCode")}</span>
                 <Button
                   type="button"
                   variant="ghost"
@@ -215,7 +219,7 @@ export function SignupVerificationForm({
                   disabled={resendPending}
                   className="h-auto rounded-none p-0 font-medium text-[#2f7ac6] hover:bg-transparent hover:underline"
                 >
-                  {resendPending ? "Sending…" : "Resend now"}
+                  {resendPending ? t("sending") : t("resendNow")}
                 </Button>
               </>
             )}
@@ -228,7 +232,7 @@ export function SignupVerificationForm({
             className="w-[110px] disabled:bg-none disabled:bg-[#fdefca] disabled:opacity-100 disabled:shadow-none"
           >
             {verifyMutation.isPending ? <Refresh className="size-4 animate-spin" aria-hidden="true" /> : null}
-            {verifyMutation.isPending ? "Checking…" : "Verify"}
+            {verifyMutation.isPending ? t("checking") : t("verify")}
           </Button>
         </form>
       </Form>
@@ -239,7 +243,7 @@ export function SignupVerificationForm({
         onClick={onBack}
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
-        {backLabel}
+        {backLabel ?? t("backToAccount")}
       </Button>
     </>
   );

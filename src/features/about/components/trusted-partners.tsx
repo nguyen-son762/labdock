@@ -1,12 +1,14 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { partnerPlaceholders } from "../about.data";
 
 export function TrustedPartners() {
+  const t = useTranslations("About");
   return (
     <section className="rounded-lg bg-white p-4" aria-labelledby="trusted-partners-title">
       <h2 id="trusted-partners-title" className="text-[28px] font-semibold leading-tight text-[#0f3678] sm:text-[32px]">
-        Trusted by leading research institutions
+        {t("partners")}
       </h2>
       <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {partnerPlaceholders.map((partner) => (

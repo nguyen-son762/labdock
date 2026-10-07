@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Alert } from "@/components/ui/alert";
@@ -19,6 +20,7 @@ function parseFilters(searchParams: URLSearchParams) {
 }
 
 export function RfqsScreen() {
+  const t = useTranslations("Rfqs");
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -36,10 +38,10 @@ export function RfqsScreen() {
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-12 pt-6 sm:px-10 xl:px-[100px]">
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "My RFQs" }]} />
-      <h1 className="mb-4 mt-2 text-[32px] font-semibold leading-none text-[#0f3678]">My RFQs</h1>
+      <Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("title") }]} />
+      <h1 className="mb-4 mt-2 text-[32px] font-semibold leading-none text-[#0f3678]">{t("title")}</h1>
       {rfqsQuery.isPending ? (
-        <div className="mt-4 space-y-3" aria-label="Loading RFQs" aria-busy="true">
+        <div className="mt-4 space-y-3" aria-label={t("loading")} aria-busy="true">
           <Skeleton className="h-11 w-full" />
           <Skeleton className="h-[480px] w-full rounded-xl" />
         </div>

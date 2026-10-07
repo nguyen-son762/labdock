@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Alert } from "@/components/ui/alert";
@@ -14,14 +15,15 @@ import { OrderItemsCard } from "./order-items-card";
 import { OrderStatusBadge } from "./order-status-badge";
 
 export function OrderDetailScreen({ orderId }: { orderId: string }) {
+  const t = useTranslations("Orders");
   const orderQuery = useOrderDetailQuery(orderId);
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-12 pt-6 sm:px-10 xl:px-[100px]">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "My orders", href: "/orders" },
+          { label: t("home"), href: "/" },
+          { label: t("title"), href: "/orders" },
           { label: `#${orderQuery.data?.orderNumber ?? orderId}` },
         ]}
       />
@@ -36,7 +38,7 @@ export function OrderDetailScreen({ orderId }: { orderId: string }) {
         <div className="mt-5 space-y-4">
           <Alert>{getApiErrorMessage(orderQuery.error)}</Alert>
           <Button asChild variant="outline">
-            <Link href="/orders">Back to orders</Link>
+            <Link href="/orders">{t("backToOrders")}</Link>
           </Button>
         </div>
       ) : null}

@@ -2,6 +2,7 @@
 
 import { DocumentDownload } from "iconsax-reactjs";
 import { type KeyboardEvent, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/class-names";
@@ -13,6 +14,7 @@ const tabs = ["Description", "Specifications", "References"] as const;
 type Tab = (typeof tabs)[number];
 
 export function ProductInformation({ product }: { product: Product }) {
+  const t = useTranslations("Product");
   const [activeTab, setActiveTab] = useState<Tab>("Specifications");
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -45,12 +47,12 @@ export function ProductInformation({ product }: { product: Product }) {
       aria-labelledby="product-information-title"
     >
       <h2 id="product-information-title" className="sr-only">
-        Product information
+        {t("information")}
       </h2>
       <div
         className="flex overflow-x-auto border-b border-[#e9eaeb] px-3"
         role="tablist"
-        aria-label="Product information"
+        aria-label={t("information")}
       >
         {tabs.map((tab, index) => (
           <Button
@@ -72,7 +74,7 @@ export function ProductInformation({ product }: { product: Product }) {
               activeTab === tab && "border-[#2061a9] text-[#2061a9] hover:border-[#2061a9] hover:text-[#2061a9]",
             )}
           >
-            {tab}
+            {tab === "Description" ? t("descriptionTab") : tab === "Specifications" ? t("specificationsTab") : t("referencesTab")}
           </Button>
         ))}
       </div>
@@ -105,7 +107,7 @@ export function ProductInformation({ product }: { product: Product }) {
               ))}
             </dl>
           ) : (
-            <p className="text-sm leading-6 text-[#5e6375]">No specifications are available.</p>
+            <p className="text-sm leading-6 text-[#5e6375]">{t("noSpecifications")}</p>
           )
         ) : null}
         {activeTab === "References" ? (
@@ -131,7 +133,7 @@ export function ProductInformation({ product }: { product: Product }) {
                 ))}
             </ul>
           ) : (
-            <p className="text-sm leading-6 text-[#5e6375]">No product documents are available.</p>
+            <p className="text-sm leading-6 text-[#5e6375]">{t("noDocuments")}</p>
           )
         ) : null}
       </div>

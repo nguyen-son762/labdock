@@ -1,4 +1,5 @@
 import { cn } from "@/lib/class-names";
+import { useTranslations } from "next-intl";
 
 import type { NewsCategory } from "../schemas/news.schema";
 
@@ -10,6 +11,7 @@ const categoryStyles: Record<NewsCategory, string> = {
 };
 
 export function NewsCategoryBadge({ category, compact = false }: { category: NewsCategory; compact?: boolean }) {
+  const t = useTranslations("News");
   return (
     <span
       className={cn(
@@ -18,7 +20,7 @@ export function NewsCategoryBadge({ category, compact = false }: { category: New
         categoryStyles[category],
       )}
     >
-      {category}
+      {t(({ News: "categoryNews", Events: "events", "Company updates": "companyUpdates", Features: "features" } as const)[category])}
     </span>
   );
 }

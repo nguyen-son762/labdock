@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import { PaymentSuccessScreen } from "@/features/checkout";
 
-export const metadata: Metadata = {
-  title: "Payment successful",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RouteMetadata");
+  return { title: t("paymentSuccess"), robots: { index: false, follow: false } };
+}
 
 export default async function PaymentSuccessPage({
   searchParams,

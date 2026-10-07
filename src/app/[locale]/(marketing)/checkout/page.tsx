@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { CheckoutScreen } from "@/features/checkout";
 
-export const metadata: Metadata = {
-  title: "Checkout",
-  description: "Review your laboratory products, delivery address and payment method.",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RouteMetadata");
+  return { title: t("checkout"), description: t("checkoutDescription"), robots: { index: false, follow: false } };
+}
 
 export default async function CheckoutPage({ searchParams }: { searchParams: Promise<{ items?: string }> }) {
   const { items } = await searchParams;

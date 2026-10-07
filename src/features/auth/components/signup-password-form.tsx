@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { UseFormReturn } from "react-hook-form";
 
 import { ArrowLeft, ArrowRight, Refresh } from "iconsax-reactjs";
@@ -20,15 +21,16 @@ type SignupPasswordFormProps = {
 };
 
 export function SignupPasswordForm({ form, completeMutation, onSubmit, errorMessage }: SignupPasswordFormProps) {
+  const t = useTranslations("Auth");
   return (
     <>
       <div className="w-full pt-8 sm:pt-10">
-        <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">Set your password</h2>
-        <p className="mt-2 text-base leading-6 text-[#868da5]">Create a secure password for your Labdock account.</p>
+        <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{t("setPassword")}</h2>
+        <p className="mt-2 text-base leading-6 text-[#868da5]">{t("securePasswordDescription")}</p>
       </div>
       {completeMutation.isSuccess ? (
         <div role="status" className="mt-6 rounded-xl border border-[#c8d0d9] bg-[#f5f7f8] p-5 text-sm text-[#164990]">
-          Your account for {completeMutation.data.email} is ready. You can now log in.
+          {t("accountReady", { email: completeMutation.data.email })}
         </div>
       ) : (
         <Form {...form}>
@@ -42,7 +44,7 @@ export function SignupPasswordForm({ form, completeMutation, onSubmit, errorMess
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {name === "password" ? "Password" : "Confirm password"}{" "}
+                      {name === "password" ? t("password") : t("confirmPassword")}{" "}
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
@@ -65,7 +67,7 @@ export function SignupPasswordForm({ form, completeMutation, onSubmit, errorMess
               ) : (
                 <ArrowRight className="order-2 size-3.5" aria-hidden="true" />
               )}
-              {completeMutation.isPending ? "Saving…" : "Create account"}
+              {completeMutation.isPending ? t("saving") : t("createAccount")}
             </Button>
           </form>
         </Form>
@@ -75,7 +77,7 @@ export function SignupPasswordForm({ form, completeMutation, onSubmit, errorMess
         className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-[#164990] hover:underline"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
-        Back to log in
+        {t("backToLogin")}
       </Link>
     </>
   );

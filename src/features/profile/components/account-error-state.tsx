@@ -2,12 +2,14 @@
 
 import axios from "axios";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { getApiErrorMessage } from "@/lib/api-error";
 
 export function AccountErrorState({ error, onRetry }: { error: unknown; onRetry: () => void }) {
+  const t = useTranslations("Profile");
   const isUnauthenticated = axios.isAxiosError(error) && error.response?.status === 401;
 
   return (
@@ -16,13 +18,13 @@ export function AccountErrorState({ error, onRetry }: { error: unknown; onRetry:
       <div className="flex gap-3">
         {isUnauthenticated ? (
           <Button asChild>
-            <Link href="/login">Đăng nhập lại</Link>
+            <Link href="/login">{t("loginAgain")}</Link>
           </Button>
         ) : (
-          <Button onClick={onRetry}>Thử lại</Button>
+          <Button onClick={onRetry}>{t("retry")}</Button>
         )}
         <Button asChild variant="outline">
-          <Link href="/">Về trang chủ</Link>
+          <Link href="/">{t("backHome")}</Link>
         </Button>
       </div>
     </div>

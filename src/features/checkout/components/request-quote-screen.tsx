@@ -3,6 +3,7 @@
 import { ArrowLeft2 } from "iconsax-reactjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -18,6 +19,7 @@ import { EmptyCartScreen } from "./empty-cart-screen";
 import { QuoteContactForm } from "./quote-contact-form";
 
 export function RequestQuoteScreen({ initialItemIds }: { initialItemIds?: string[] }) {
+  const t = useTranslations("Checkout");
   const router = useRouter();
   const cartQuery = useCartQuery();
   const updateCart = useUpdateCartItemMutation();
@@ -53,12 +55,12 @@ export function RequestQuoteScreen({ initialItemIds }: { initialItemIds?: string
         <Breadcrumbs
           items={[{ label: "Home", href: "/" }, { label: "Cart", href: "/cart" }, { label: "Request for quote" }]}
         />
-        <h1 className="mt-3 text-3xl font-semibold text-[#164990]">Request for quote</h1>
+        <h1 className="mt-3 text-3xl font-semibold text-[#164990]">{t("requestQuote")}</h1>
         <Link
           href="/products"
           className="mt-6 inline-flex items-center gap-2 rounded text-xs text-[#164990] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
         >
-          <ArrowLeft2 className="size-4" aria-hidden="true" /> Back to product listing
+          <ArrowLeft2 className="size-4" aria-hidden="true" /> {t("backToProducts")}
         </Link>
         <div className="mt-6 grid items-start gap-4 lg:grid-cols-[minmax(0,821px)_minmax(340px,403px)]">
           <CartItemsTable

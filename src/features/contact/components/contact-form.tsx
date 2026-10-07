@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, TickCircle } from "iconsax-reactjs";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ function createDefaultValues(inquiryType: InquiryType): ContactFormValues {
 }
 
 export function ContactForm({ initialType }: { initialType: InquiryType }) {
+  const t = useTranslations("Contact");
   const mutation = useSubmitContactMutation();
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -53,7 +55,7 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
     <section className="bg-[#f9fcff] px-4 py-8 sm:px-5">
       <div className="mx-auto max-w-[1240px] rounded-xl bg-white p-5 sm:p-6">
         <h2 className="text-2xl font-semibold leading-[42px] text-[#0f3678] sm:text-[32px]">
-          What can we help you with?
+          {t("formTitle")}
         </h2>
         <Form {...form}>
           <form noValidate onSubmit={form.handleSubmit(handleSubmit)} className="mt-2 space-y-4">
@@ -75,13 +77,13 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value="general" id="general-inquiry" className="size-4" />
                         <Label htmlFor="general-inquiry" className="cursor-pointer text-xs font-normal text-[#051a50]">
-                          General inquiry
+                          {t("generalInquiry")}
                         </Label>
                       </div>
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value="quote" id="request-a-quote" className="size-4" />
                         <Label htmlFor="request-a-quote" className="cursor-pointer text-xs font-normal text-[#051a50]">
-                          Request a quote
+                          {t("requestQuote")}
                         </Label>
                       </div>
                     </RadioGroup>
@@ -91,15 +93,15 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
               )}
             />
 
-            {mutation.isError ? <Alert>We could not submit your request. Please try again.</Alert> : null}
+            {mutation.isError ? <Alert>{t("submitError")}</Alert> : null}
             {mutation.isSuccess ? (
               <p role="status" className="flex items-center gap-2 rounded-lg bg-[#ecfdf3] p-3 text-sm text-[#027a48]">
                 <TickCircle className="size-5" variant="Bold" aria-hidden="true" />
-                Your request was submitted successfully. Reference: {mutation.data.reference}
+                {t("submitSuccess", { reference: mutation.data.reference })}
               </p>
             ) : null}
 
-            {inquiryType === "quote" ? <h3 className="text-base font-semibold text-[#1f5fa8]">Contact info</h3> : null}
+            {inquiryType === "quote" ? <h3 className="text-base font-semibold text-[#1f5fa8]">{t("contactInfo")}</h3> : null}
             <ContactInfoFields />
 
             {inquiryType === "general" ? (
@@ -108,9 +110,9 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
                 name="subject"
                 render={({ field }) => (
                   <FormItem className="space-y-1.5">
-                    <FormLabel className="text-xs text-[#051a50]">Subject</FormLabel>
+                    <FormLabel className="text-xs text-[#051a50]">{t("subject")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter subject" className="h-11 border-[#d5dce5] bg-white" {...field} />
+                      <Input placeholder={t("enterSubject")} className="h-11 border-[#d5dce5] bg-white" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs" />
                   </FormItem>
@@ -126,11 +128,11 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
               render={({ field }) => (
                 <FormItem className="space-y-1.5">
                   <FormLabel className="text-xs text-[#051a50]">
-                    {inquiryType === "quote" ? "Inquiry message" : "Your message"}
+                    {inquiryType === "quote" ? t("inquiryMessage") : t("yourMessage")}
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder={inquiryType === "quote" ? "Enter inquiry message..." : "Enter your message..."}
+                      placeholder={inquiryType === "quote" ? t("enterInquiry") : t("enterMessage")}
                       className="min-h-[104px] resize-y border-[#d5dce5] bg-white"
                       {...field}
                     />
@@ -146,7 +148,7 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
               disabled={mutation.isPending}
               className="h-11 min-w-[122px] justify-between py-1.5 pl-5 pr-1.5 shadow-[0_8px_22px_rgba(239,163,59,0.28)]"
             >
-              <span>{mutation.isPending ? "Submitting…" : "Submit"}</span>
+              <span>{mutation.isPending ? t("submitting") : t("submit")}</span>
               <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b]">
                 <ArrowRight className="size-4" aria-hidden="true" />
               </span>

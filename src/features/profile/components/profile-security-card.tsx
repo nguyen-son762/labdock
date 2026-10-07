@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit2, Refresh2, TickCircle } from "iconsax-reactjs";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export function ProfileSecurityCard({
   onEdit: () => void;
   onCancel: () => void;
 }) {
+  const t = useTranslations("Profile");
   const mutation = useChangePasswordMutation();
   const form = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordFormSchema),
@@ -44,10 +46,10 @@ export function ProfileSecurityCard({
   return (
     <Card className="h-fit overflow-hidden border-[#dde2e8] shadow-none">
       <div className="flex h-[50px] items-center justify-between border-b border-[#dde2e8] px-4">
-        <h2 className="text-xl font-medium text-[#1f5fa8]">Security</h2>
+        <h2 className="text-xl font-medium text-[#1f5fa8]">{t("security")}</h2>
         {!editing ? (
           <Button type="button" variant="ghost" className="h-8 px-0 font-normal text-[#164990]" onClick={onEdit}>
-            <Edit2 className="size-5" aria-hidden="true" /> Change password
+            <Edit2 className="size-5" aria-hidden="true" /> {t("changePassword")}
           </Button>
         ) : null}
       </div>
@@ -60,19 +62,19 @@ export function ProfileSecurityCard({
                 role="status"
                 className="flex items-center gap-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800"
               >
-                <TickCircle className="size-4" aria-hidden="true" /> Password updated.
+                <TickCircle className="size-4" aria-hidden="true" /> {t("passwordUpdated")}
               </p>
             ) : null}
             {(["currentPassword", "newPassword", "confirmPassword"] as const).map((name) => {
               const labels = {
-                currentPassword: "Current password",
-                newPassword: "New password",
-                confirmPassword: "Confirm password",
+                currentPassword: t("currentPassword"),
+                newPassword: t("newPassword"),
+                confirmPassword: t("confirmPassword"),
               };
               const placeholders = {
-                currentPassword: "Enter current password",
-                newPassword: "Enter new password",
-                confirmPassword: "Enter password again",
+                currentPassword: t("enterCurrentPassword"),
+                newPassword: t("enterNewPassword"),
+                confirmPassword: t("enterPasswordAgain"),
               };
               return (
                 <FormField
@@ -107,20 +109,20 @@ export function ProfileSecurityCard({
                 className="rounded-full border-[#c8d0d9] font-normal"
                 onClick={handleCancel}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" variant="brand" size="sm" disabled={mutation.isPending}>
                 {mutation.isPending ? <Refresh2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-                {mutation.isPending ? "Saving…" : "Save changes"}
+                {mutation.isPending ? t("saving") : t("saveChanges")}
               </Button>
             </div>
           </form>
         </Form>
       ) : (
         <div className="grid grid-cols-2 gap-2 p-4 pt-6 text-sm text-[#051a50]">
-          <span className="text-[13px] text-[#73798f]">Password</span>
+          <span className="text-[13px] text-[#73798f]">{t("password")}</span>
           <span>••••••••</span>
-          <span className="col-span-2">Last changed: 3 months ago</span>
+          <span className="col-span-2">{t("lastChanged", { time: "3 months ago" })}</span>
         </div>
       )}
     </Card>

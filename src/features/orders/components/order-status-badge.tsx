@@ -1,27 +1,42 @@
 import { cn } from "@/lib/class-names";
+import { useTranslations } from "next-intl";
 
-const statusConfig: Record<string, { label: string; className: string; dot: string }> = {
-  draft: { label: "Draft", className: "bg-[#ecf0f3] text-[#596579]", dot: "bg-[#73798f]" },
-  pending: { label: "Pending", className: "bg-[#fffbb7] text-[#88580b]", dot: "bg-[#c7930a]" },
-  paid: { label: "Paid", className: "bg-[#d9f2e1] text-[#217a4f]", dot: "bg-[#279968]" },
-  processing: { label: "Processing", className: "bg-[#eaf3ff] text-[#1f5fa8]", dot: "bg-[#1f5fa8]" },
-  "awaiting-shipment": { label: "Awaiting shipment", className: "bg-[#fffbb7] text-[#88580b]", dot: "bg-[#c7930a]" },
-  awaitingpayment: { label: "Awaiting payment", className: "bg-[#fffbb7] text-[#88580b]", dot: "bg-[#c7930a]" },
-  shipped: { label: "Shipped", className: "bg-[#f1edff] text-[#6535ff]", dot: "bg-[#6535ff]" },
-  delivered: { label: "Delivered", className: "bg-[#d9f2e1] text-[#217a4f]", dot: "bg-[#279968]" },
-  completed: { label: "Completed", className: "bg-[#d9f2e1] text-[#217a4f]", dot: "bg-[#279968]" },
-  cancelled: { label: "Cancelled", className: "bg-[#fff0f1] text-[#e81643]", dot: "bg-[#f04468]" },
-  canceled: { label: "Cancelled", className: "bg-[#fff0f1] text-[#e81643]", dot: "bg-[#f04468]" },
+type OrderStatusTranslationKey =
+  | "draft"
+  | "pending"
+  | "paid"
+  | "processing"
+  | "awaitingShipment"
+  | "awaitingPayment"
+  | "shipped"
+  | "delivered"
+  | "completed"
+  | "cancelled"
+  | "unknown";
+
+const statusConfig: Record<string, { key: OrderStatusTranslationKey; className: string; dot: string }> = {
+  draft: { key: "draft", className: "bg-[#ecf0f3] text-[#596579]", dot: "bg-[#73798f]" },
+  pending: { key: "pending", className: "bg-[#fffbb7] text-[#88580b]", dot: "bg-[#c7930a]" },
+  paid: { key: "paid", className: "bg-[#d9f2e1] text-[#217a4f]", dot: "bg-[#279968]" },
+  processing: { key: "processing", className: "bg-[#eaf3ff] text-[#1f5fa8]", dot: "bg-[#1f5fa8]" },
+  "awaiting-shipment": { key: "awaitingShipment", className: "bg-[#fffbb7] text-[#88580b]", dot: "bg-[#c7930a]" },
+  awaitingpayment: { key: "awaitingPayment", className: "bg-[#fffbb7] text-[#88580b]", dot: "bg-[#c7930a]" },
+  shipped: { key: "shipped", className: "bg-[#f1edff] text-[#6535ff]", dot: "bg-[#6535ff]" },
+  delivered: { key: "delivered", className: "bg-[#d9f2e1] text-[#217a4f]", dot: "bg-[#279968]" },
+  completed: { key: "completed", className: "bg-[#d9f2e1] text-[#217a4f]", dot: "bg-[#279968]" },
+  cancelled: { key: "cancelled", className: "bg-[#fff0f1] text-[#e81643]", dot: "bg-[#f04468]" },
+  canceled: { key: "cancelled", className: "bg-[#fff0f1] text-[#e81643]", dot: "bg-[#f04468]" },
 };
 
 export function OrderStatusBadge({ status }: { status: string }) {
+  const t = useTranslations("Orders.statuses");
   const normalizedStatus = status
     .trim()
     .toLowerCase()
     .replace(/[\s_]+/g, "-");
   const config = statusConfig[normalizedStatus] ??
     statusConfig[normalizedStatus.replaceAll("-", "")] ?? {
-      label: status,
+      key: "unknown",
       className: "bg-[#ecf0f3] text-[#596579]",
       dot: "bg-[#73798f]",
     };
@@ -30,18 +45,11 @@ export function OrderStatusBadge({ status }: { status: string }) {
       className={cn("inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium", config.className)}
     >
       <span className={cn("size-1.5 rounded-full", config.dot)} aria-hidden="true" />
-      {config.label}
+      {t(config.key, { status })}
     </span>
   );
 }
 
 export function getOrderStatusLabel(status: string) {
-  return (
-    statusConfig[
-      status
-        .trim()
-        .toLowerCase()
-        .replace(/[\s_]+/g, "-")
-    ]?.label ?? status
-  );
+  return status;
 }

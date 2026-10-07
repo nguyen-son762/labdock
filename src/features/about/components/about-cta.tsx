@@ -1,10 +1,12 @@
 import { ArrowRight } from "iconsax-reactjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
 export function AboutCta() {
+  const t = useTranslations("About");
   return (
     <section
       className="relative flex min-h-[153px] flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl px-5 text-center"
@@ -26,7 +28,7 @@ export function AboutCta() {
         className="absolute -top-7 right-0 h-[364px] w-[515px] opacity-50 mix-blend-lighten"
       />
       <h2 id="about-cta-title" className="relative text-2xl font-semibold leading-tight text-white sm:text-[32px]">
-        Powering 200+ research institutions across Southeast Asia
+        {t("cta")}
       </h2>
       <Button
         asChild
@@ -34,7 +36,7 @@ export function AboutCta() {
         className="relative h-14 rounded-full py-1.5 pl-[18px] pr-1.5 text-base font-normal"
       >
         <Link href="/products">
-          Explore products
+          {t("explore")}
           <span className="flex size-11 items-center justify-center rounded-full bg-[#efa33b]">
             <ArrowRight className="size-6" aria-hidden="true" />
           </span>

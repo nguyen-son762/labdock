@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Key, SecuritySafe, ShieldTick } from "iconsax-reactjs";
 
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
@@ -6,14 +7,15 @@ import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/lo
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
-  const description = "Learn how Labdock protects account sessions and user data.";
+  const t = await getTranslations("Security");
+  const description = t("description");
 
   return {
-    title: "Security",
+    title: t("title"),
     description,
     alternates: getLocalizedAlternates("/security", locale),
     openGraph: {
-      title: "Security | Labdock",
+      title: `${t("title")} | Labdock`,
       description,
       url: getLocalizedPath("/security", locale),
       locale: locale === "vi" ? "vi_VN" : "en_SG",
@@ -23,41 +25,39 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 const protections = [
   {
-    title: "Cookie-based sessions",
-    description:
-      "Tokens are kept out of local storage and use same-site session cookies, with secure transport enforced on HTTPS.",
+    titleKey: "cookieTitle",
+    descriptionKey: "cookieDescription",
     icon: SecuritySafe,
   },
   {
-    title: "Server-side authorization",
-    description:
-      "The interface is not an authorization boundary. Private APIs verify every user and permission server-side.",
+    titleKey: "authorizationTitle",
+    descriptionKey: "authorizationDescription",
     icon: Key,
   },
   {
-    title: "Isolated private cache",
-    description:
-      "Private query data is cleared at authentication boundaries to prevent information leaking across sessions.",
+    titleKey: "cacheTitle",
+    descriptionKey: "cacheDescription",
     icon: ShieldTick,
   },
 ] as const;
 
-export default function SecurityPage() {
+export default async function SecurityPage() {
+  const t = await getTranslations("Security");
   return (
     <main className="container py-16 lg:py-20">
       <div className="max-w-2xl">
-        <p className="text-sm font-semibold text-primary">Defence in depth</p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight">Secure by design</h1>
+        <p className="text-sm font-semibold text-primary">{t("defence")}</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight">{t("title")}</h1>
         <p className="mt-4 text-lg leading-8 text-muted-foreground">
-          Labdock reduces its attack surface with clear data boundaries and API-validated sessions.
+          {t("intro")}
         </p>
       </div>
       <div className="mt-10 grid gap-5 md:grid-cols-3">
-        {protections.map(({ title, description, icon: Icon }) => (
-          <section key={title} className="rounded-xl border bg-card p-6">
+        {protections.map(({ titleKey, descriptionKey, icon: Icon }) => (
+          <section key={titleKey} className="rounded-xl border bg-card p-6">
             <Icon className="size-6 text-primary" aria-hidden="true" />
-            <h2 className="mt-5 font-semibold">{title}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+            <h2 className="mt-5 font-semibold">{t(titleKey)}</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{t(descriptionKey)}</p>
           </section>
         ))}
       </div>

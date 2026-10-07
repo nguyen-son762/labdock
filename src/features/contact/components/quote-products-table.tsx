@@ -2,6 +2,7 @@
 
 import { Add, CloseCircle, TickCircle, Trash } from "iconsax-reactjs";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -16,24 +17,25 @@ const emptyProduct = { productName: "", brand: "", quantity: "", budgetRange: ""
 const brands = ["Medisafe", "BIO-RAD", "Sartorius", "Heidolph"] as const;
 
 export function QuoteProductsTable() {
+  const t = useTranslations("Contact");
   const form = useFormContext<ContactFormValues>();
   const { fields, append, remove } = useFieldArray({ control: form.control, name: "products" });
 
   return (
     <section aria-labelledby="products-of-interest-title">
       <h3 id="products-of-interest-title" className="mb-4 text-base font-semibold text-[#1f5fa8]">
-        Product(s) of interest
+        {t("productsTitle")}
       </h3>
       <div className="overflow-hidden rounded-xl border border-[#d5dce5] bg-white">
         <Table className="min-w-[900px] table-fixed">
           <TableHeader className="bg-[#f5f7f8]">
             <TableRow className="hover:bg-[#f5f7f8]">
-              <TableHead className="w-[38%] px-3">Product name</TableHead>
-              <TableHead className="w-[19%] px-3">Brand</TableHead>
-              <TableHead className="w-[19%] px-3">Quantity</TableHead>
-              <TableHead className="w-[19%] px-3">Budget range</TableHead>
+              <TableHead className="w-[38%] px-3">{t("productName")}</TableHead>
+              <TableHead className="w-[19%] px-3">{t("brand")}</TableHead>
+              <TableHead className="w-[19%] px-3">{t("quantity")}</TableHead>
+              <TableHead className="w-[19%] px-3">{t("budgetRange")}</TableHead>
               <TableHead className="w-[5%] px-3">
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">{t("actions")}</span>
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -49,7 +51,7 @@ export function QuoteProductsTable() {
                         <FormItem className="min-w-0 flex-1">
                           <FormControl>
                             <Input
-                              placeholder="Enter product name"
+                              placeholder={t("productPlaceholder")}
                               className="h-[30px] border-[#7aa7e4] bg-white px-2 text-xs"
                               {...field}
                             />
@@ -62,7 +64,7 @@ export function QuoteProductsTable() {
                       type="button"
                       variant="ghost"
                       size="icon"
-                      aria-label={`Confirm product ${index + 1}`}
+                      aria-label={t("confirmProduct", { index: index + 1 })}
                       className="size-[30px] text-[#12b76a] hover:bg-[#ecfdf3] hover:text-[#12b76a]"
                       onClick={() => form.clearErrors(`products.${index}.productName`)}
                     >
@@ -72,7 +74,7 @@ export function QuoteProductsTable() {
                       type="button"
                       variant="ghost"
                       size="icon"
-                      aria-label={`Clear product ${index + 1}`}
+                      aria-label={t("clearProduct", { index: index + 1 })}
                       className="size-[30px] text-[#f04438] hover:bg-[#fef3f2] hover:text-[#f04438]"
                       onClick={() => form.setValue(`products.${index}.productName`, "", { shouldDirty: true })}
                     >
@@ -89,10 +91,10 @@ export function QuoteProductsTable() {
                         <Select value={field.value} onValueChange={field.onChange}>
                           <FormControl>
                             <SelectTrigger
-                              aria-label={`Brand for product ${index + 1}`}
+                              aria-label={t("brandForProduct", { index: index + 1 })}
                               className="h-[30px] bg-white px-2 text-xs"
                             >
-                              <SelectValue placeholder="Select" />
+                              <SelectValue placeholder={t("select")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-white">
@@ -122,7 +124,7 @@ export function QuoteProductsTable() {
                             allowNegative={false}
                             allowLeadingZeros={false}
                             inputMode="numeric"
-                            placeholder="Enter quantity"
+                            placeholder={t("quantityPlaceholder")}
                             className="h-[30px] border-[#7aa7e4] bg-white px-2 text-xs"
                             onValueChange={({ value }) => field.onChange(value)}
                           />
@@ -140,7 +142,7 @@ export function QuoteProductsTable() {
                       <FormItem>
                         <FormControl>
                           <Input
-                            placeholder="Enter budget range"
+                            placeholder={t("budgetPlaceholder")}
                             className="h-[30px] border-[#7aa7e4] bg-white px-2 text-xs"
                             {...field}
                           />
@@ -155,7 +157,7 @@ export function QuoteProductsTable() {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    aria-label={`Remove product ${index + 1}`}
+                    aria-label={t("removeProduct", { index: index + 1 })}
                     onClick={() => remove(index)}
                     className="size-[30px] text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20]"
                   >
@@ -175,7 +177,7 @@ export function QuoteProductsTable() {
             onClick={() => append(emptyProduct)}
             className="h-7 px-0 text-xs font-normal text-[#164990] hover:bg-transparent hover:text-[#164990]"
           >
-            <Add className="size-4" aria-hidden="true" /> Add another product
+            <Add className="size-4" aria-hidden="true" /> {t("addProduct")}
           </Button>
         </div>
       </div>

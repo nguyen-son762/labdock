@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, Refresh } from "iconsax-reactjs";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -31,12 +32,6 @@ import { ForgotPasswordResetForm } from "./forgot-password-reset-form";
 import { inputClassName } from "./signup-fields";
 import { SignupVerificationForm } from "./signup-verification-form";
 
-const forgotPasswordSteps = [
-  ["Step 1", "Email address"],
-  ["Step 2", "Verification"],
-  ["Step 3", "New password"],
-] as const;
-
 type ForgotPasswordFlowState =
   { step: 1 } | { step: 2; challenge: ForgotPasswordChallenge } | { step: 3; challengeId: string; completed: boolean };
 
@@ -47,6 +42,7 @@ function getForgotPasswordErrorMessage(error: unknown): string | null {
 }
 
 export function ForgotPasswordForm() {
+  const t = useTranslations("Auth");
   const [flow, setFlow] = useState<ForgotPasswordFlowState>({ step: 1 });
   const startMutation = useStartForgotPasswordMutation();
   const verifyMutation = useVerifyForgotPasswordMutation();
@@ -104,7 +100,11 @@ export function ForgotPasswordForm() {
   }
 
   const stepper = (activeStep: 1 | 2 | 3) => (
-    <AuthStepper activeStep={activeStep} steps={forgotPasswordSteps} ariaLabel="Password reset progress" />
+    <AuthStepper
+      activeStep={activeStep}
+      steps={[[t("stepOne"), t("emailAddress")], [t("stepTwo"), t("verification")], [t("stepThree"), t("newPassword")]]}
+      ariaLabel={t("passwordResetProgress")}
+    />
   );
 
   if (flow.step === 1) {
@@ -112,9 +112,9 @@ export function ForgotPasswordForm() {
       <>
         {stepper(1)}
         <div className="w-full pt-8 sm:pt-10">
-          <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">Forgot password</h2>
+          <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{t("forgotPasswordTitle")}</h2>
           <p className="mt-2 text-base leading-6 text-[var(--auth-muted)]">
-            Enter your email address to receive a verification code.
+            {t("forgotPasswordPrompt")}
           </p>
         </div>
         <Form {...emailForm}>
@@ -136,7 +136,7 @@ export function ForgotPasswordForm() {
                       type="email"
                       inputMode="email"
                       autoComplete="email"
-                      placeholder="Enter email address"
+                      placeholder={t("enterEmailAddress")}
                       className={inputClassName}
                     />
                   </FormControl>
@@ -150,7 +150,7 @@ export function ForgotPasswordForm() {
               ) : (
                 <ArrowRight className="order-2 size-3.5" aria-hidden="true" />
               )}
-              {startMutation.isPending ? "Sending…" : "Send verification code"}
+              {startMutation.isPending ? t("sending") : t("sendVerificationCode")}
             </Button>
           </form>
         </Form>
@@ -159,7 +159,7 @@ export function ForgotPasswordForm() {
           className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-[#164990] hover:underline"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Back to log in
+          {t("backToLogin")}
         </Link>
       </>
     );
@@ -184,8 +184,8 @@ export function ForgotPasswordForm() {
           resendError={getForgotPasswordErrorMessage(startMutation.error)}
           expiresAt={flow.challenge.expiresAt}
           errorMessage={getForgotPasswordErrorMessage}
-          description="We’ve sent a 6-digit password reset code to your email address."
-          backLabel="Back to email"
+          description={t("resetCodeDescription")}
+          backLabel={t("backToEmail")}
         />
       </>
     );

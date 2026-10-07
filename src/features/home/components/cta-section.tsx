@@ -28,7 +28,7 @@ export function CtaSection() {
   const t = useTranslations("Home");
 
   return (
-    <section className="bg-[#f5f8fb] py-16" aria-label="Explore Labdock opportunities">
+    <section className="bg-[#f5f8fb] py-16" aria-label={t("opportunitiesLabel")}>
       <div className="container grid gap-6 lg:grid-cols-2">
         {cards.map((card) => (
           <article

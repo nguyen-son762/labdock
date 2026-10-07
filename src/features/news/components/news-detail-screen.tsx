@@ -1,6 +1,8 @@
 import { ArrowLeft2 } from "iconsax-reactjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 import type { NewsArticle } from "../schemas/news.schema";
 import { formatNewsDate } from "../utils/news-formatters";
@@ -8,6 +10,8 @@ import { CopyLinkButton } from "./copy-link-button";
 import { NewsCategoryBadge } from "./news-category-badge";
 
 export function NewsDetailScreen({ article }: { article: NewsArticle }) {
+  const t = useTranslations("News");
+  const locale = useLocale();
   return (
     <article className="bg-[#f5f8fb] pb-16">
       <header className="mx-auto max-w-[1240px] px-5 pb-[50px] pt-8 sm:px-10 xl:px-0">
@@ -15,14 +19,14 @@ export function NewsDetailScreen({ article }: { article: NewsArticle }) {
           href="/news"
           className="inline-flex items-center gap-2 rounded text-sm text-[#1f5fa8] hover:text-[#0f3678] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
         >
-          <ArrowLeft2 className="size-5" aria-hidden="true" /> Back to all articles
+          <ArrowLeft2 className="size-5" aria-hidden="true" /> {t("back")}
         </Link>
 
         <div className="mt-6 space-y-3">
           <div className="flex items-center gap-3">
             <NewsCategoryBadge category={article.category} compact />
             <time dateTime={article.publishedAt} className="text-sm font-semibold text-[#73798f]">
-              {formatNewsDate(article.publishedAt)}
+              {formatNewsDate(article.publishedAt, locale)}
             </time>
           </div>
           <h1 className="text-[32px] font-semibold leading-[1.15] text-[#0f3678]">{article.title}</h1>
@@ -31,7 +35,7 @@ export function NewsDetailScreen({ article }: { article: NewsArticle }) {
         <div className="relative mt-6 aspect-[2/1] min-h-[300px] overflow-hidden rounded-[20px] lg:h-[620px] lg:aspect-auto">
           <Image
             src={article.heroImage ?? article.image}
-            alt={`${article.title} featured image`}
+            alt={t("featuredImage", { title: article.title })}
             fill
             priority
             sizes="(min-width: 1280px) 1240px, 100vw"
@@ -64,7 +68,7 @@ export function NewsDetailScreen({ article }: { article: NewsArticle }) {
               <div key={`${image}-${index}`} className="relative aspect-[1.45/1] overflow-hidden">
                 <Image
                   src={image}
-                  alt={`Modern laboratory workspace ${index + 1}`}
+                  alt={t("imageAlt", { index: index + 1 })}
                   fill
                   sizes="(min-width: 640px) 404px, 100vw"
                   className="object-cover"
@@ -75,7 +79,7 @@ export function NewsDetailScreen({ article }: { article: NewsArticle }) {
         ) : null}
 
         <div className="flex items-center justify-between border-t border-[#dde2e8] pt-5">
-          <p className="text-sm text-[#051a50]">Share this article</p>
+          <p className="text-sm text-[#051a50]">{t("share")}</p>
           <CopyLinkButton />
         </div>
       </div>

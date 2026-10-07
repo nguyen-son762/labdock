@@ -1,6 +1,7 @@
 "use client";
 
 import { DocumentUpload, Gallery, Refresh2, Trash } from "iconsax-reactjs";
+import { useTranslations } from "next-intl";
 import { useRef, useState, type DragEvent, type ReactNode } from "react";
 
 import { Alert } from "@/components/ui/alert";
@@ -25,6 +26,7 @@ const MAX_FILE_SIZE = 1024 * 1024;
 const acceptedTypes = new Set(["image/jpeg", "image/png"]);
 
 export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
+  const t = useTranslations("Profile");
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File>();
   const [validationError, setValidationError] = useState<string>();
@@ -35,8 +37,8 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
     setValidationError(undefined);
     updateAvatar.reset();
     if (!nextFile) return;
-    if (!acceptedTypes.has(nextFile.type)) return setValidationError("Upload a PNG or JPG image.");
-    if (nextFile.size > MAX_FILE_SIZE) return setValidationError("Profile picture must be 1MB or smaller.");
+    if (!acceptedTypes.has(nextFile.type)) return setValidationError(t("uploadTypeError"));
+    if (nextFile.size > MAX_FILE_SIZE) return setValidationError(t("uploadSizeError"));
     setFile(nextFile);
   }
 
@@ -69,8 +71,8 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent hideClose className="max-w-[480px] gap-6 p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl">Change profile picture</DialogTitle>
-          <DialogDescription>Upload profile avatar for your account</DialogDescription>
+          <DialogTitle className="text-xl">{t("changePicture")}</DialogTitle>
+          <DialogDescription>{t("uploadAvatarDescription")}</DialogDescription>
         </DialogHeader>
         {validationError ? <Alert>{validationError}</Alert> : null}
         {updateAvatar.isError ? <Alert>{getApiErrorMessage(updateAvatar.error)}</Alert> : null}
@@ -89,17 +91,17 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
               className="h-auto p-0 font-normal text-[#164990]"
               onClick={() => inputRef.current?.click()}
             >
-              Click to upload
+              {t("clickUpload")}
             </Button>
-            <span>or drag and drop</span>
+            <span>{t("orDragDrop")}</span>
           </div>
-          <p className="mt-1 text-xs text-[#b1bac8]">PNG or JPG - Max 1MB</p>
+          <p className="mt-1 text-xs text-[#b1bac8]">{t("imageLimit")}</p>
           <Input
             ref={inputRef}
             type="file"
             accept="image/png,image/jpeg"
             className="sr-only"
-            aria-label="Choose profile picture"
+            aria-label={t("choosePicture")}
             onChange={(event) => void selectFile(event.target.files?.[0])}
           />
         </div>
@@ -113,7 +115,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
                 <p className="truncate text-sm font-medium text-[#051a50]">{file.name}</p>
                 <p className="text-sm text-[#73798f]">{Math.ceil(file.size / 1024)} KB</p>
                 <div className="mt-3 flex items-center gap-3">
-                  <Progress value={100} aria-label="Upload complete" />
+                  <Progress value={100} aria-label={t("uploadComplete")} />
                   <span className="text-sm text-[#051a50]">100%</span>
                 </div>
               </div>
@@ -122,7 +124,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
                 variant="ghost"
                 size="icon"
                 className="size-8 text-red-600"
-                aria-label="Remove image"
+                aria-label={t("removeImage")}
                 onClick={clearFile}
               >
                 <Trash className="size-5" aria-hidden="true" />
@@ -137,12 +139,12 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
               variant="outline"
               className="rounded-full border-[#c8d0d9] font-normal text-[#051a50]"
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </DialogClose>
           <Button type="button" variant="brand" disabled={!file || updateAvatar.isPending} onClick={handleSave}>
             {updateAvatar.isPending ? <Refresh2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-            {updateAvatar.isPending ? "Saving…" : "Save"}
+            {updateAvatar.isPending ? t("saving") : t("save")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,4 +1,5 @@
 import { Control } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -107,6 +108,7 @@ export function SelectField({
 }
 
 export function PhoneField({ control }: { control: Control<SignupValues> }) {
+  const t = useTranslations("Auth");
   return (
     <div className="space-y-2">
       <p className="text-sm font-medium leading-none">
@@ -118,7 +120,7 @@ export function PhoneField({ control }: { control: Control<SignupValues> }) {
           name="phoneCode"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <FormLabel className="sr-only">Calling code</FormLabel>
+              <FormLabel className="sr-only">{t("callingCode")}</FormLabel>
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger className={cn(inputClassName, "px-3 text-sm")}>
@@ -142,13 +144,13 @@ export function PhoneField({ control }: { control: Control<SignupValues> }) {
           name="phone"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <FormLabel className="sr-only">Phone number</FormLabel>
+              <FormLabel className="sr-only">{t("phoneNumber")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   inputMode="tel"
                   autoComplete="tel-national"
-                  placeholder="Enter phone number"
+                  placeholder={t("enterPhoneNumber")}
                   className={inputClassName}
                 />
               </FormControl>

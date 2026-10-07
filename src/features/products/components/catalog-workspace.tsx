@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,8 @@ export function CatalogWorkspace({
   brandsError,
   categoryPage = false,
 }: CatalogWorkspaceProps) {
+  const t = useTranslations("Catalog");
+  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -104,10 +107,10 @@ export function CatalogWorkspace({
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 id="product-list-title" className="text-xl font-semibold text-[#051a50]">
-              Product listing
+              {t("listing")}
             </h2>
             <p className="mt-1 text-xs text-[#73798f]">
-              Showing {products.length} of {total.toLocaleString("en-SG")} products
+              {t("showing", { count: products.length, total: total.toLocaleString(locale === "vi" ? "vi-VN" : "en-SG") })}
             </p>
           </div>
           <Select
@@ -115,13 +118,13 @@ export function CatalogWorkspace({
             disabled={isPending || productsError}
             onValueChange={(sort) => updateParams({ sort: sort === "featured" ? null : sort, page: null })}
           >
-            <SelectTrigger aria-label="Sort products" className="h-10 w-full bg-white sm:w-[200px]">
-              <SelectValue placeholder="Sort by" />
+            <SelectTrigger aria-label={t("sortProducts")} className="h-10 w-full bg-white sm:w-[200px]">
+              <SelectValue placeholder={t("sortBy")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="featured">Featured products</SelectItem>
-              <SelectItem value="name">Name A-Z</SelectItem>
-              <SelectItem value="price-desc">Price high to low</SelectItem>
+              <SelectItem value="featured">{t("featured")}</SelectItem>
+              <SelectItem value="name">{t("nameAsc")}</SelectItem>
+              <SelectItem value="price-desc">{t("priceDesc")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -131,7 +134,7 @@ export function CatalogWorkspace({
             role="alert"
             className="rounded-xl border border-[#fecdca] bg-[#fef3f2] p-8 text-center text-sm text-[#b42318]"
           >
-            We could not load products. Please try again later.
+            {t("loadError")}
           </div>
         ) : products.length ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
@@ -145,7 +148,7 @@ export function CatalogWorkspace({
           </div>
         ) : (
           <div className="rounded-xl border border-dashed bg-white p-12 text-center text-sm text-[#73798f]">
-            <p>No products match the selected filters.</p>
+            <p>{t("noMatches")}</p>
             {hasFilters ? (
               <Button
                 type="button"
@@ -154,7 +157,7 @@ export function CatalogWorkspace({
                 onClick={clearFilters}
                 className="mt-3 text-[#164990]"
               >
-                Clear filters
+                {t("clearFilters")}
               </Button>
             ) : null}
           </div>

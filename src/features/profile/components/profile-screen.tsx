@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Card } from "@/components/ui/card";
@@ -14,8 +15,9 @@ import { ProfileSecurityCard } from "./profile-security-card";
 import { ProfileSidebar } from "./profile-sidebar";
 
 function ProfileLoading() {
+  const t = useTranslations("Profile");
   return (
-    <div className="grid gap-4 lg:grid-cols-[266px_minmax(0,1fr)]" aria-label="Loading profile" aria-busy="true">
+    <div className="grid gap-4 lg:grid-cols-[266px_minmax(0,1fr)]" aria-label={t("loading")} aria-busy="true">
       <Card className="h-[286px] border-[#dde2e8] p-6 shadow-none">
         <Skeleton className="mx-auto size-24 rounded-full" />
         <Skeleton className="mx-auto mt-5 h-8 w-40" />
@@ -30,14 +32,15 @@ function ProfileLoading() {
 }
 
 export function ProfileScreen() {
+  const t = useTranslations("Profile");
   const [editingProfile, setEditingProfile] = useState(false);
   const [editingPassword, setEditingPassword] = useState(false);
   const currentUserQuery = useCurrentUserQuery();
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-5 pb-12 pt-6 sm:px-10 xl:px-[100px]">
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "My profiles" }]} />
-      <h1 className="mb-4 mt-3 text-[32px] font-semibold leading-none text-[#0f3678]">My profiles</h1>
+      <Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("title") }]} />
+      <h1 className="mb-4 mt-3 text-[32px] font-semibold leading-none text-[#0f3678]">{t("title")}</h1>
       {currentUserQuery.isPending ? <ProfileLoading /> : null}
       {currentUserQuery.isError ? (
         <AccountErrorState error={currentUserQuery.error} onRetry={() => void currentUserQuery.refetch()} />

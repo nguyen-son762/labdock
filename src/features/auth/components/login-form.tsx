@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Refresh } from "iconsax-reactjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { Alert } from "@/components/ui/alert";
@@ -16,6 +17,7 @@ import { useLoginMutation } from "../api/use-login-mutation";
 import { loginSchema, type LoginValues } from "../schemas/login.schema";
 
 export function LoginForm() {
+  const t = useTranslations("Auth");
   const router = useRouter();
   const loginMutation = useLoginMutation();
   const form = useForm<LoginValues>({
@@ -40,14 +42,14 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Email address <span className="text-destructive">*</span>
+                {t("emailAddress")} <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
                 <Input
                   type="email"
                   autoComplete="email"
                   inputMode="email"
-                  placeholder="Enter email address"
+                  placeholder={t("enterEmailAddress")}
                   className="h-[42px] rounded-lg border-[var(--auth-input-border)] px-3.5 py-2.5 text-base shadow-[0_1px_2px_rgba(10,13,18,0.05)]"
                   {...field}
                 />
@@ -63,7 +65,7 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Password <span className="text-destructive">*</span>
+                {t("password")} <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -84,20 +86,20 @@ export function LoginForm() {
             href="/forgot-password"
             className="text-sm font-medium text-[#164990] underline-offset-4 hover:underline"
           >
-            Forgot password
+            {t("forgotPassword")}
           </Link>
         </div>
 
         <Button variant="brand" size="auth" type="submit" disabled={loginMutation.isPending}>
           {loginMutation.isPending ? <Refresh className="size-4 animate-spin" aria-hidden="true" /> : null}
-          {loginMutation.isPending ? "Logging in…" : "Log in"}
+          {loginMutation.isPending ? t("loggingIn") : t("logIn")}
           {!loginMutation.isPending ? <ArrowRight className="size-3.5" aria-hidden="true" /> : null}
         </Button>
       </form>
       <p className="mt-5 flex gap-1 text-sm text-[#868da5]">
-        Don&apos;t have an account?
+        {t("noAccount")}
         <Link href="/signup" className="font-medium text-[#164990] underline-offset-4 hover:underline">
-          Sign up
+          {t("signUp")}
         </Link>
       </p>
     </Form>

@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight } from "iconsax-reactjs";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -28,19 +29,20 @@ export function ProductPagination({
   totalPages: number;
   hrefForPage: (page: number) => string;
 }) {
+  const t = useTranslations("Catalog");
   if (totalPages <= 1) return null;
 
   return (
-    <nav aria-label="Product pagination" className="mt-8 flex flex-wrap items-center justify-center gap-1">
+    <nav aria-label={t("pagination")} className="mt-8 flex flex-wrap items-center justify-center gap-1">
       {page > 1 ? (
         <Button asChild variant="ghost" size="sm" className="text-[#5e6375]">
           <Link href={hrefForPage(page - 1)}>
-            <ArrowLeft className="size-4" aria-hidden="true" /> Previous
+            <ArrowLeft className="size-4" aria-hidden="true" /> {t("previous")}
           </Link>
         </Button>
       ) : (
         <Button type="button" variant="ghost" size="sm" disabled>
-          <ArrowLeft className="size-4" aria-hidden="true" /> Previous
+          <ArrowLeft className="size-4" aria-hidden="true" /> {t("previous")}
         </Button>
       )}
 
@@ -54,7 +56,7 @@ export function ProductPagination({
             <Link
               href={hrefForPage(item)}
               aria-current={item === page ? "page" : undefined}
-              aria-label={`Page ${item}`}
+              aria-label={t("page", { page: item })}
             >
               {item}
             </Link>
@@ -65,12 +67,12 @@ export function ProductPagination({
       {page < totalPages ? (
         <Button asChild variant="ghost" size="sm" className="text-[#5e6375]">
           <Link href={hrefForPage(page + 1)}>
-            Next <ArrowRight className="size-4" aria-hidden="true" />
+            {t("next")} <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </Button>
       ) : (
         <Button type="button" variant="ghost" size="sm" disabled>
-          Next <ArrowRight className="size-4" aria-hidden="true" />
+          {t("next")} <ArrowRight className="size-4" aria-hidden="true" />
         </Button>
       )}
     </nav>

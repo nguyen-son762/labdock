@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Swiper as SwiperInstance } from "swiper";
 import { A11y, Autoplay, Grid } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -28,6 +29,7 @@ export function CategoryStrip({
   title?: string;
   headingLevel?: "h1" | "h2";
 }) {
+  const t = useTranslations("Catalog");
   const searchParams = useSearchParams();
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [edgeState, setEdgeState] = useState({ beginning: true, end: false });
@@ -45,7 +47,7 @@ export function CategoryStrip({
           {title}
         </Heading>
         <SwiperNavigation
-          label="categories"
+          label={t("categoryCarousel")}
           tone="orange"
           previousDisabled={!swiper || edgeState.beginning}
           nextDisabled={!swiper || edgeState.end}
@@ -61,7 +63,7 @@ export function CategoryStrip({
         watchOverflow
         loop
         autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
-        a11y={{ containerMessage: "Product categories carousel" }}
+        a11y={{ containerMessage: t("categoryCarousel") }}
         breakpoints={{
           640: { slidesPerView: 3, grid: { rows: 2, fill: "row" } },
           1024: { slidesPerView: 5, grid: { rows: 1, fill: "row" } },

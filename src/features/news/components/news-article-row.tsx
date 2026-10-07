@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale } from "next-intl";
 
 import type { NewsArticle } from "../schemas/news.schema";
 import { formatNewsDate } from "../utils/news-formatters";
 import { NewsCategoryBadge } from "./news-category-badge";
 
 export function NewsArticleRow({ article }: { article: NewsArticle }) {
+  const locale = useLocale();
   return (
     <article className="border-b border-[#e9eaeb] py-4 last:border-b-0">
       <Link
@@ -25,7 +27,7 @@ export function NewsArticleRow({ article }: { article: NewsArticle }) {
           <div className="flex flex-wrap items-center gap-3">
             <NewsCategoryBadge category={article.category} />
             <time dateTime={article.publishedAt} className="text-sm font-medium text-[#73798f]">
-              {formatNewsDate(article.publishedAt)}
+              {formatNewsDate(article.publishedAt, locale)}
             </time>
           </div>
           <h3 className="text-base font-bold leading-6 text-[#1f5fa8] transition-colors group-hover:text-[#0f3678]">

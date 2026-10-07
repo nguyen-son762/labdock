@@ -2,12 +2,14 @@
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export default function DashboardError({ reset }: { reset: () => void }) {
+  const t = useTranslations("Profile");
   return (
     <div className="max-w-xl space-y-4 py-10">
-      <Alert>Dashboard không thể hiển thị lúc này. Vui lòng thử lại.</Alert>
-      <Button onClick={reset}>Tải lại Dashboard</Button>
+      <Alert>{t("dashboardError")}</Alert>
+      <Button onClick={reset}>{t("reloadDashboard")}</Button>
     </div>
   );
 }

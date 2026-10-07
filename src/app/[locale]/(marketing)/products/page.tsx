@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { getPublicBrands } from "@/features/brands/server";
 import { getPublicCategories } from "@/features/categories/server";
@@ -17,16 +18,15 @@ type ProductsPageProps = {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
-  const description =
-    "Browse verified laboratory equipment, glassware and research supplies with fast delivery and bulk pricing.";
+  const t = await getTranslations("RouteMetadata");
+  const description = t("productsDescription");
 
   return {
-    title: "Laboratory Products",
-    description:
-      "Browse verified laboratory equipment, glassware and research supplies with fast delivery and bulk pricing.",
+    title: t("products"),
+    description,
     alternates: getLocalizedAlternates("/products", locale),
     openGraph: {
-      title: "Laboratory Products",
+      title: t("products"),
       description,
       url: getLocalizedPath("/products", locale),
       locale: locale === "vi" ? "vi_VN" : "en_SG",

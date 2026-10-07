@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { AuthShell } from "@/features/auth/components/auth-shell";
 import { SignupForm } from "@/features/auth/components/signup-form";
 
-export const metadata: Metadata = {
-  title: "Sign up",
-  description: "Create your Labdock account.",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RouteMetadata");
+  return { title: t("signUp"), description: t("signUpDescription"), robots: { index: false, follow: false } };
+}
 
-export default function SignupPage() {
+export default async function SignupPage() {
+  const t = await getTranslations("Auth");
   return (
-    <AuthShell heroTitle="Your Trusted Partner for Laboratory Procurement">
+    <AuthShell heroTitle={t("heroTitle")}>
       <SignupForm />
     </AuthShell>
   );

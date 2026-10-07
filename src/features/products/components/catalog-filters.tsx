@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUp, SearchNormal1 } from "iconsax-reactjs";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ type FilterOption = {
 };
 
 type FilterGroupProps = {
+  group: "brands" | "categories";
   id: string;
   title: string;
   searchPlaceholder: string;
@@ -29,6 +31,7 @@ type FilterGroupProps = {
 };
 
 function FilterGroup({
+  group,
   id,
   title,
   searchPlaceholder,
@@ -38,6 +41,7 @@ function FilterGroup({
   hasError,
   onChange,
 }: FilterGroupProps) {
+  const t = useTranslations("Catalog");
   const [query, setQuery] = useState("");
   const visibleOptions = options.filter((option) => option.name.toLowerCase().includes(query.trim().toLowerCase()));
 
@@ -65,20 +69,20 @@ function FilterGroup({
 
       {hasError ? (
         <p role="status" className="mt-3 text-xs text-[#b42318]">
-          Unable to load {title.toLowerCase()}.
+          {t(group === "brands" ? "unableBrands" : "unableCategories")}
         </p>
       ) : (
         <RadioGroup
           value={selectedId ?? "all"}
           onValueChange={(value) => onChange(value === "all" ? null : value)}
           disabled={disabled}
-          aria-label={`Filter by ${title.toLowerCase()}`}
+          aria-label={title}
           className="mt-3 max-h-64 gap-2.5 overflow-y-auto pr-1"
         >
           <div className="flex items-center gap-2">
             <RadioGroupItem id={`${id}-all`} value="all" />
             <Label htmlFor={`${id}-all`} className="cursor-pointer text-xs font-normal text-[#303647]">
-              All {title.toLowerCase()}
+              {t(group === "brands" ? "allBrands" : "allCategories")}
             </Label>
           </div>
           {visibleOptions.map((option) => {
@@ -98,7 +102,7 @@ function FilterGroup({
             );
           })}
           {visibleOptions.length === 0 ? (
-            <p className="text-xs text-[#73798f]">No matching {title.toLowerCase()}.</p>
+            <p className="text-xs text-[#73798f]">{t(group === "brands" ? "noMatchingBrands" : "noMatchingCategories")}</p>
           ) : null}
         </RadioGroup>
       )}
@@ -129,12 +133,13 @@ export function CatalogFilters({
   onCategoryChange,
   onClear,
 }: CatalogFiltersProps) {
+  const t = useTranslations("Catalog");
   const hasFilters = Boolean(filters.brandId || filters.categoryId || filters.sort !== "featured");
 
   return (
-    <aside aria-label="Product filters" className="rounded-xl bg-white p-4 lg:rounded-none lg:bg-transparent lg:p-0">
+    <aside aria-label={t("productFilters")} className="rounded-xl bg-white p-4 lg:rounded-none lg:bg-transparent lg:p-0">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <h2 className="text-base font-semibold text-[#051a50] border-b w-full pb-2 border-[#ECF0F3]">More filter</h2>
+        <h2 className="text-base font-semibold text-[#051a50] border-b w-full pb-2 border-[#ECF0F3]">{t("moreFilters")}</h2>
         {hasFilters ? (
           <Button
             type="button"
@@ -143,15 +148,16 @@ export function CatalogFilters({
             onClick={onClear}
             className="h-auto p-0 text-xs font-medium text-[#2f7bc4] hover:bg-transparent"
           >
-            Clear
+            {t("clear")}
           </Button>
         ) : null}
       </div>
       <div className="space-y-4">
         <FilterGroup
+          group="brands"
           id="brand-filter"
-          title="Brands"
-          searchPlaceholder="Search brands"
+          title={t("brands")}
+          searchPlaceholder={t("searchBrands")}
           options={brands}
           selectedId={filters.brandId}
           disabled={disabled}
@@ -159,9 +165,10 @@ export function CatalogFilters({
           onChange={onBrandChange}
         />
         <FilterGroup
+          group="categories"
           id="category-filter"
-          title="Categories"
-          searchPlaceholder="Search categories"
+          title={t("categories")}
+          searchPlaceholder={t("searchCategories")}
           options={categories}
           selectedId={filters.categoryId}
           disabled={disabled}

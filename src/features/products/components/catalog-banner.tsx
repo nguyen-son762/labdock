@@ -1,13 +1,15 @@
 import { MoneyChange, TruckFast, Verify } from "iconsax-reactjs";
 import Image from "next/image";
-
-const benefits = [
-  { label: "Verified Lab Products", icon: Verify },
-  { label: "Fast Delivery", icon: TruckFast },
-  { label: "Bulk Pricing Available", icon: MoneyChange },
-] as const;
+import { useLocale, useTranslations } from "next-intl";
 
 export function CatalogBanner({ total }: { total: number }) {
+  const t = useTranslations("Catalog");
+  const locale = useLocale();
+  const benefits = [
+    { label: t("verifiedProducts"), icon: Verify },
+    { label: t("fastDelivery"), icon: TruckFast },
+    { label: t("bulkPricing"), icon: MoneyChange },
+  ];
   return (
     <section
       className="relative isolate min-h-[300px] overflow-hidden bg-[#1f5fa8] text-white"
@@ -15,7 +17,7 @@ export function CatalogBanner({ total }: { total: number }) {
     >
       <Image
         src="/products/catalog-banner.png"
-        alt="Laboratory glassware arranged in a research lab"
+        alt={t("bannerImageAlt")}
         fill
         priority
         unoptimized
@@ -29,9 +31,9 @@ export function CatalogBanner({ total }: { total: number }) {
           id="catalog-banner-title"
           className="text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-[48px]"
         >
-          {total.toLocaleString("en-SG")} products
+          {t("productCount", { count: total.toLocaleString(locale === "vi" ? "vi-VN" : "en-SG") })}
         </h1>
-        <p className="mt-1 text-base sm:text-lg">Premium quality. Fast delivery. Ships 7-10 days</p>
+        <p className="mt-1 text-base sm:text-lg">{t("banner")}</p>
         <div className="mt-5 flex w-fit max-w-full flex-wrap items-center gap-2 rounded-xl bg-white p-1.5 text-[#051a50] sm:rounded-full">
           {benefits.map(({ label, icon: Icon }) => (
             <span

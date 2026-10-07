@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { AboutScreen } from "@/features/about";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
@@ -6,15 +7,15 @@ import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/lo
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
-  const description =
-    "Learn how Labdock simplifies scientific procurement for research institutions with verified suppliers, laboratory products and professional support.";
+  const t = await getTranslations("RouteMetadata");
+  const description = t("aboutDescription");
 
   return {
-    title: "About us",
-    description: "Simplifying scientific procurement and enhancing research efficiency across Southeast Asia.",
+    title: t("about"),
+    description,
     alternates: getLocalizedAlternates("/about-us", locale),
     openGraph: {
-      title: "About Labdock",
+      title: t("about"),
       description,
       url: getLocalizedPath("/about-us", locale),
       locale: locale === "vi" ? "vi_VN" : "en_SG",

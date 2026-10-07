@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { LegalDocumentScreen, privacyDocument } from "@/features/legal";
 import { getLocalizedAlternates, isAppLocale } from "@/i18n/locale";
@@ -6,11 +7,11 @@ import { getLocalizedAlternates, isAppLocale } from "@/i18n/locale";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
+  const t = await getTranslations("RouteMetadata");
 
   return {
-    title: "Privacy Policy",
-    description:
-      "Learn how Labdock collects, uses, protects and retains personal data under applicable privacy laws, including Singapore's PDPA.",
+    title: t("privacy"),
+    description: t("privacyDescription"),
     alternates: getLocalizedAlternates("/privacy", locale),
   };
 }

@@ -1,12 +1,7 @@
 "use client";
 
 import { TickCircle } from "iconsax-reactjs";
-
-const signupSteps = [
-  ["Step 1", "Account details"],
-  ["Step 2", "Verification"],
-  ["Step 3", "Set password"],
-] as const;
+import { useTranslations } from "next-intl";
 
 type AuthStepperProps = {
   activeStep: 1 | 2 | 3;
@@ -14,10 +9,16 @@ type AuthStepperProps = {
   ariaLabel?: string;
 };
 
-export function AuthStepper({ activeStep, steps = signupSteps, ariaLabel = "Sign up progress" }: AuthStepperProps) {
+export function AuthStepper({ activeStep, steps, ariaLabel }: AuthStepperProps) {
+  const t = useTranslations("Auth");
+  const visibleSteps = steps ?? [
+    [t("stepOne"), t("accountDetails")],
+    [t("stepTwo"), t("verification")],
+    [t("stepThree"), t("stepSetPassword")],
+  ];
   return (
-    <ol aria-label={ariaLabel} className="flex w-full items-start">
-      {steps.map(([label, description], index) => {
+    <ol aria-label={ariaLabel ?? t("signUpProgress")} className="flex w-full items-start">
+      {visibleSteps.map(([label, description], index) => {
         const step = (index + 1) as 1 | 2 | 3;
         const active = step === activeStep;
         const done = step < activeStep;
@@ -37,7 +38,7 @@ export function AuthStepper({ activeStep, steps = signupSteps, ariaLabel = "Sign
                   <span className="size-4 rounded-full border-2 border-[#c8d0d9] bg-white" />
                 )}
               </span>
-              {index < steps.length - 1 ? (
+              {index < visibleSteps.length - 1 ? (
                 <span className={`h-0.5 flex-1 ${done ? "bg-[#0f3678]" : "bg-[#c8d0d9]"}`} />
               ) : (
                 <span className="flex-1" />

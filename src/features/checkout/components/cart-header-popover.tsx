@@ -21,6 +21,7 @@ function createSelectionHref(pathname: string, selectedIds: string[]) {
 export function CartHeaderPopover() {
   const cartQuery = useCartQuery();
   const t = useTranslations("Header");
+  const checkoutT = useTranslations("Checkout");
   const removeCartItem = useRemoveCartItemMutation();
   const [selection, setSelection] = useState<string[] | null>(null);
   const items = cartQuery.data ?? [];
@@ -58,25 +59,25 @@ export function CartHeaderPopover() {
         className="w-[min(449px,calc(100vw-24px))] rounded-xl border border-[#dde2e8] bg-white p-0 text-[#051a50] shadow-[0_16px_40px_rgba(5,26,80,0.18)]"
       >
         <div className="flex items-center justify-between border-b border-[#edf0f2] px-4 py-3">
-          <h2 className="text-lg font-semibold">Cart</h2>
-          <nav aria-label="Cart shortcuts" className="flex items-center gap-4">
+          <h2 className="text-lg font-semibold">{checkoutT("cart")}</h2>
+          <nav aria-label={checkoutT("cartShortcuts")} className="flex items-center gap-4">
             <Link href="/cart" className="text-xs font-semibold text-[#164990] hover:underline">
-              View cart
+              {checkoutT("viewCart")}
             </Link>
             <Link href="/orders" className="text-xs font-semibold text-[#164990] hover:underline">
-              View orders
+              {checkoutT("viewOrders")}
             </Link>
           </nav>
         </div>
         <div className="divide-y divide-[#edf0f2] px-4">
-          {cartQuery.isPending ? <p className="py-6 text-center text-xs text-[#73798f]">Loading cart…</p> : null}
+          {cartQuery.isPending ? <p className="py-6 text-center text-xs text-[#73798f]">{checkoutT("loadingCart")}</p> : null}
           {cartQuery.isError ? (
             <p role="alert" className="py-6 text-center text-xs text-[#d92d20]">
-              We could not load your cart.
+              {checkoutT("loadCartError")}
             </p>
           ) : null}
           {cartQuery.isSuccess && items.length === 0 ? (
-            <p className="py-6 text-center text-xs text-[#73798f]">Your cart is empty.</p>
+            <p className="py-6 text-center text-xs text-[#73798f]">{checkoutT("emptyCartTitle")}</p>
           ) : null}
           {items.map((item) => (
             <div key={item.id} className="grid grid-cols-[16px_48px_1fr_32px] items-center gap-3 py-3">
@@ -89,7 +90,7 @@ export function CartHeaderPopover() {
                       : selectedIds.filter((id) => id !== item.id),
                   )
                 }
-                aria-label={`Select ${item.name}`}
+                aria-label={checkoutT("selectProduct", { name: item.name })}
               />
               <div className="flex size-12 items-center justify-center overflow-hidden rounded-md border border-[#e7e9ed] bg-[#f8f9fa]">
                 {item.image ? (
@@ -114,7 +115,7 @@ export function CartHeaderPopover() {
                 className="size-8 rounded-full text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20]"
                 disabled={removeCartItem.isPending && removeCartItem.variables?.itemId === item.id}
                 onClick={() => removeCartItem.mutate({ itemId: item.id })}
-                aria-label={`Remove ${item.name}`}
+                aria-label={checkoutT("removeProduct", { name: item.name })}
               >
                 <Trash className="size-4" aria-hidden="true" />
               </Button>
@@ -122,7 +123,7 @@ export function CartHeaderPopover() {
           ))}
           {removeCartItem.isError ? (
             <p role="alert" className="py-2 text-center text-xs text-[#d92d20]">
-              We could not remove this item. Please try again.
+              {checkoutT("removeItemError")}
             </p>
           ) : null}
         </div>
@@ -137,7 +138,7 @@ export function CartHeaderPopover() {
               aria-disabled={!hasSelection}
               tabIndex={hasSelection ? undefined : -1}
             >
-              Request for quote
+              {checkoutT("requestQuote")}
             </Link>
           </Button>
           <Button asChild variant="brand" className="h-10 px-4 shadow-none">
@@ -146,7 +147,7 @@ export function CartHeaderPopover() {
               aria-disabled={!hasSelection}
               tabIndex={hasSelection ? undefined : -1}
             >
-              Proceed to checkout
+              {checkoutT("proceedCheckout")}
             </Link>
           </Button>
         </div>

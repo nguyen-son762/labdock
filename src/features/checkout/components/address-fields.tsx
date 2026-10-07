@@ -1,6 +1,7 @@
 import type { UseFormReturn } from "react-hook-form";
 import { ArrowDown2 } from "iconsax-reactjs";
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { countries, getCountryCallingCode } from "@/features/auth";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { CheckoutFormValues } from "../schemas/checkout.schema";
 
 export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFormValues> }) {
+  const t = useTranslations("Checkout");
   const country = form.watch("country");
   const callingCode = getCountryCallingCode(country);
   const changeCountry = (nextCountry: string) => {
@@ -29,7 +31,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
   return (
     <section className="rounded-xl border border-[#dde2e8] bg-white p-4" aria-labelledby="delivery-address-title">
       <h2 id="delivery-address-title" className="text-2xl font-semibold text-[#051a50]">
-        Delivery address
+        {t("deliveryAddress")}
       </h2>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <FormField
@@ -37,7 +39,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="fullName"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>Full name *</FormLabel>
+              <FormLabel>{t("fullName")} *</FormLabel>
               <FormControl>
                 <Input autoComplete="name" {...field} />
               </FormControl>
@@ -50,7 +52,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email address <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>{t("emailAddress")} <span className="text-destructive">*</span></FormLabel>
               <FormControl>
                 <Input type="email" autoComplete="email" {...field} />
               </FormControl>
@@ -63,7 +65,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="phone"
           render={({ field }) => (
             <FormItem className="min-w-0">
-              <FormLabel>Phone no. <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>{t("phoneNumber")} <span className="text-destructive">*</span></FormLabel>
               <div className="flex h-11 min-w-0 overflow-hidden rounded-md border border-input shadow-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
                 <CountryCallingCodePicker value={country} callingCode={callingCode} onChange={changeCountry} />
                 <FormControl>
@@ -91,7 +93,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="companyName"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>Company name</FormLabel>
+              <FormLabel>{t("company")}</FormLabel>
               <FormControl>
                 <Input autoComplete="organization" {...field} />
               </FormControl>
@@ -104,7 +106,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="address"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>Address <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>{t("address")} <span className="text-destructive">*</span></FormLabel>
               <FormControl>
                 <Input autoComplete="street-address" {...field} />
               </FormControl>
@@ -117,7 +119,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="postalCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Postal code <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>{t("postalCode")} <span className="text-destructive">*</span></FormLabel>
               <FormControl>
                 <Input inputMode="numeric" autoComplete="postal-code" {...field} />
               </FormControl>
@@ -130,11 +132,11 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="country"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Country <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>{t("country")} <span className="text-destructive">*</span></FormLabel>
               <Select value={field.value} onValueChange={changeCountry}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select country" />
+                    <SelectValue placeholder={t("selectCountry")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -153,7 +155,6 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
     </section>
   );
 }
-
 function CountryCallingCodePicker({
   value,
   callingCode,
@@ -163,19 +164,15 @@ function CountryCallingCodePicker({
   callingCode: string;
   onChange: (countryCode: string) => void;
 }) {
+  const t = useTranslations("Checkout");
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const searchRef = useRef<HTMLInputElement>(null);
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const normalizedSearch = search.trim().toLocaleLowerCase();
-  const filteredCountries = countries.filter(
-    ({ code, name, dialCode }) =>
-      !normalizedSearch ||
-      name.toLocaleLowerCase().includes(normalizedSearch) ||
-      code.toLocaleLowerCase().includes(normalizedSearch) ||
-      dialCode.includes(normalizedSearch),
-  );
+  const filteredCountries = countries.filter(({ code, name, dialCode }) =>
+    !normalizedSearch || name.toLocaleLowerCase().includes(normalizedSearch) || code.toLocaleLowerCase().includes(normalizedSearch) || dialCode.includes(normalizedSearch));
 
   const focusOption = (index: number) => {
     const nextIndex = Math.max(0, Math.min(index, filteredCountries.length - 1));
@@ -204,20 +201,18 @@ function CountryCallingCodePicker({
           type="button"
           variant="outline"
           role="combobox"
-          aria-label="Country calling code"
+          aria-label={t("countryCallingCode")}
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-controls="checkout-country-options"
-          className="h-full w-[104px] shrink-0 justify-between gap-1 rounded-none border-0 border-r border-input bg-transparent px-3 text-sm font-normal text-foreground shadow-none hover:bg-muted focus-visible:ring-0 focus-visible:ring-offset-0"
-        >
-          <span>{callingCode || "Code"}</span>
+          className="h-full w-[104px] shrink-0 justify-between gap-1 rounded-none border-0 border-r border-input bg-transparent px-3 text-sm font-normal text-foreground shadow-none hover:bg-muted focus-visible:ring-0 focus-visible:ring-offset-0">
+          <span>{callingCode || t("code")}</span>
           <ArrowDown2 className="size-4 shrink-0 opacity-50" aria-hidden="true" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="w-[280px] bg-white p-2"
-        onOpenAutoFocus={(event) => {
+        className="w-[280px] bg-white p-2" onOpenAutoFocus={(event) => {
           event.preventDefault();
           searchRef.current?.focus();
         }}
@@ -226,8 +221,8 @@ function CountryCallingCodePicker({
           ref={searchRef}
           type="search"
           role="searchbox"
-          aria-label="Search country or calling code"
-          placeholder="Search country or code"
+          aria-label={t("searchCountryCode")}
+          placeholder={t("searchCountryCodePlaceholder")}
           value={search}
           onChange={(event) => {
             setSearch(event.currentTarget.value);
@@ -249,7 +244,7 @@ function CountryCallingCodePicker({
         <div
           id="checkout-country-options"
           role="listbox"
-          aria-label="Countries and calling codes"
+          aria-label={t("countriesAndCodes")}
           className="mt-2 max-h-60 overflow-y-auto"
         >
           {filteredCountries.length ? (
@@ -293,7 +288,7 @@ function CountryCallingCodePicker({
               </button>
             ))
           ) : (
-            <p className="px-2 py-3 text-sm text-muted-foreground">No countries found.</p>
+            <p className="px-2 py-3 text-sm text-muted-foreground">{t("noCountries")}</p>
           )}
         </div>
       </PopoverContent>

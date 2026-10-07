@@ -1,5 +1,6 @@
 import { ArrowRight } from "iconsax-reactjs";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -21,23 +22,24 @@ export function RfqsTable({
   pageSize: number;
   onPageChange: (page: number) => void;
 }) {
+  const t = useTranslations("Rfqs");
   const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const end = Math.min((page - 1) * pageSize + rfqs.length, total);
 
   if (rfqs.length === 0) return null;
 
   return (
-    <section className="overflow-hidden rounded-xl border border-[#dde2e8] bg-white" aria-label="RFQs">
+    <section className="overflow-hidden rounded-xl border border-[#dde2e8] bg-white" aria-label={t("tableLabel")}>
       <div className="hidden lg:block">
         <Table>
           <TableHeader className="bg-[#ecf0f3]">
             <TableRow className="hover:bg-[#ecf0f3]">
-              <TableHead>RFQ No.</TableHead>
-              <TableHead>Date submitted</TableHead>
-              <TableHead>Last updated</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Supplier</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>{t("number")}</TableHead>
+              <TableHead>{t("dateSubmitted")}</TableHead>
+              <TableHead>{t("lastUpdated")}</TableHead>
+              <TableHead>{t("source")}</TableHead>
+              <TableHead>{t("supplier")}</TableHead>
+              <TableHead>{t("status")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -79,19 +81,19 @@ export function RfqsTable({
             </div>
             <dl className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <dt className="text-xs text-[#73798f]">Date submitted</dt>
+                <dt className="text-xs text-[#73798f]">{t("dateSubmitted")}</dt>
                 <dd className="text-[#051a50]">{formatRfqDate(rfq.createdAt)}</dd>
               </div>
               <div>
-                <dt className="text-xs text-[#73798f]">Last updated</dt>
+                <dt className="text-xs text-[#73798f]">{t("lastUpdated")}</dt>
                 <dd className="text-[#051a50]">{formatRfqDate(rfq.updatedAt)}</dd>
               </div>
               <div>
-                <dt className="text-xs text-[#73798f]">Source</dt>
+                <dt className="text-xs text-[#73798f]">{t("source")}</dt>
                 <dd className="text-[#051a50]">{rfq.source}</dd>
               </div>
               <div className="min-w-0">
-                <dt className="text-xs text-[#73798f]">Supplier</dt>
+                <dt className="text-xs text-[#73798f]">{t("supplier")}</dt>
                 <dd className="truncate font-mono text-xs text-[#051a50]" title={rfq.supplierId}>
                   {rfq.supplierId}
                 </dd>
@@ -99,7 +101,7 @@ export function RfqsTable({
             </dl>
             <Button asChild variant="ghost" className="h-8 w-full justify-end px-0 font-normal text-[#164990]">
               <Link href={`/rfqs/${rfq.id}`}>
-                View details <ArrowRight className="size-4" aria-hidden="true" />
+                {t("viewDetails")} <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </Button>
           </article>
@@ -107,7 +109,7 @@ export function RfqsTable({
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#dde2e8] px-6 py-3">
         <p className="text-sm text-[#73798f]">
-          Showing {start}–{end} of {total}
+          {t("showing", { start, end, total })}
         </p>
         <div className="flex gap-3">
           <Button
@@ -118,7 +120,7 @@ export function RfqsTable({
             disabled={page <= 1}
             onClick={() => onPageChange(page - 1)}
           >
-            Previous
+            {t("previous")}
           </Button>
           <Button
             type="button"
@@ -128,7 +130,7 @@ export function RfqsTable({
             disabled={page >= Math.ceil(total / pageSize)}
             onClick={() => onPageChange(page + 1)}
           >
-            Next
+            {t("next")}
           </Button>
         </div>
       </div>

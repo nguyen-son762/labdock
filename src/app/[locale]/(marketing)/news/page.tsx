@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { NewsListScreen } from "@/features/news";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
@@ -6,16 +7,15 @@ import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/lo
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
-  const description =
-    "Stay informed with the latest research breakthroughs, industry news, laboratory best practices and scientific events.";
+  const t = await getTranslations("RouteMetadata");
+  const description = t("newsDescription");
 
   return {
-    title: "News",
-    description:
-      "Stay informed with the latest research breakthroughs, industry news, laboratory best practices and scientific events.",
+    title: t("news"),
+    description,
     alternates: getLocalizedAlternates("/news", locale),
     openGraph: {
-      title: "News",
+      title: t("news"),
       description,
       url: getLocalizedPath("/news", locale),
       locale: locale === "vi" ? "vi_VN" : "en_SG",

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Refresh2, TickCircle } from "iconsax-reactjs";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -19,15 +20,15 @@ import type { CurrentUser } from "../schemas/user.schema";
 
 type FieldName = Exclude<keyof ProfileFormValues, "country" | "billingSameAsDelivery">;
 
-const fields: Array<{ name: FieldName; label: string; required?: boolean; wide?: boolean; type?: "email" | "tel" }> = [
-  { name: "fullName", label: "Full name", required: true },
-  { name: "phone", label: "Phone no.", required: true, type: "tel" },
-  { name: "email", label: "Email address", required: true, wide: true, type: "email" },
-  { name: "companyName", label: "Company name", required: true },
-  { name: "companyPhone", label: "Company phone no.", type: "tel" },
-  { name: "businessRegistrationNumber", label: "Business registration no.", wide: true },
-  { name: "deliveryAddress", label: "Address", required: true, wide: true },
-  { name: "postalCode", label: "Postal code", required: true },
+const fieldLabelKeys: Record<FieldName, "fullName" | "phone" | "email" | "companyName" | "companyPhone" | "businessRegistration" | "address" | "postalCode"> = {
+  fullName: "fullName", phone: "phone", email: "email", companyName: "companyName", companyPhone: "companyPhone",
+  businessRegistrationNumber: "businessRegistration", deliveryAddress: "address", postalCode: "postalCode",
+};
+const fields: Array<{ name: FieldName; required?: boolean; wide?: boolean; type?: "email" | "tel" }> = [
+  { name: "fullName", required: true }, { name: "phone", required: true, type: "tel" },
+  { name: "email", required: true, wide: true, type: "email" }, { name: "companyName", required: true },
+  { name: "companyPhone", type: "tel" }, { name: "businessRegistrationNumber", wide: true },
+  { name: "deliveryAddress", required: true, wide: true }, { name: "postalCode", required: true },
 ];
 
 function SectionTitle({ children }: { children: string }) {
@@ -50,6 +51,7 @@ function toFormValues(user: CurrentUser): ProfileFormValues {
 }
 
 export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: () => void }) {
+  const t = useTranslations("Profile");
   const mutation = useUpdateProfileMutation();
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -71,7 +73,7 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
         render={({ field }) => (
           <FormItem className={config.wide ? "col-span-full space-y-1.5" : "space-y-1.5"}>
             <FormLabel className="text-xs text-[#051a50]">
-              {config.label} {config.required ? <span className="text-red-600">*</span> : null}
+              {t(fieldLabelKeys[name])} {config.required ? <span className="text-red-600">*</span> : null}
             </FormLabel>
             <FormControl>
               <Input type={config.type ?? "text"} className="h-10 border-[#dde2e8] bg-white" {...field} />
@@ -86,7 +88,7 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
   return (
     <Card className="overflow-hidden border-[#dde2e8] shadow-none">
       <div className="flex h-12 items-center border-b border-[#dde2e8] px-4">
-        <h2 className="text-lg font-semibold text-[#1f5fa8]">Account information</h2>
+        <h2 className="text-lg font-semibold text-[#1f5fa8]">{t("accountInfo")}</h2>
       </div>
       <Form {...form}>
         <form noValidate onSubmit={form.handleSubmit(handleSubmit)}>
@@ -101,21 +103,21 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
                 role="status"
                 className="col-span-full flex items-center gap-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800"
               >
-                <TickCircle className="size-4" aria-hidden="true" /> Profile updated.
+                <TickCircle className="size-4" aria-hidden="true" /> {t("profileUpdated")}
               </p>
             ) : null}
 
-            <SectionTitle>Personal details</SectionTitle>
+            <SectionTitle>{t("personalDetails")}</SectionTitle>
             {renderField("fullName")}
             {renderField("phone")}
             {renderField("email")}
 
-            <SectionTitle>Company details</SectionTitle>
+            <SectionTitle>{t("companyDetails")}</SectionTitle>
             {renderField("companyName")}
             {renderField("companyPhone")}
             {renderField("businessRegistrationNumber")}
 
-            <SectionTitle>Delivery address</SectionTitle>
+            <SectionTitle>{t("deliveryAddress")}</SectionTitle>
             {renderField("deliveryAddress")}
             {renderField("postalCode")}
             <FormField
@@ -124,18 +126,18 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
               render={({ field }) => (
                 <FormItem className="space-y-1.5">
                   <FormLabel className="text-xs text-[#051a50]">
-                    Country <span className="text-red-600">*</span>
+                    {t("country")} <span className="text-red-600">*</span>
                   </FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger className="h-10 border-[#dde2e8] bg-white">
-                        <SelectValue placeholder="Select country" />
+                        <SelectValue placeholder={t("selectCountry")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="SG">Singapore</SelectItem>
-                      <SelectItem value="MY">Malaysia</SelectItem>
-                      <SelectItem value="VN">Vietnam</SelectItem>
+                      <SelectItem value="SG">{t("singapore")}</SelectItem>
+                      <SelectItem value="MY">{t("malaysia")}</SelectItem>
+                      <SelectItem value="VN">{t("vietnam")}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage className="text-xs" />
@@ -143,7 +145,7 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
               )}
             />
 
-            <SectionTitle>Billing address</SectionTitle>
+            <SectionTitle>{t("billingAddress")}</SectionTitle>
             <FormField
               control={form.control}
               name="billingSameAsDelivery"
@@ -152,7 +154,7 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
-                  <FormLabel className="font-normal text-[#051a50]">Same as delivery address</FormLabel>
+                  <FormLabel className="font-normal text-[#051a50]">{t("sameAsDelivery")}</FormLabel>
                 </FormItem>
               )}
             />
@@ -165,11 +167,11 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
               className="rounded-full border-[#c8d0d9] font-normal"
               onClick={onCancel}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button type="submit" variant="brand" size="sm" disabled={!form.formState.isDirty || mutation.isPending}>
               {mutation.isPending ? <Refresh2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-              {mutation.isPending ? "Saving…" : "Save changes"}
+              {mutation.isPending ? t("saving") : t("saveChanges")}
             </Button>
           </div>
         </form>

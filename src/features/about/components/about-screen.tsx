@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { AboutCta } from "./about-cta";
 import { AboutHero } from "./about-hero";
@@ -7,6 +8,7 @@ import { AboutValues } from "./about-values";
 import { TrustedPartners } from "./trusted-partners";
 
 export function AboutScreen() {
+  const t = useTranslations("About");
   return (
     <div className="bg-[#f9fcff]">
       <AboutHero />
@@ -16,7 +18,7 @@ export function AboutScreen() {
             <div className="relative aspect-[638/560] overflow-hidden rounded-3xl">
               <Image
                 src="/about/about-laboratory.png"
-                alt="Laboratory equipment and research facilities available through Labdock"
+                alt={t("imageAlt")}
                 fill
                 priority
                 sizes="(min-width: 1280px) 638px, calc(100vw - 40px)"

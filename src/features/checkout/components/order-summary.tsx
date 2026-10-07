@@ -1,4 +1,5 @@
 import { ArrowRight, ShieldTick } from "iconsax-reactjs";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
@@ -14,11 +15,12 @@ export function OrderSummary({
   pending: boolean;
   currency?: string;
 }) {
+  const t = useTranslations("Checkout");
   const rows = [
-    ["Subtotal", formatCurrency(totals.subtotal, currency)],
-    ["Total discount", `-${formatCurrency(totals.discount, currency)}`],
-    ["Delivery", totals.delivery === 0 ? "FREE" : formatCurrency(totals.delivery, currency)],
-    ["Tax", formatCurrency(totals.tax, currency)],
+    [t("subtotal"), formatCurrency(totals.subtotal, currency)],
+    [t("discount"), `-${formatCurrency(totals.discount, currency)}`],
+    [t("delivery"), totals.delivery === 0 ? t("free") : formatCurrency(totals.delivery, currency)],
+    [t("tax"), formatCurrency(totals.tax, currency)],
   ] as const;
 
   return (
@@ -27,7 +29,7 @@ export function OrderSummary({
       aria-labelledby="order-summary-title"
     >
       <h2 id="order-summary-title" className="text-2xl font-semibold text-[#051a50]">
-        Order summary
+        {t("orderSummary")}
       </h2>
       <dl className="mt-5 space-y-4">
         {rows.map(([label, value]) => (
@@ -38,7 +40,7 @@ export function OrderSummary({
         ))}
       </dl>
       <div className="mt-5 flex items-center justify-between border-t border-[#dde2e8] pt-4">
-        <span className="text-sm font-semibold text-[#051a50]">Total</span>
+        <span className="text-sm font-semibold text-[#051a50]">{t("total")}</span>
         <strong className="text-xl text-[#164990]">{formatCurrency(totals.total, currency)}</strong>
       </div>
       <Button
@@ -48,13 +50,13 @@ export function OrderSummary({
         disabled={pending}
         className="mt-5 h-11 w-full justify-between pl-5 pr-1.5"
       >
-        <span className="flex-1 text-center">{pending ? "Preparing payment…" : "Make payment"}</span>
+          <span className="flex-1 text-center">{pending ? t("preparingPayment") : t("makePayment")}</span>
         <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b]">
           <ArrowRight className="size-4" aria-hidden="true" />
         </span>
       </Button>
       <p className="mt-5 flex items-center gap-2 text-xs text-[#868da5]">
-        <ShieldTick className="size-4 text-[#e3bf00]" variant="Bold" aria-hidden="true" /> Secured payment
+        <ShieldTick className="size-4 text-[#e3bf00]" variant="Bold" aria-hidden="true" /> {t("securedPayment")}
       </p>
     </aside>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { getPublicBrands } from "@/features/brands/server";
@@ -36,24 +37,25 @@ async function getCategoryBySlug(slug: string) {
 export async function generateMetadata({ params }: Pick<ProductCategoryPageProps, "params">): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isAppLocale(locale)) return {};
+  const t = await getTranslations({ locale, namespace: "RouteMetadata" });
 
   try {
     const category = await getCategoryBySlug(slug);
-    if (!category) return { title: "Category not found" };
+    if (!category) return { title: t("categoryNotFound") };
 
     return {
-      title: `${category.name} | Laboratory Products`,
-      description: category.description ?? `Browse laboratory products in ${category.name}.`,
+      title: `${category.name} | ${t("laboratoryProducts")}`,
+      description: category.description ?? t("browseCategory", { category: category.name }),
       alternates: getLocalizedAlternates(`/products/category/${category.slug}`, locale),
       openGraph: {
-        title: `${category.name} | Laboratory Products`,
-        description: category.description ?? `Browse laboratory products in ${category.name}.`,
+        title: `${category.name} | ${t("laboratoryProducts")}`,
+        description: category.description ?? t("browseCategory", { category: category.name }),
         url: getLocalizedPath(`/products/category/${category.slug}`, locale),
         locale: locale === "vi" ? "vi_VN" : "en_SG",
       },
     };
   } catch {
-    return { title: "Product category" };
+    return { title: t("productCategory") };
   }
 }
 
