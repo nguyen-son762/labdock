@@ -80,7 +80,7 @@ function OrderSummary() {
     >
       <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-white/10">
         <ShoppingCart className="size-4" variant="Bold" aria-hidden="true" />
-        <span className="absolute -right-1 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#e57a00] text-[10px] font-semibold leading-none">
+        <span aria-hidden="true" className="absolute -right-1 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#e57a00] text-[10px] font-semibold leading-none">
           2
         </span>
       </span>
@@ -157,6 +157,7 @@ export function MainHeader({
               <Link
                 key={key}
                 href={href}
+                aria-label={t(key)}
                 className={cn(
                   "inline-flex h-5 items-center gap-2 transition-colors hover:text-[#f5a623]",
                   pathname === href && "text-[#f5a623]",

@@ -85,7 +85,6 @@ function EditorialCard({ promo, index }: { promo: (typeof promos)[number]; index
         src={promo.image}
         alt=""
         fill
-        unoptimized
         sizes="(min-width: 1024px) 33vw, 95vw"
         className="object-cover"
       />

@@ -49,7 +49,6 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
           src={presentation.image}
           alt={product.name}
           fill
-          unoptimized
           sizes="(min-width: 1280px) 190px, (min-width: 768px) 30vw, 45vw"
           className="object-contain p-3"
         />
@@ -126,8 +125,12 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
                 "border-[#2f7bc4] bg-white text-[#164990] hover:bg-[#f3f8fc] hover:text-[#164990]",
             )}
           >
-            <Link href={productHref}>
+            <Link
+              href={productHref}
+              aria-label={`${presentation.canPurchase ? t("buyNow") : t("learnMore")}: ${product.name}`}
+            >
               {presentation.canPurchase ? t("buyNow") : t("learnMore")}
+              <span className="sr-only">: {product.name}</span>
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
           </Button>

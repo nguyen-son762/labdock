@@ -53,7 +53,6 @@ export function CtaSection() {
                 src={card.image}
                 alt=""
                 fill
-                unoptimized
                 sizes="310px"
                 className="rounded-[20px] object-contain object-right-top"
               />

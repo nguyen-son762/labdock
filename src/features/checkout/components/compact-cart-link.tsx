@@ -15,7 +15,7 @@ export function CompactCartLink() {
   return (
     <Link
       href="/cart"
-      aria-label={t("cart")}
+      aria-label={t("cartItemCount", { count: itemCount })}
       className="relative flex size-10 items-center justify-center rounded-full bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
     >
       <ShoppingCart className="size-5" variant="Bold" aria-hidden="true" />

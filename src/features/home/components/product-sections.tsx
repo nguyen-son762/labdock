@@ -147,8 +147,8 @@ export function PersonalizedProducts({ products }: { products: readonly Product[
                   <path d="M16.3399 0C7.31561 0 0 7.31561 0 16.3399C0 25.3641 7.31561 32.6797 16.3399 32.6797C25.3641 32.6797 32.6797 25.3641 32.6797 16.3399C32.6797 7.31561 25.3641 0 16.3399 0Z" fill="url(#paint0_linear_106_4260)" />
                   <defs>
                     <linearGradient id="paint0_linear_106_4260" x1="0" y1="16.3399" x2="32.6797" y2="16.3399" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#EFA33B" />
-                      <stop offset="1" stop-color="#E57A00" />
+                      <stop stopColor="#EFA33B" />
+                      <stop offset="1" stopColor="#E57A00" />
                     </linearGradient>
                   </defs>
                 </svg>

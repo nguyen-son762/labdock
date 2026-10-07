@@ -47,14 +47,12 @@ function PromoCard({ event = false }: { event?: boolean }) {
         src={event ? "/home/event-promo.png" : "/home/hero-promo.png"}
         alt=""
         fill
-        unoptimized
-        priority
         sizes={event ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 66vw, 100vw"}
         className="object-cover"
       />
       <div className="absolute inset-0  " />
       <div className="relative flex h-full min-h-[250px] max-w-lg flex-col justify-end p-6 lg:min-h-[300px]">
-        <span className="mb-2 w-fit rounded bg-[#e57a00] px-1.5 py-0.5 text-[10px] font-semibold uppercase">
+        <span className="mb-2 w-fit rounded bg-[#a24e00] px-1.5 py-0.5 text-[10px] font-semibold uppercase">
           {event ? t("upcomingEvent") : t("lowStock")}
         </span>
         <h2 className="max-w-md text-xl font-semibold leading-tight lg:text-2xl">
@@ -123,7 +121,6 @@ function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
         src={banner.imageUrl}
         alt=""
         fill
-        unoptimized
         sizes="(min-width: 1024px) 50vw, 100vw"
         className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
       />
@@ -135,7 +132,7 @@ function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
             <span
               className={cn(
                 "mb-2 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase",
-                isLeft ? "bg-[#e57a00]" : "bg-[#2f7bc4]",
+                isLeft ? "bg-[#a24e00]" : "bg-[#2263a0]",
               )}
             >
               {banner.badge}

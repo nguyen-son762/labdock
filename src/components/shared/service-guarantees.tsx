@@ -60,7 +60,7 @@ export function ServiceGuarantees() {
                   <Image src={imageUrl} alt="" width={40} height={40} />
                 </div>
                 <h2 className="mt-4 text-sm font-semibold text-[#051a50]">{t(`${key}Title`)}</h2>
-                <p className="mx-auto mt-1 max-w-[220px] text-xs leading-[18px] text-[#73798f]">
+                <p className="mx-auto mt-1 max-w-[220px] text-xs leading-[18px] text-[#646a80]">
                   {t(`${key}Description`)}
                 </p>
               </article>

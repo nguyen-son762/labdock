@@ -35,8 +35,10 @@ export function HomeScreen({
         alt=""
         width={1920}
         height={850}
-        unoptimized
+        sizes="100vw"
         priority
+        fetchPriority="high"
+        unoptimized
         className="pointer-events-none absolute left-0 top-0 h-[850px] w-full object-cover object-top"
       />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[850px] bg-[linear-gradient(180deg,rgba(249,252,255,0)_36%,#f5f8fb_100%)]" />

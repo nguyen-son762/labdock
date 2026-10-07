@@ -32,6 +32,7 @@
     "logout": "Đăng xuất",
     "loggingOut": "Đang đăng xuất…",
     "cart": "Giỏ hàng",
+    "cartItemCount": "Giỏ hàng, {count} sản phẩm",
     "searchCatalog": "Tìm kiếm danh mục",
     "searchPlaceholder": "Tìm theo CAS, mã catalog hoặc tên sản phẩm...",
     "search": "Tìm kiếm",

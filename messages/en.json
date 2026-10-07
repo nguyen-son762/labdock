@@ -32,6 +32,7 @@
     "logout": "Logout",
     "loggingOut": "Logging out…",
     "cart": "Cart",
+    "cartItemCount": "Cart, {count} items",
     "searchCatalog": "Search catalog",
     "searchPlaceholder": "Search by CAS/catalog/product name...",
     "search": "Search",
