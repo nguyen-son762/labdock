@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp, SearchNormal1 } from "iconsax-reactjs";
+import { SearchNormal1 } from "iconsax-reactjs";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 

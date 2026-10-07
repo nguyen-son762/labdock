@@ -1,4 +1,4 @@
-import { Facebook, Global, Instagram, Sms, TruckFast, Verify, Whatsapp } from "iconsax-reactjs";
+import { Sms, TruckFast, Verify, Whatsapp } from "iconsax-reactjs";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 

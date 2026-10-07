@@ -21,7 +21,6 @@ export function SwiperNavigation({
   onNext,
   previousDisabled,
   nextDisabled,
-  tone = "light",
   className,
 }: SwiperNavigationProps) {
   return (

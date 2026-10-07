@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Star1 } from "iconsax-reactjs";
+import { ArrowLeft, ArrowRight } from "iconsax-reactjs";
 import Image from "next/image";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
