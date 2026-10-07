@@ -110,7 +110,10 @@ export function CatalogWorkspace({
               {t("listing")}
             </h2>
             <p className="mt-1 text-xs text-[#73798f]">
-              {t("showing", { count: products.length, total: total.toLocaleString(locale === "vi" ? "vi-VN" : "en-SG") })}
+              {t("showing", {
+                count: products.length,
+                total: total.toLocaleString(locale === "vi" ? "vi-VN" : "en-SG"),
+              })}
             </p>
           </div>
           <Select

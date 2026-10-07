@@ -46,11 +46,7 @@ export function ProfileInfoPanel({ user, onEdit }: { user: CurrentUser; onEdit: 
         <Detail label={t("country")} value={user.country} />
 
         <SectionTitle>{t("billingAddress")}</SectionTitle>
-        <Detail
-          label=""
-          value={user.billingSameAsDelivery ? t("sameAsDelivery") : t("differentBilling")}
-          wide
-        />
+        <Detail label="" value={user.billingSameAsDelivery ? t("sameAsDelivery") : t("differentBilling")} wide />
       </dl>
     </Card>
   );

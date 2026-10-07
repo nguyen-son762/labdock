@@ -79,7 +79,17 @@ export function NewsFeed({ articles }: { articles: NewsArticle[] }) {
               category === item ? "bg-[#d1ecfa] text-[#092661] hover:bg-[#c5e7f8]" : "bg-[#ecf0f3] text-[#73798f]",
             )}
           >
-            {t(({ All: "all", News: "categoryNews", Events: "events", "Company updates": "companyUpdates", Features: "features" } as const)[item])}
+            {t(
+              (
+                {
+                  All: "all",
+                  News: "categoryNews",
+                  Events: "events",
+                  "Company updates": "companyUpdates",
+                  Features: "features",
+                } as const
+              )[item],
+            )}
           </Button>
         ))}
       </div>

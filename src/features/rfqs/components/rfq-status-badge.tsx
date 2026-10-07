@@ -12,7 +12,10 @@ const statusStyles: Record<string, string> = {
   expired: "bg-[#fff0f1] text-[#e81643]",
   cancelled: "bg-[#fff0f1] text-[#e81643]",
 };
-const statusTranslationKeys: Record<string, "submitted" | "quoted" | "pending" | "declined" | "accepted" | "expired" | "cancelled" | "unknown"> = {
+const statusTranslationKeys: Record<
+  string,
+  "submitted" | "quoted" | "pending" | "declined" | "accepted" | "expired" | "cancelled" | "unknown"
+> = {
   submitted: "submitted",
   quoted: "quoted",
   pending: "pending",

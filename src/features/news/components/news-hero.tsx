@@ -19,9 +19,7 @@ export function NewsHero() {
         <Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("title") }]} />
         <div className="space-y-3">
           <h1 className="text-[32px] font-semibold leading-none text-[#0f3678]">{t("title")}</h1>
-          <p className="text-sm leading-5 text-[#051a50]">
-            {t("description")}
-          </p>
+          <p className="text-sm leading-5 text-[#051a50]">{t("description")}</p>
         </div>
       </div>
     </section>

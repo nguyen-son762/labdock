@@ -20,7 +20,11 @@ export function NewsCategoryBadge({ category, compact = false }: { category: New
         categoryStyles[category],
       )}
     >
-      {t(({ News: "categoryNews", Events: "events", "Company updates": "companyUpdates", Features: "features" } as const)[category])}
+      {t(
+        (
+          { News: "categoryNews", Events: "events", "Company updates": "companyUpdates", Features: "features" } as const
+        )[category],
+      )}
     </span>
   );
 }

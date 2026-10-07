@@ -140,7 +140,10 @@ function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
           ) : null}
           {banner.title ? (
             <h2
-              className={cn("text-xl font-semibold leading-tight lg:text-2xl lg:leading-8", isLeft ? "max-w-[384px]" : "max-w-xl")}
+              className={cn(
+                "text-xl font-semibold leading-tight lg:text-2xl lg:leading-8",
+                isLeft ? "max-w-[384px]" : "max-w-xl",
+              )}
             >
               {banner.title}
             </h2>

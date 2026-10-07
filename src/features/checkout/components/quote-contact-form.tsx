@@ -56,7 +56,9 @@ export function QuoteContactForm({ onSubmit, pending, error }: QuoteContactFormP
             )}
           />
           <fieldset>
-            <legend className="mb-2 text-sm font-medium leading-none">{t("phoneNumber")} <span className="text-destructive">*</span></legend>
+            <legend className="mb-2 text-sm font-medium leading-none">
+              {t("phoneNumber")} <span className="text-destructive">*</span>
+            </legend>
             <div className="grid grid-cols-[92px_1fr] gap-2">
               <FormField
                 control={form.control}

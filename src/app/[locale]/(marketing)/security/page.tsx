@@ -48,9 +48,7 @@ export default async function SecurityPage() {
       <div className="max-w-2xl">
         <p className="text-sm font-semibold text-primary">{t("defence")}</p>
         <h1 className="mt-3 text-4xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="mt-4 text-lg leading-8 text-muted-foreground">
-          {t("intro")}
-        </p>
+        <p className="mt-4 text-lg leading-8 text-muted-foreground">{t("intro")}</p>
       </div>
       <div className="mt-10 grid gap-5 md:grid-cols-3">
         {protections.map(({ titleKey, descriptionKey, icon: Icon }) => (

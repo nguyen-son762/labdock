@@ -59,15 +59,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     brand: { "@type": "Brand", name: product.brandName },
     ...(canShowOffer && variant
       ? {
-        offers: {
-          "@type": "Offer",
-          priceCurrency: variant.currency,
-          price: variant.unitPrice,
-          url: `${siteConfig.url}${getLocalizedPath(`/products/${product.slug}`, locale)}`,
-          availability:
-            variant.isActive && variant.stockQty > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        },
-      }
+          offers: {
+            "@type": "Offer",
+            priceCurrency: variant.currency,
+            price: variant.unitPrice,
+            url: `${siteConfig.url}${getLocalizedPath(`/products/${product.slug}`, locale)}`,
+            availability:
+              variant.isActive && variant.stockQty > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+          },
+        }
       : {}),
   };
 

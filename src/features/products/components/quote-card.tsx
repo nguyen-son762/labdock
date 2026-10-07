@@ -24,7 +24,7 @@ export function QuoteCard() {
         <p className="mt-2 max-w-[270px] text-sm text-white/85">{t("quoteCardDescription")}</p>
         <Button asChild variant="brand" className="mt-6 w-fit px-5 shadow-none">
           <Link href="/contact-us?type=quote">
-          {t("quoteAction")} <ArrowRight className="size-4" aria-hidden="true" />
+            {t("quoteAction")} <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </Button>
         <div className="mt-6 flex flex-wrap gap-2 text-[10px]">

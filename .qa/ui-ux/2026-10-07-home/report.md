@@ -14,13 +14,13 @@ Measured: headings, page overflow, header control bounds, category link destinat
 
 ## Confirmed fixes
 
-| Finding | Before | After | Backlog |
-|---|---|---|---|
-| Homepage category route | `/categories/{slug}` had no route | `/products/category/{slug}` | BUG-20261007-002 |
-| Header category filter | ignored `category` URL parameter | implemented category route | BUG-20261007-006 |
-| Hero desktop geometry | y=166, width=470, height=71.66, bold | y=158, width=433, height=84, semibold | BUG-20261007-007 |
-| Left banner title | text box width 576px | width 384px, desktop line height 32px | BUG-20261007-007 |
-| Category SVG warnings | invalid `stop-color`/`stop-opacity` React props | `stopColor`/`stopOpacity` | corrected in owned component |
+| Finding                 | Before                                          | After                                 | Backlog                      |
+| ----------------------- | ----------------------------------------------- | ------------------------------------- | ---------------------------- |
+| Homepage category route | `/categories/{slug}` had no route               | `/products/category/{slug}`           | BUG-20261007-002             |
+| Header category filter  | ignored `category` URL parameter                | implemented category route            | BUG-20261007-006             |
+| Hero desktop geometry   | y=166, width=470, height=71.66, bold            | y=158, width=433, height=84, semibold | BUG-20261007-007             |
+| Left banner title       | text box width 576px                            | width 384px, desktop line height 32px | BUG-20261007-007             |
+| Category SVG warnings   | invalid `stop-color`/`stop-opacity` React props | `stopColor`/`stopOpacity`             | corrected in owned component |
 
 ## Validation
 

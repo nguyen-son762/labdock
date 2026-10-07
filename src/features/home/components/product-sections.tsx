@@ -72,7 +72,8 @@ export function OutstandingProducts({ products }: { products: readonly Product[]
               />
             </svg>
             <span className="relative z-10 flex items-center gap-2 text-2xl font-semibold text-white">
-              <Image className="relative z-10" src="/home/icon/awards.png" alt="" width={40} height={40} /> {t("outstanding")}
+              <Image className="relative z-10" src="/home/icon/awards.png" alt="" width={40} height={40} />{" "}
+              {t("outstanding")}
             </span>
           </h2>
           <div className="relative z-10">
@@ -124,11 +125,25 @@ export function PersonalizedProducts({ products }: { products: readonly Product[
               preserveAspectRatio="none"
             >
               <defs>
-                <linearGradient id="personalized-title-gradient" x1="191" y1="62" x2="191" y2="0" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="personalized-title-gradient"
+                  x1="191"
+                  y1="62"
+                  x2="191"
+                  y2="0"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stopColor="#74B3E4" stopOpacity="0.8" />
                   <stop offset="1" stopColor="#164990" />
                 </linearGradient>
-                <linearGradient id="personalized-title-stroke" x1="191" y1="0" x2="191" y2="62" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="personalized-title-stroke"
+                  x1="191"
+                  y1="0"
+                  x2="191"
+                  y2="62"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stopColor="white" stopOpacity="0" />
                   <stop offset="1" stopColor="white" stopOpacity="0.2" />
                 </linearGradient>
@@ -143,10 +158,27 @@ export function PersonalizedProducts({ products }: { products: readonly Product[
             <span className="relative z-10 flex items-center gap-2 text-2xl">
               <div className="relative">
                 <Image className="relative z-10" src="/home/icon/personal.png" alt="" width={40} height={40} />
-                <svg className="absolute -top-[1px] right-0" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
-                  <path d="M16.3399 0C7.31561 0 0 7.31561 0 16.3399C0 25.3641 7.31561 32.6797 16.3399 32.6797C25.3641 32.6797 32.6797 25.3641 32.6797 16.3399C32.6797 7.31561 25.3641 0 16.3399 0Z" fill="url(#paint0_linear_106_4260)" />
+                <svg
+                  className="absolute -top-[1px] right-0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="33"
+                  height="33"
+                  viewBox="0 0 33 33"
+                  fill="none"
+                >
+                  <path
+                    d="M16.3399 0C7.31561 0 0 7.31561 0 16.3399C0 25.3641 7.31561 32.6797 16.3399 32.6797C25.3641 32.6797 32.6797 25.3641 32.6797 16.3399C32.6797 7.31561 25.3641 0 16.3399 0Z"
+                    fill="url(#paint0_linear_106_4260)"
+                  />
                   <defs>
-                    <linearGradient id="paint0_linear_106_4260" x1="0" y1="16.3399" x2="32.6797" y2="16.3399" gradientUnits="userSpaceOnUse">
+                    <linearGradient
+                      id="paint0_linear_106_4260"
+                      x1="0"
+                      y1="16.3399"
+                      x2="32.6797"
+                      y2="16.3399"
+                      gradientUnits="userSpaceOnUse"
+                    >
                       <stop stopColor="#EFA33B" />
                       <stop offset="1" stopColor="#E57A00" />
                     </linearGradient>

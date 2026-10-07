@@ -16,7 +16,9 @@ export function AboutValues() {
           <li key={`${advantage.title}-${index}`} className="flex items-start gap-1">
             <TickCircle className="mt-0.5 size-5 shrink-0 text-[#12b76a]" aria-hidden="true" />
             <p className="leading-5 text-[#2e3038]">
-              <strong className="text-base font-semibold leading-6 text-[#1f5fa8]">{t(advantageKeys[index] ?? "advantage1")}</strong>{" "}
+              <strong className="text-base font-semibold leading-6 text-[#1f5fa8]">
+                {t(advantageKeys[index] ?? "advantage1")}
+              </strong>{" "}
               <span className="text-sm">{t(`${advantageKeys[index] ?? "advantage1"}Description`)}</span>
             </p>
           </li>

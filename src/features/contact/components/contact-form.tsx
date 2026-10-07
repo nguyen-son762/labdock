@@ -54,9 +54,7 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
   return (
     <section className="bg-[#f9fcff] px-4 py-8 sm:px-5">
       <div className="mx-auto max-w-[1240px] rounded-xl bg-white p-5 sm:p-6">
-        <h2 className="text-2xl font-semibold leading-[42px] text-[#0f3678] sm:text-[32px]">
-          {t("formTitle")}
-        </h2>
+        <h2 className="text-2xl font-semibold leading-[42px] text-[#0f3678] sm:text-[32px]">{t("formTitle")}</h2>
         <Form {...form}>
           <form noValidate onSubmit={form.handleSubmit(handleSubmit)} className="mt-2 space-y-4">
             <FormField
@@ -101,7 +99,9 @@ export function ContactForm({ initialType }: { initialType: InquiryType }) {
               </p>
             ) : null}
 
-            {inquiryType === "quote" ? <h3 className="text-base font-semibold text-[#1f5fa8]">{t("contactInfo")}</h3> : null}
+            {inquiryType === "quote" ? (
+              <h3 className="text-base font-semibold text-[#1f5fa8]">{t("contactInfo")}</h3>
+            ) : null}
             <ContactInfoFields />
 
             {inquiryType === "general" ? (

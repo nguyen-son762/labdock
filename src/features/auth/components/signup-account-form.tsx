@@ -35,9 +35,27 @@ export function SignupAccountForm({ form, signupMutation, onSubmit, errorMessage
           {errorMessage(signupMutation.error) ? (
             <Alert className="sm:col-span-2">{errorMessage(signupMutation.error)}</Alert>
           ) : null}
-          <Field name="company" label={t("companyName")} placeholder={t("enterCompanyName")} control={form.control} required />
-          <Field name="fullName" label={t("fullName")} placeholder={t("enterFullName")} control={form.control} required />
-          <Field name="email" label={t("emailAddress")} placeholder={t("enterEmailAddress")} control={form.control} required />
+          <Field
+            name="company"
+            label={t("companyName")}
+            placeholder={t("enterCompanyName")}
+            control={form.control}
+            required
+          />
+          <Field
+            name="fullName"
+            label={t("fullName")}
+            placeholder={t("enterFullName")}
+            control={form.control}
+            required
+          />
+          <Field
+            name="email"
+            label={t("emailAddress")}
+            placeholder={t("enterEmailAddress")}
+            control={form.control}
+            required
+          />
           <PhoneField control={form.control} />
           <SelectField
             name="country"
@@ -47,13 +65,7 @@ export function SignupAccountForm({ form, signupMutation, onSubmit, errorMessage
             control={form.control}
             required
           />
-          <Field
-            name="region"
-            label={t("region")}
-            placeholder={t("enterRegion")}
-            control={form.control}
-            required
-          />
+          <Field name="region" label={t("region")} placeholder={t("enterRegion")} control={form.control} required />
           <Field
             name="address"
             label={t("address")}
@@ -79,7 +91,7 @@ export function SignupAccountForm({ form, signupMutation, onSubmit, errorMessage
         </form>
       </Form>
       <p className="mt-5 flex gap-1 text-sm text-[#868da5]">
-        {t("alreadyHaveAccount")} {" "}
+        {t("alreadyHaveAccount")}{" "}
         <Link href="/login" className="font-medium text-[#164990] hover:underline">
           {t("logIn")}
         </Link>

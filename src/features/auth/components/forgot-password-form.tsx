@@ -102,7 +102,11 @@ export function ForgotPasswordForm() {
   const stepper = (activeStep: 1 | 2 | 3) => (
     <AuthStepper
       activeStep={activeStep}
-      steps={[[t("stepOne"), t("emailAddress")], [t("stepTwo"), t("verification")], [t("stepThree"), t("newPassword")]]}
+      steps={[
+        [t("stepOne"), t("emailAddress")],
+        [t("stepTwo"), t("verification")],
+        [t("stepThree"), t("newPassword")],
+      ]}
       ariaLabel={t("passwordResetProgress")}
     />
   );
@@ -112,10 +116,10 @@ export function ForgotPasswordForm() {
       <>
         {stepper(1)}
         <div className="w-full pt-8 sm:pt-10">
-          <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{t("forgotPasswordTitle")}</h2>
-          <p className="mt-2 text-base leading-6 text-[var(--auth-muted)]">
-            {t("forgotPasswordPrompt")}
-          </p>
+          <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">
+            {t("forgotPasswordTitle")}
+          </h2>
+          <p className="mt-2 text-base leading-6 text-[var(--auth-muted)]">{t("forgotPasswordPrompt")}</p>
         </div>
         <Form {...emailForm}>
           <form className="space-y-4 pt-6" noValidate onSubmit={emailForm.handleSubmit(submitEmail)}>

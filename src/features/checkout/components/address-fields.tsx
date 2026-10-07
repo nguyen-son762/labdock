@@ -52,7 +52,9 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("emailAddress")} <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>
+                {t("emailAddress")} <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <Input type="email" autoComplete="email" {...field} />
               </FormControl>
@@ -65,7 +67,9 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="phone"
           render={({ field }) => (
             <FormItem className="min-w-0">
-              <FormLabel>{t("phoneNumber")} <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>
+                {t("phoneNumber")} <span className="text-destructive">*</span>
+              </FormLabel>
               <div className="flex h-11 min-w-0 overflow-hidden rounded-md border border-input shadow-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
                 <CountryCallingCodePicker value={country} callingCode={callingCode} onChange={changeCountry} />
                 <FormControl>
@@ -106,7 +110,9 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="address"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>{t("address")} <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>
+                {t("address")} <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <Input autoComplete="street-address" {...field} />
               </FormControl>
@@ -119,7 +125,9 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="postalCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("postalCode")} <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>
+                {t("postalCode")} <span className="text-destructive">*</span>
+              </FormLabel>
               <FormControl>
                 <Input inputMode="numeric" autoComplete="postal-code" {...field} />
               </FormControl>
@@ -132,7 +140,9 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
           name="country"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("country")} <span className="text-destructive">*</span></FormLabel>
+              <FormLabel>
+                {t("country")} <span className="text-destructive">*</span>
+              </FormLabel>
               <Select value={field.value} onValueChange={changeCountry}>
                 <FormControl>
                   <SelectTrigger>
@@ -171,8 +181,13 @@ function CountryCallingCodePicker({
   const searchRef = useRef<HTMLInputElement>(null);
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const normalizedSearch = search.trim().toLocaleLowerCase();
-  const filteredCountries = countries.filter(({ code, name, dialCode }) =>
-    !normalizedSearch || name.toLocaleLowerCase().includes(normalizedSearch) || code.toLocaleLowerCase().includes(normalizedSearch) || dialCode.includes(normalizedSearch));
+  const filteredCountries = countries.filter(
+    ({ code, name, dialCode }) =>
+      !normalizedSearch ||
+      name.toLocaleLowerCase().includes(normalizedSearch) ||
+      code.toLocaleLowerCase().includes(normalizedSearch) ||
+      dialCode.includes(normalizedSearch),
+  );
 
   const focusOption = (index: number) => {
     const nextIndex = Math.max(0, Math.min(index, filteredCountries.length - 1));
@@ -205,14 +220,16 @@ function CountryCallingCodePicker({
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-controls="checkout-country-options"
-          className="h-full w-[104px] shrink-0 justify-between gap-1 rounded-none border-0 border-r border-input bg-transparent px-3 text-sm font-normal text-foreground shadow-none hover:bg-muted focus-visible:ring-0 focus-visible:ring-offset-0">
+          className="h-full w-[104px] shrink-0 justify-between gap-1 rounded-none border-0 border-r border-input bg-transparent px-3 text-sm font-normal text-foreground shadow-none hover:bg-muted focus-visible:ring-0 focus-visible:ring-offset-0"
+        >
           <span>{callingCode || t("code")}</span>
           <ArrowDown2 className="size-4 shrink-0 opacity-50" aria-hidden="true" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="w-[280px] bg-white p-2" onOpenAutoFocus={(event) => {
+        className="w-[280px] bg-white p-2"
+        onOpenAutoFocus={(event) => {
           event.preventDefault();
           searchRef.current?.focus();
         }}

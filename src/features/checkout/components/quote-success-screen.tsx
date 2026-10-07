@@ -14,9 +14,7 @@ export function QuoteSuccessScreen() {
       <div className="flex max-w-2xl flex-col items-center">
         <TickCircle className="size-16 text-[#2474ca]" variant="Bold" aria-hidden="true" />
         <h1 className="mt-5 text-3xl font-semibold text-[#051a50]">{t("quoteSubmitted")}</h1>
-        <p className="mt-3 max-w-xl text-sm leading-6 text-[#73798f]">
-          {t("quoteSuccessDescription")}
-        </p>
+        <p className="mt-3 max-w-xl text-sm leading-6 text-[#73798f]">{t("quoteSuccessDescription")}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button
             asChild

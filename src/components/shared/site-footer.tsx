@@ -66,36 +66,21 @@ export function SiteFooter() {
               aria-label="Labdock on Instagram"
               className="rounded hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
             >
-              <Image
-                src="/icon/x.svg"
-                alt="Labdock on X"
-                width={20}
-                height={20}
-              />
+              <Image src="/icon/x.svg" alt="Labdock on X" width={20} height={20} />
             </Link>
             <Link
               href="#"
               aria-label="Labdock website"
               className="rounded hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
             >
-              <Image
-                src="/icon/linkedin.svg"
-                alt="Labdock on LinkedIn"
-                width={20}
-                height={20}
-              />
+              <Image src="/icon/linkedin.svg" alt="Labdock on LinkedIn" width={20} height={20} />
             </Link>
             <Link
               href="#"
               aria-label="Labdock on Facebook"
               className="rounded hover:text-[#164990] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
             >
-              <Image
-                src="/icon/facebook.svg"
-                alt="Labdock on Facebook"
-                width={20}
-                height={20}
-              />
+              <Image src="/icon/facebook.svg" alt="Labdock on Facebook" width={20} height={20} />
             </Link>
           </div>
         </div>
@@ -128,13 +113,7 @@ export function SiteFooter() {
           <p className="mt-8 text-sm font-semibold text-[#164990]">{t("payment")}</p>
           <div className="mt-3 flex gap-2" aria-label="Accepted payment methods">
             {["visa", "pay_now", "pay"].map((payment) => (
-              <Image
-                key={payment}
-                src={`/icon/${payment}.svg`}
-                alt={payment}
-                width={40}
-                height={28}
-              />
+              <Image key={payment} src={`/icon/${payment}.svg`} alt={payment} width={40} height={28} />
             ))}
           </div>
         </div>
@@ -150,12 +129,14 @@ export function SiteFooter() {
               <div key={certification} className="inline-flex items-center gap-1.5 text-[#303647]">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EFFAF3]">
                   <Verify className="size-5 text-[#3eb584]" variant="Bold" aria-hidden="true" />
-                </div> {certification}
+                </div>{" "}
+                {certification}
               </div>
             ))}
             <span className="inline-flex items-center gap-1.5 text-[#303647]">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D1ECFA]">
-                <TruckFast className="size-5 text-[#164990]" variant="Bold" aria-hidden="true" /> </div>
+                <TruckFast className="size-5 text-[#164990]" variant="Bold" aria-hidden="true" />{" "}
+              </div>
               {t("fastDelivery")}
             </span>
           </div>

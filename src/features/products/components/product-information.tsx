@@ -49,11 +49,7 @@ export function ProductInformation({ product }: { product: Product }) {
       <h2 id="product-information-title" className="sr-only">
         {t("information")}
       </h2>
-      <div
-        className="flex overflow-x-auto border-b border-[#e9eaeb] px-3"
-        role="tablist"
-        aria-label={t("information")}
-      >
+      <div className="flex overflow-x-auto border-b border-[#e9eaeb] px-3" role="tablist" aria-label={t("information")}>
         {tabs.map((tab, index) => (
           <Button
             key={tab}
@@ -74,7 +70,11 @@ export function ProductInformation({ product }: { product: Product }) {
               activeTab === tab && "border-[#2061a9] text-[#2061a9] hover:border-[#2061a9] hover:text-[#2061a9]",
             )}
           >
-            {tab === "Description" ? t("descriptionTab") : tab === "Specifications" ? t("specificationsTab") : t("referencesTab")}
+            {tab === "Description"
+              ? t("descriptionTab")
+              : tab === "Specifications"
+                ? t("specificationsTab")
+                : t("referencesTab")}
           </Button>
         ))}
       </div>

@@ -88,9 +88,7 @@ export function OrdersTable({
         ))}
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#dde2e8] px-6 py-3">
-        <p className="text-sm text-[#73798f]">
-          {t("showing", { start, end, total })}
-        </p>
+        <p className="text-sm text-[#73798f]">{t("showing", { start, end, total })}</p>
         <div className="flex gap-3">
           <Button
             type="button"

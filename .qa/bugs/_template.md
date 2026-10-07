@@ -3,10 +3,10 @@ id: BUG-YYYYMMDD-###
 status: open
 severity: P1
 confidence: High
-area: 
-component: 
+area:
+component:
 created_at: YYYY-MM-DD
-source_commit: 
+source_commit:
 owner: qa-fix-agent
 ---
 
@@ -22,7 +22,7 @@ confirmed bug
 
 ## Reproduction steps
 
-1. 
+1.
 
 ## Expected
 
@@ -30,8 +30,8 @@ confirmed bug
 
 ## Evidence
 
-- File/component: 
-- Test/log/trace: 
+- File/component:
+- Test/log/trace:
 
 ## Root-cause hypothesis
 

@@ -34,9 +34,7 @@ export function ForgotPasswordResetForm({
     <>
       <div className="w-full pt-8 sm:pt-10">
         <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{t("newPassword")}</h2>
-        <p className="mt-2 text-base leading-6 text-[#868da5]">
-          {t("securePasswordDescription")}
-        </p>
+        <p className="mt-2 text-base leading-6 text-[#868da5]">{t("securePasswordDescription")}</p>
       </div>
       {completed ? (
         <div

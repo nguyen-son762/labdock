@@ -125,12 +125,8 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
             className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(320px,0.95fr)]"
           >
             <div className="space-y-4">
-              {checkoutMutation.isError ? (
-                <Alert>{t("preparePaymentError")}</Alert>
-              ) : null}
-              {cartQuery.isError ? (
-                <Alert>{t("returnToCartError")}</Alert>
-              ) : null}
+              {checkoutMutation.isError ? <Alert>{t("preparePaymentError")}</Alert> : null}
+              {cartQuery.isError ? <Alert>{t("returnToCartError")}</Alert> : null}
               <CheckoutItems items={items} />
               <DeliveryAddressFields form={form} />
               <BillingSection form={form} />

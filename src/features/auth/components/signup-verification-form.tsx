@@ -132,9 +132,7 @@ export function SignupVerificationForm({
     <>
       <div className="w-full pt-8 sm:pt-10">
         <h2 className="text-[32px] font-semibold leading-[43px] text-[var(--auth-ink)]">{title ?? t("verifyEmail")}</h2>
-        <p className="mt-2 text-base leading-6 text-[#868da5]">
-          {description ?? t("verificationDescription")}
-        </p>
+        <p className="mt-2 text-base leading-6 text-[#868da5]">{description ?? t("verificationDescription")}</p>
       </div>
       <Form {...form}>
         <form className="space-y-5 pt-6" noValidate onSubmit={form.handleSubmit(onSubmit)}>
@@ -181,9 +179,7 @@ export function SignupVerificationForm({
                       </div>
                     ))}
                   </div>
-                  {isIncorrect ? (
-                    <p className="text-sm font-medium text-[#f04438]">{t("incorrectCode")}</p>
-                  ) : null}
+                  {isIncorrect ? <p className="text-sm font-medium text-[#f04438]">{t("incorrectCode")}</p> : null}
                   {isExpired ? <p className="text-sm font-medium text-[#dc6803]">{t("codeExpired")}</p> : null}
                   {!isKnownCodeError ? <FormMessage /> : null}
                 </FormItem>
@@ -207,7 +203,9 @@ export function SignupVerificationForm({
             ) : resendSeconds > 0 ? (
               <>
                 <span>{t("didNotReceiveCode")}</span>
-                <span className="font-medium text-[#051a50]">{t("resendIn", { time: formatCountdown(resendSeconds) })}</span>
+                <span className="font-medium text-[#051a50]">
+                  {t("resendIn", { time: formatCountdown(resendSeconds) })}
+                </span>
               </>
             ) : (
               <>

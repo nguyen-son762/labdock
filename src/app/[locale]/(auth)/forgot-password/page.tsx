@@ -6,7 +6,11 @@ import { ForgotPasswordForm } from "@/features/auth/components/forgot-password-f
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RouteMetadata");
-  return { title: t("forgotPassword"), description: t("forgotPasswordDescription"), robots: { index: false, follow: false } };
+  return {
+    title: t("forgotPassword"),
+    description: t("forgotPasswordDescription"),
+    robots: { index: false, follow: false },
+  };
 }
 
 export default function ForgotPasswordPage() {

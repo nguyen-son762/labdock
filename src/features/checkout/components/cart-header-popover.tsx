@@ -70,7 +70,9 @@ export function CartHeaderPopover() {
           </nav>
         </div>
         <div className="divide-y divide-[#edf0f2] px-4">
-          {cartQuery.isPending ? <p className="py-6 text-center text-xs text-[#73798f]">{checkoutT("loadingCart")}</p> : null}
+          {cartQuery.isPending ? (
+            <p className="py-6 text-center text-xs text-[#73798f]">{checkoutT("loadingCart")}</p>
+          ) : null}
           {cartQuery.isError ? (
             <p role="alert" className="py-6 text-center text-xs text-[#d92d20]">
               {checkoutT("loadCartError")}

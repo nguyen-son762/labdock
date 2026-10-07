@@ -81,13 +81,7 @@ function EditorialCard({ promo, index }: { promo: (typeof promos)[number]; index
 
   return (
     <article className="relative min-h-[300px] overflow-hidden rounded-xl text-white">
-      <Image
-        src={promo.image}
-        alt=""
-        fill
-        sizes="(min-width: 1024px) 33vw, 95vw"
-        className="object-cover"
-      />
+      <Image src={promo.image} alt="" fill sizes="(min-width: 1024px) 33vw, 95vw" className="object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#08265f]/95 via-[#0b3472]/45 to-transparent" />
       <div className="relative flex min-h-[300px] flex-col justify-end p-5">
         <span
@@ -118,7 +112,14 @@ function EditorialCard({ promo, index }: { promo: (typeof promos)[number]; index
                 />
               </g>
               <defs>
-                <linearGradient id="editorial-badge-flame-gradient" x1="6" y1="12" x2="6" y2="0" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="editorial-badge-flame-gradient"
+                  x1="6"
+                  y1="12"
+                  x2="6"
+                  y2="0"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stopColor="#EFA33B" stopOpacity="0.5" />
                   <stop offset="1" stopColor="#E57A00" />
                 </linearGradient>

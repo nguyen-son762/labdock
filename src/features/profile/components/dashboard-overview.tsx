@@ -13,7 +13,10 @@ export function DashboardOverview() {
   const locale = useLocale();
   const t = useTranslations("Profile");
   const dateFormatter = new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-SG", { dateStyle: "long" });
-  const dateTimeFormatter = new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-SG", { dateStyle: "medium", timeStyle: "short" });
+  const dateTimeFormatter = new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-SG", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
   const currentUserQuery = useCurrentUserQuery();
 
   if (currentUserQuery.isPending) {

@@ -20,15 +20,28 @@ import type { CurrentUser } from "../schemas/user.schema";
 
 type FieldName = Exclude<keyof ProfileFormValues, "country" | "billingSameAsDelivery">;
 
-const fieldLabelKeys: Record<FieldName, "fullName" | "phone" | "email" | "companyName" | "companyPhone" | "businessRegistration" | "address" | "postalCode"> = {
-  fullName: "fullName", phone: "phone", email: "email", companyName: "companyName", companyPhone: "companyPhone",
-  businessRegistrationNumber: "businessRegistration", deliveryAddress: "address", postalCode: "postalCode",
+const fieldLabelKeys: Record<
+  FieldName,
+  "fullName" | "phone" | "email" | "companyName" | "companyPhone" | "businessRegistration" | "address" | "postalCode"
+> = {
+  fullName: "fullName",
+  phone: "phone",
+  email: "email",
+  companyName: "companyName",
+  companyPhone: "companyPhone",
+  businessRegistrationNumber: "businessRegistration",
+  deliveryAddress: "address",
+  postalCode: "postalCode",
 };
 const fields: Array<{ name: FieldName; required?: boolean; wide?: boolean; type?: "email" | "tel" }> = [
-  { name: "fullName", required: true }, { name: "phone", required: true, type: "tel" },
-  { name: "email", required: true, wide: true, type: "email" }, { name: "companyName", required: true },
-  { name: "companyPhone", type: "tel" }, { name: "businessRegistrationNumber", wide: true },
-  { name: "deliveryAddress", required: true, wide: true }, { name: "postalCode", required: true },
+  { name: "fullName", required: true },
+  { name: "phone", required: true, type: "tel" },
+  { name: "email", required: true, wide: true, type: "email" },
+  { name: "companyName", required: true },
+  { name: "companyPhone", type: "tel" },
+  { name: "businessRegistrationNumber", wide: true },
+  { name: "deliveryAddress", required: true, wide: true },
+  { name: "postalCode", required: true },
 ];
 
 function SectionTitle({ children }: { children: string }) {

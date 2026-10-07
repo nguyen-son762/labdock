@@ -50,7 +50,7 @@ export function OrderSummary({
         disabled={pending}
         className="mt-5 h-11 w-full justify-between pl-5 pr-1.5"
       >
-          <span className="flex-1 text-center">{pending ? t("preparingPayment") : t("makePayment")}</span>
+        <span className="flex-1 text-center">{pending ? t("preparingPayment") : t("makePayment")}</span>
         <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b]">
           <ArrowRight className="size-4" aria-hidden="true" />
         </span>
