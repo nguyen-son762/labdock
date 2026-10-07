@@ -54,7 +54,7 @@ function CategoryColumn({ categories, depth, activeCategoryId, onActivate, onExp
             onMouseEnter={() => onActivate(category, depth)}
           >
             <Link
-              href={`/products?category=${encodeURIComponent(category.slug)}`}
+              href={`/products/category/${encodeURIComponent(category.slug)}`}
               onFocus={() => onActivate(category, depth)}
               className="flex min-w-0 flex-1 items-center gap-2 rounded-l-lg px-3 py-2 font-medium text-[#051a50] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#2f7ac6]"
             >

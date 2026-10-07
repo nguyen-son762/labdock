@@ -104,8 +104,8 @@ function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
   const isLeft = banner.type === "Left";
   const formattedDate = banner.dateTime
     ? new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(
-      new Date(banner.dateTime),
-    )
+        new Date(banner.dateTime),
+      )
     : null;
   const hasMetadata = Boolean(banner.location || formattedDate);
   const hasContent = Boolean(
@@ -132,12 +132,21 @@ function HomepageBannerCard({ banner }: { banner: HomeBanner }) {
       {hasContent ? (
         <div className="absolute inset-x-0 bottom-0 p-6">
           {banner.badge ? (
-            <span className={cn("mb-2 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase", isLeft ? "bg-[#e57a00]" : "bg-[#2f7bc4]")}>
+            <span
+              className={cn(
+                "mb-2 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase",
+                isLeft ? "bg-[#e57a00]" : "bg-[#2f7bc4]",
+              )}
+            >
               {banner.badge}
             </span>
           ) : null}
           {banner.title ? (
-            <h2 className="max-w-xl text-xl font-semibold leading-tight lg:text-2xl">{banner.title}</h2>
+            <h2
+              className={cn("text-xl font-semibold leading-tight lg:text-2xl lg:leading-8", isLeft ? "max-w-[384px]" : "max-w-xl")}
+            >
+              {banner.title}
+            </h2>
           ) : null}
           {banner.showDescription && banner.description ? (
             <p className="mt-2 max-w-xl text-sm leading-5 text-white/90">{banner.description}</p>
@@ -183,19 +192,22 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
 
   return (
     <section className="relative overflow-hidden pb-[70px]" aria-labelledby="home-hero-title">
-      <div className="container relative pt-12 lg:pt-14">
+      <div className="container relative pt-12">
         <div className="max-w-[820px]">
           <h1
             id="home-hero-title"
-            className="max-w-[470px] text-xl font-bold leading-[1.12] text-[#051a50] lg:text-[32px]"
+            className="max-w-[433px] text-xl font-semibold leading-[1.12] text-[#051a50] lg:text-[32px] lg:leading-[42px]"
           >
             {t("heroTitle")}
           </h1>
-          <p className="mt-5 max-w-[460px] text-base leading-6 text-[#5e6375]" dangerouslySetInnerHTML={{
-            __html: t("heroDescription")
-          }}></p>
+          <p
+            className="mt-4 max-w-[452px] text-base leading-6 text-[#5e6375]"
+            dangerouslySetInnerHTML={{
+              __html: t("heroDescription"),
+            }}
+          ></p>
           <ul
-            className="mt-7 inline-flex max-w-full flex-wrap items-center gap-2 rounded-[28px] bg-white p-1.5 pr-3 shadow-[0_6px_24px_rgba(5,26,80,0.04)]"
+            className="mt-6 inline-flex max-w-full flex-wrap items-center gap-2 rounded-[28px] bg-white p-1.5 shadow-[0_6px_24px_rgba(5,26,80,0.04)]"
             aria-label="Procurement guarantees"
           >
             {guarantees.map(({ key, icon: Icon, color }) => (
@@ -210,7 +222,7 @@ export function HeroSection({ banners }: { banners: readonly HomeBanner[] }) {
         </div>
 
         {banners.length ? (
-          <div className={cn("mt-10 grid gap-5", banners.length > 1 ? "lg:grid-cols-3" : "lg:grid-cols-1")}>
+          <div className={cn("mt-11 grid gap-5", banners.length > 1 ? "lg:grid-cols-3" : "lg:grid-cols-1")}>
             {banners.map((banner) => (
               <HomepageBannerCard key={banner.id} banner={banner} />
             ))}

@@ -73,7 +73,7 @@ describe("MainHeader", () => {
 
     expect(screen.getByRole("link", { name: /Mice Level 1/ })).toHaveAttribute(
       "href",
-      "/products?category=mice-level-1",
+      "/products/category/mice-level-1",
     );
     expect(screen.queryByRole("link", { name: /Mice Level 2/ })).not.toBeInTheDocument();
 
@@ -85,7 +85,7 @@ describe("MainHeader", () => {
 
     expect(screen.getByRole("link", { name: /Mice Level 2/ })).toHaveAttribute(
       "href",
-      "/products?category=mice-level-2",
+      "/products/category/mice-level-2",
     );
     expect(screen.getByRole("region", { name: "Subcategories of Mice Level 1" })).toBeInTheDocument();
 

@@ -15,7 +15,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "qa:baseline": "bash scripts/qa-baseline.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.0",

@@ -1,0 +1,1273 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "status": 200,
+    "errors": [],
+    "consoleErrors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stop-color stopColor",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "failedRequests": [],
+    "overflow": false,
+    "scrollWidth": 1440,
+    "headerControls": [
+      {
+        "name": "Home",
+        "x": 80,
+        "right": 140.46875
+      },
+      {
+        "name": "About us",
+        "x": 164.46875,
+        "right": 243.859375
+      },
+      {
+        "name": "Contact us",
+        "x": 267.859375,
+        "right": 359.140625
+      },
+      {
+        "name": "info@i-dna.sg",
+        "x": 1051.140625,
+        "right": 1157.71875
+      },
+      {
+        "name": "Language",
+        "x": 1198.71875,
+        "right": 1266.5625
+      },
+      {
+        "name": "🇸🇬 SGD",
+        "x": 1286.5625,
+        "right": 1360
+      },
+      {
+        "name": "Labdock home",
+        "x": 80,
+        "right": 265
+      },
+      {
+        "name": "All Categories",
+        "x": 336,
+        "right": 486.625
+      },
+      {
+        "name": "Search",
+        "x": 783,
+        "right": 815
+      },
+      {
+        "name": "Sell on LabdockBecome distributor partner",
+        "x": 899,
+        "right": 1113.78125
+      },
+      {
+        "name": "Sign inAccount",
+        "x": 1123.78125,
+        "right": 1243.78125
+      },
+      {
+        "name": "Cart with 0 products",
+        "x": 1251.78125,
+        "right": 1337.15625
+      }
+    ],
+    "headings": [
+      {
+        "text": "Your Trusted Partner for Laboratory Procurement",
+        "x": 80,
+        "y": 158,
+        "width": 433,
+        "height": 84,
+        "fontSize": "32px"
+      },
+      {
+        "text": "High-Purity Chemicals for Uncompromising Research.",
+        "x": 104,
+        "y": 566,
+        "width": 384,
+        "height": 64,
+        "fontSize": "24px"
+      },
+      {
+        "text": "2025 Biotech Expo iDNA Live Demonstration",
+        "x": 970.65625,
+        "y": 542,
+        "width": 365.34375,
+        "height": 64,
+        "fontSize": "24px"
+      },
+      {
+        "text": " Outstanding Products",
+        "x": 505,
+        "y": 880,
+        "width": 430,
+        "height": 70,
+        "fontSize": "28px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 100,
+        "y": 1636.65625,
+        "width": 373.328125,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals & Reagents",
+        "x": 533.328125,
+        "y": 1636.65625,
+        "width": 373.328125,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "Premium Lab Consumables",
+        "x": 966.65625,
+        "y": 1636.65625,
+        "width": 373.328125,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "New Products & Services",
+        "x": 80,
+        "y": 1860.65625,
+        "width": 1280,
+        "height": 56,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Top Categories",
+        "x": 146,
+        "y": 2502.5,
+        "width": 164.296875,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Personalized offer",
+        "x": 529,
+        "y": 2941,
+        "width": 382,
+        "height": 62,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Trusted by 500+ Research Leaders",
+        "x": 80,
+        "y": 3571.671875,
+        "width": 1280,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Lab Verified Products",
+        "x": 80,
+        "y": 4339.671875,
+        "width": 230.390625,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "COA / SDS Available",
+        "x": 342.390625,
+        "y": 4349.671875,
+        "width": 230.390625,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Rapid Delivery",
+        "x": 604.78125,
+        "y": 4339.671875,
+        "width": 230.390625,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Bulk Pricing Available",
+        "x": 867.171875,
+        "y": 4339.671875,
+        "width": 230.390625,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "S5G & CSBE Certified",
+        "x": 1129.5625,
+        "y": 4344.109375,
+        "width": 230.390625,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 104,
+        "y": 4647.671875,
+        "width": 357.390625,
+        "height": 30,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Become a Distributor Partner",
+        "x": 756,
+        "y": 4667.671875,
+        "width": 314.375,
+        "height": 30,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Product Categories",
+        "x": 432.296875,
+        "y": 4934.671875,
+        "width": 215.390625,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Customer Support",
+        "x": 687.6875,
+        "y": 4934.671875,
+        "width": 215.375,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Quick Links",
+        "x": 943.0625,
+        "y": 4934.671875,
+        "width": 183.078125,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Contact us",
+        "x": 1166.140625,
+        "y": 4934.671875,
+        "width": 193.84375,
+        "height": 20,
+        "fontSize": "14px"
+      }
+    ],
+    "brokenImages": [],
+    "categoryLinks": [
+      "/products/category/aquatic-animal-housing-systems",
+      "/products/category/bedding-systems",
+      "/products/category/enrichment-solutions",
+      "/products/category/equipment-for-laboratory-animals",
+      "/products/category/laboratory-animal-washing-sterilization",
+      "/products/category/laboratory-rodent-animals",
+      "/products/category/rodent-animal-housing-system",
+      "/products/category/surgical-instruments",
+      "/products/category/thermal-control",
+      "/products/category/workstations-rodent-animals"
+    ],
+    "unnamedControls": []
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "status": 200,
+    "errors": [],
+    "consoleErrors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stop-color stopColor",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "failedRequests": [],
+    "overflow": false,
+    "scrollWidth": 1280,
+    "headerControls": [
+      {
+        "name": "Home",
+        "x": 80,
+        "right": 140.46875
+      },
+      {
+        "name": "About us",
+        "x": 164.46875,
+        "right": 243.859375
+      },
+      {
+        "name": "Contact us",
+        "x": 267.859375,
+        "right": 359.140625
+      },
+      {
+        "name": "info@i-dna.sg",
+        "x": 891.140625,
+        "right": 997.71875
+      },
+      {
+        "name": "Language",
+        "x": 1038.71875,
+        "right": 1106.5625
+      },
+      {
+        "name": "🇸🇬 SGD",
+        "x": 1126.5625,
+        "right": 1200
+      },
+      {
+        "name": "Labdock home",
+        "x": 80,
+        "right": 265
+      },
+      {
+        "name": "Search",
+        "x": 1018,
+        "right": 1050
+      },
+      {
+        "name": "Open categories",
+        "x": 1064,
+        "right": 1104
+      },
+      {
+        "name": "Sign in",
+        "x": 1112,
+        "right": 1152
+      },
+      {
+        "name": "Cart",
+        "x": 1160,
+        "right": 1200
+      }
+    ],
+    "headings": [
+      {
+        "text": "Your Trusted Partner for Laboratory Procurement",
+        "x": 16,
+        "y": 158,
+        "width": 433,
+        "height": 84,
+        "fontSize": "32px"
+      },
+      {
+        "text": "High-Purity Chemicals for Uncompromising Research.",
+        "x": 40,
+        "y": 566,
+        "width": 384,
+        "height": 64,
+        "fontSize": "24px"
+      },
+      {
+        "text": "2025 Biotech Expo iDNA Live Demonstration",
+        "x": 885.328125,
+        "y": 542,
+        "width": 354.65625,
+        "height": 64,
+        "fontSize": "24px"
+      },
+      {
+        "text": " Outstanding Products",
+        "x": 425,
+        "y": 880,
+        "width": 430,
+        "height": 70,
+        "fontSize": "28px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 36,
+        "y": 1631.328125,
+        "width": 362.65625,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals & Reagents",
+        "x": 458.65625,
+        "y": 1611.328125,
+        "width": 362.65625,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "Premium Lab Consumables",
+        "x": 881.3125,
+        "y": 1611.328125,
+        "width": 362.65625,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "New Products & Services",
+        "x": 16,
+        "y": 1855.328125,
+        "width": 1248,
+        "height": 56,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Top Categories",
+        "x": 82,
+        "y": 2491.828125,
+        "width": 164.296875,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Personalized offer",
+        "x": 449,
+        "y": 2930.328125,
+        "width": 382,
+        "height": 62,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Trusted by 500+ Research Leaders",
+        "x": 16,
+        "y": 3555.671875,
+        "width": 1248,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Lab Verified Products",
+        "x": 16,
+        "y": 4323.671875,
+        "width": 224,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "COA / SDS Available",
+        "x": 272,
+        "y": 4333.671875,
+        "width": 224,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Rapid Delivery",
+        "x": 528,
+        "y": 4323.671875,
+        "width": 224,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Bulk Pricing Available",
+        "x": 784,
+        "y": 4323.671875,
+        "width": 224,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "S5G & CSBE Certified",
+        "x": 1040,
+        "y": 4328.109375,
+        "width": 224,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 40,
+        "y": 4631.671875,
+        "width": 357.390625,
+        "height": 30,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Become a Distributor Partner",
+        "x": 676,
+        "y": 4651.671875,
+        "width": 314.375,
+        "height": 30,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Product Categories",
+        "x": 359.375,
+        "y": 4918.671875,
+        "width": 209.234375,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Customer Support",
+        "x": 608.609375,
+        "y": 4918.671875,
+        "width": 209.234375,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Quick Links",
+        "x": 857.84375,
+        "y": 4918.671875,
+        "width": 177.84375,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Contact us",
+        "x": 1075.6875,
+        "y": 4918.671875,
+        "width": 188.296875,
+        "height": 20,
+        "fontSize": "14px"
+      }
+    ],
+    "brokenImages": [],
+    "categoryLinks": [
+      "/products/category/aquatic-animal-housing-systems",
+      "/products/category/bedding-systems",
+      "/products/category/enrichment-solutions",
+      "/products/category/equipment-for-laboratory-animals",
+      "/products/category/laboratory-animal-washing-sterilization",
+      "/products/category/laboratory-rodent-animals",
+      "/products/category/rodent-animal-housing-system",
+      "/products/category/surgical-instruments",
+      "/products/category/thermal-control",
+      "/products/category/workstations-rodent-animals"
+    ],
+    "unnamedControls": []
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "status": 200,
+    "errors": [],
+    "consoleErrors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stop-color stopColor",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "failedRequests": [],
+    "overflow": false,
+    "scrollWidth": 768,
+    "headerControls": [
+      {
+        "name": "Home",
+        "x": 40,
+        "right": 100.46875
+      },
+      {
+        "name": "About us",
+        "x": 124.46875,
+        "right": 203.859375
+      },
+      {
+        "name": "Contact us",
+        "x": 227.859375,
+        "right": 319.140625
+      },
+      {
+        "name": "info@i-dna.sg",
+        "x": 419.140625,
+        "right": 525.71875
+      },
+      {
+        "name": "Language",
+        "x": 566.71875,
+        "right": 634.5625
+      },
+      {
+        "name": "🇸🇬 SGD",
+        "x": 654.5625,
+        "right": 728
+      },
+      {
+        "name": "Labdock home",
+        "x": 40,
+        "right": 225
+      },
+      {
+        "name": "Open categories",
+        "x": 592,
+        "right": 632
+      },
+      {
+        "name": "Sign in",
+        "x": 640,
+        "right": 680
+      },
+      {
+        "name": "Cart",
+        "x": 688,
+        "right": 728
+      }
+    ],
+    "headings": [
+      {
+        "text": "Your Trusted Partner for Laboratory Procurement",
+        "x": 16,
+        "y": 158,
+        "width": 433,
+        "height": 44.78125,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals for Uncompromising Research.",
+        "x": 40,
+        "y": 490.78125,
+        "width": 384,
+        "height": 50,
+        "fontSize": "20px"
+      },
+      {
+        "text": "2025 Biotech Expo iDNA Live Demonstration",
+        "x": 40,
+        "y": 761.78125,
+        "width": 576,
+        "height": 25,
+        "fontSize": "20px"
+      },
+      {
+        "text": " Outstanding Products",
+        "x": 169,
+        "y": 1144.78125,
+        "width": 430,
+        "height": 70,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": -1353,
+        "y": 1931.4375,
+        "width": 660.375,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals & Reagents",
+        "x": -640.625,
+        "y": 1931.4375,
+        "width": 660.375,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "Premium Lab Consumables",
+        "x": 71.75,
+        "y": 1931.4375,
+        "width": 660.375,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "New Products & Services",
+        "x": 16,
+        "y": 2207.4375,
+        "width": 736,
+        "height": 56,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Top Categories",
+        "x": 78,
+        "y": 3308.59375,
+        "width": 164.296875,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Personalized offer",
+        "x": 193,
+        "y": 4331.09375,
+        "width": 382,
+        "height": 62,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Trusted by 500+ Research Leaders",
+        "x": 16,
+        "y": 5410.421875,
+        "width": 736,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Lab Verified Products",
+        "x": -1112,
+        "y": 6178.421875,
+        "width": 360,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "COA / SDS Available",
+        "x": -736,
+        "y": 6188.421875,
+        "width": 360,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Rapid Delivery",
+        "x": -360,
+        "y": 6178.421875,
+        "width": 360,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Bulk Pricing Available",
+        "x": 16,
+        "y": 6178.421875,
+        "width": 360,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "S5G & CSBE Certified",
+        "x": 392,
+        "y": 6182.859375,
+        "width": 360,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 40,
+        "y": 6558.421875,
+        "width": 357.390625,
+        "height": 30,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Become a Distributor Partner",
+        "x": 40,
+        "y": 6882.421875,
+        "width": 314.375,
+        "height": 30,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Product Categories",
+        "x": 404,
+        "y": 7149.421875,
+        "width": 348,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Customer Support",
+        "x": 16,
+        "y": 7373.421875,
+        "width": 348,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Quick Links",
+        "x": 404,
+        "y": 7373.421875,
+        "width": 348,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Contact us",
+        "x": 16,
+        "y": 7597.421875,
+        "width": 348,
+        "height": 20,
+        "fontSize": "14px"
+      }
+    ],
+    "brokenImages": [],
+    "categoryLinks": [
+      "/products/category/aquatic-animal-housing-systems",
+      "/products/category/bedding-systems",
+      "/products/category/enrichment-solutions",
+      "/products/category/equipment-for-laboratory-animals",
+      "/products/category/laboratory-animal-washing-sterilization",
+      "/products/category/laboratory-rodent-animals",
+      "/products/category/rodent-animal-housing-system",
+      "/products/category/surgical-instruments",
+      "/products/category/thermal-control",
+      "/products/category/workstations-rodent-animals"
+    ],
+    "unnamedControls": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "status": 200,
+    "errors": [],
+    "consoleErrors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stop-color stopColor",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "failedRequests": [],
+    "overflow": false,
+    "scrollWidth": 390,
+    "headerControls": [
+      {
+        "name": "Home",
+        "x": 20,
+        "right": 80.46875
+      },
+      {
+        "name": "About us",
+        "x": 96.46875,
+        "right": 112.46875
+      },
+      {
+        "name": "Contact us",
+        "x": 128.46875,
+        "right": 144.46875
+      },
+      {
+        "name": "Labdock home",
+        "x": 20,
+        "right": 205
+      },
+      {
+        "name": "Open categories",
+        "x": 234,
+        "right": 274
+      },
+      {
+        "name": "Sign in",
+        "x": 282,
+        "right": 322
+      },
+      {
+        "name": "Cart",
+        "x": 330,
+        "right": 370
+      }
+    ],
+    "headings": [
+      {
+        "text": "Your Trusted Partner for Laboratory Procurement",
+        "x": 16,
+        "y": 158,
+        "width": 358,
+        "height": 44.78125,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals for Uncompromising Research.",
+        "x": 40,
+        "y": 530.78125,
+        "width": 310,
+        "height": 50,
+        "fontSize": "20px"
+      },
+      {
+        "text": "2025 Biotech Expo iDNA Live Demonstration",
+        "x": 40,
+        "y": 776.78125,
+        "width": 310,
+        "height": 50,
+        "fontSize": "20px"
+      },
+      {
+        "text": " Outstanding Products",
+        "x": 51.8046875,
+        "y": 1268.78125,
+        "width": 286.390625,
+        "height": 70,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": -651,
+        "y": 1937.78125,
+        "width": 300.375,
+        "height": 56,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals & Reagents",
+        "x": -298.625,
+        "y": 1937.78125,
+        "width": 300.375,
+        "height": 56,
+        "fontSize": "20px"
+      },
+      {
+        "text": "Premium Lab Consumables",
+        "x": 53.75,
+        "y": 1965.78125,
+        "width": 300.375,
+        "height": 28,
+        "fontSize": "20px"
+      },
+      {
+        "text": "New Products & Services",
+        "x": 16,
+        "y": 2261.78125,
+        "width": 358,
+        "height": 56,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Top Categories",
+        "x": 78,
+        "y": 3234.28125,
+        "width": 164.296875,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Personalized offer",
+        "x": 51.8046875,
+        "y": 4776.78125,
+        "width": 286.390625,
+        "height": 62,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Trusted by 500+ Research Leaders",
+        "x": 16,
+        "y": 5708.78125,
+        "width": 358,
+        "height": 64,
+        "fontSize": "24px"
+      },
+      {
+        "text": "S5G & CSBE Certified",
+        "x": -1480,
+        "y": 6533.21875,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Lab Verified Products",
+        "x": -1106,
+        "y": 6528.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "COA / SDS Available",
+        "x": -732,
+        "y": 6538.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Rapid Delivery",
+        "x": -358,
+        "y": 6528.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Bulk Pricing Available",
+        "x": 16,
+        "y": 6528.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 40,
+        "y": 6838.78125,
+        "width": 310,
+        "height": 60,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Become a Distributor Partner",
+        "x": 40,
+        "y": 7182.78125,
+        "width": 310,
+        "height": 60,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Product Categories",
+        "x": 16,
+        "y": 7709.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Customer Support",
+        "x": 16,
+        "y": 7933.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Quick Links",
+        "x": 16,
+        "y": 8157.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Contact us",
+        "x": 16,
+        "y": 8381.78125,
+        "width": 358,
+        "height": 20,
+        "fontSize": "14px"
+      }
+    ],
+    "brokenImages": [],
+    "categoryLinks": [
+      "/products/category/aquatic-animal-housing-systems",
+      "/products/category/bedding-systems",
+      "/products/category/enrichment-solutions",
+      "/products/category/equipment-for-laboratory-animals",
+      "/products/category/laboratory-animal-washing-sterilization",
+      "/products/category/laboratory-rodent-animals",
+      "/products/category/rodent-animal-housing-system",
+      "/products/category/surgical-instruments",
+      "/products/category/thermal-control",
+      "/products/category/workstations-rodent-animals"
+    ],
+    "unnamedControls": []
+  },
+  {
+    "width": 320,
+    "height": 720,
+    "status": 200,
+    "errors": [],
+    "consoleErrors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stop-color stopColor",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "failedRequests": [],
+    "overflow": false,
+    "scrollWidth": 320,
+    "headerControls": [
+      {
+        "name": "Home",
+        "x": 20,
+        "right": 80.46875
+      },
+      {
+        "name": "About us",
+        "x": 96.46875,
+        "right": 112.46875
+      },
+      {
+        "name": "Contact us",
+        "x": 128.46875,
+        "right": 144.46875
+      },
+      {
+        "name": "Labdock home",
+        "x": 20,
+        "right": 205
+      },
+      {
+        "name": "Open categories",
+        "x": 205,
+        "right": 245
+      },
+      {
+        "name": "Sign in",
+        "x": 253,
+        "right": 273
+      },
+      {
+        "name": "Cart",
+        "x": 281,
+        "right": 301
+      }
+    ],
+    "headings": [
+      {
+        "text": "Your Trusted Partner for Laboratory Procurement",
+        "x": 16,
+        "y": 158,
+        "width": 288,
+        "height": 44.78125,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals for Uncompromising Research.",
+        "x": 40,
+        "y": 633.78125,
+        "width": 240,
+        "height": 75,
+        "fontSize": "20px"
+      },
+      {
+        "text": "2025 Biotech Expo iDNA Live Demonstration",
+        "x": 40,
+        "y": 904.78125,
+        "width": 240,
+        "height": 50,
+        "fontSize": "20px"
+      },
+      {
+        "text": " Outstanding Products",
+        "x": 44.8046875,
+        "y": 1396.78125,
+        "width": 230.390625,
+        "height": 70,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": -521,
+        "y": 2054.78125,
+        "width": 233.703125,
+        "height": 56,
+        "fontSize": "20px"
+      },
+      {
+        "text": "High-Purity Chemicals & Reagents",
+        "x": -235.296875,
+        "y": 2034.78125,
+        "width": 233.703125,
+        "height": 56,
+        "fontSize": "20px"
+      },
+      {
+        "text": "Premium Lab Consumables",
+        "x": 50.40625,
+        "y": 2034.78125,
+        "width": 233.703125,
+        "height": 56,
+        "fontSize": "20px"
+      },
+      {
+        "text": "New Products & Services",
+        "x": 16,
+        "y": 2378.78125,
+        "width": 288,
+        "height": 56,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Top Categories",
+        "x": 78,
+        "y": 3329.28125,
+        "width": 164.296875,
+        "height": 32,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Personalized offer",
+        "x": 44.8046875,
+        "y": 4871.78125,
+        "width": 230.390625,
+        "height": 62,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Trusted by 500+ Research Leaders",
+        "x": 16,
+        "y": 5781.78125,
+        "width": 288,
+        "height": 64,
+        "fontSize": "24px"
+      },
+      {
+        "text": "S5G & CSBE Certified",
+        "x": -1200,
+        "y": 6606.21875,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Lab Verified Products",
+        "x": -896,
+        "y": 6601.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "COA / SDS Available",
+        "x": -592,
+        "y": 6611.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Rapid Delivery",
+        "x": -288,
+        "y": 6601.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Bulk Pricing Available",
+        "x": 16,
+        "y": 6601.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Advanced Laboratory Equipment",
+        "x": 40,
+        "y": 6911.78125,
+        "width": 240,
+        "height": 60,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Become a Distributor Partner",
+        "x": 40,
+        "y": 7235.78125,
+        "width": 240,
+        "height": 60,
+        "fontSize": "24px"
+      },
+      {
+        "text": "Product Categories",
+        "x": 16,
+        "y": 7782.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Customer Support",
+        "x": 16,
+        "y": 8006.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Quick Links",
+        "x": 16,
+        "y": 8230.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      },
+      {
+        "text": "Contact us",
+        "x": 16,
+        "y": 8454.78125,
+        "width": 288,
+        "height": 20,
+        "fontSize": "14px"
+      }
+    ],
+    "brokenImages": [],
+    "categoryLinks": [
+      "/products/category/aquatic-animal-housing-systems",
+      "/products/category/bedding-systems",
+      "/products/category/enrichment-solutions",
+      "/products/category/equipment-for-laboratory-animals",
+      "/products/category/laboratory-animal-washing-sterilization",
+      "/products/category/laboratory-rodent-animals",
+      "/products/category/rodent-animal-housing-system",
+      "/products/category/surgical-instruments",
+      "/products/category/thermal-control",
+      "/products/category/workstations-rodent-animals"
+    ],
+    "unnamedControls": []
+  }
+]

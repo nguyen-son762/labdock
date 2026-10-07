@@ -1,0 +1,7 @@
+[
+  {"id":"BUG-20261007-002","type":"interaction defect","status":"resolved","severity":"P1","evidence":"before/measurements.json; after/measurements.json"},
+  {"id":"BUG-20261007-006","type":"interaction defect","status":"resolved","severity":"P2","evidence":"regression.cjs; product-catalog.schema.ts"},
+  {"id":"BUG-20261007-007","type":"visual mismatch","status":"resolved","severity":"P3","figmaNodes":["106:3388","106:3383"],"evidence":"before/1440.png; after/1440.png; after/measurements.json"},
+  {"id":"BUG-20261007-008","type":"interaction defect","status":"blocked","severity":"P2","reason":"Search API contract not established"},
+  {"id":"BUG-20261007-009","type":"accessibility defect","status":"open","severity":"P2","evidence":"Autoplay restored by user request; explicit keyboard pause remains absent"}
+]
