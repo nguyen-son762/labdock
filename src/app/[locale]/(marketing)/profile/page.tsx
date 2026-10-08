@@ -9,5 +9,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ProfilePage() {
-  return <ProfileScreen />;
+  return (
+    <div className="bg-card">
+      <ProfileScreen />
+    </div>
+  );
 }

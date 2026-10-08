@@ -18,7 +18,7 @@ function ProfileLoading() {
   const t = useTranslations("Profile");
   return (
     <div className="grid gap-4 lg:grid-cols-[266px_minmax(0,1fr)]" aria-label={t("loading")} aria-busy="true">
-      <Card className="h-[286px] border-[#dde2e8] p-6 shadow-none">
+      <Card className="h-[286px] border-[#dde2e8] p-6 !shadow-none">
         <Skeleton className="mx-auto size-24 rounded-full" />
         <Skeleton className="mx-auto mt-5 h-8 w-40" />
         <Skeleton className="mx-auto mt-3 h-9 w-48" />

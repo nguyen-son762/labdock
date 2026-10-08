@@ -1,12 +1,23 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { NextIntlClientProvider } from "next-intl";
+import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
+import messages from "../../../../messages/en.json";
 import { AppProviders } from "@/providers/app-providers";
 
 import { profileService } from "../api/profile.service";
 import type { CurrentUser } from "../schemas/user.schema";
 import { ProfileScreen } from "./profile-screen";
+
+function ProfileTestProviders({ children }: { children: ReactNode }) {
+  return (
+    <NextIntlClientProvider locale="en" messages={messages} timeZone="Asia/Singapore">
+      <AppProviders>{children}</AppProviders>
+    </NextIntlClientProvider>
+  );
+}
 
 const user: CurrentUser = {
   fullName: "Sarah Chen",
@@ -37,9 +48,9 @@ describe("ProfileScreen", () => {
     const interaction = userEvent.setup();
 
     render(
-      <AppProviders>
+      <ProfileTestProviders>
         <ProfileScreen />
-      </AppProviders>,
+      </ProfileTestProviders>,
     );
 
     expect(await screen.findByRole("heading", { name: "Sarah Chen" })).toBeInTheDocument();
@@ -65,9 +76,9 @@ describe("ProfileScreen", () => {
     const interaction = userEvent.setup();
 
     render(
-      <AppProviders>
+      <ProfileTestProviders>
         <ProfileScreen />
-      </AppProviders>,
+      </ProfileTestProviders>,
     );
 
     expect(await screen.findByRole("heading", { name: "Sarah Chen" })).toBeInTheDocument();
@@ -97,9 +108,9 @@ describe("ProfileScreen", () => {
     const interaction = userEvent.setup();
 
     render(
-      <AppProviders>
+      <ProfileTestProviders>
         <ProfileScreen />
-      </AppProviders>,
+      </ProfileTestProviders>,
     );
 
     expect(await screen.findByRole("heading", { name: "Sarah Chen" })).toBeInTheDocument();

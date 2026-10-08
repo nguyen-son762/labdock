@@ -1,0 +1,33 @@
+{
+  "route": "/profile",
+  "siteUrl": "http://localhost:3000/profile",
+  "figmaUrl": "https://www.figma.com/design/hTjur9ijtoYj1D0nOlPkPk/iDNA-design?node-id=114-19155&m=dev",
+  "status": "limited-audit-completed",
+  "findings": [
+    {
+      "id": "PROFILE-001",
+      "type": "visual mismatch",
+      "area": "page background",
+      "severity": "P3",
+      "confidence": "High",
+      "status": "resolved",
+      "evidence": ["figma.png", "before/screenshots/1440-view.png", "after/measurements.json"]
+    },
+    {
+      "id": "PROFILE-002",
+      "type": "visual mismatch",
+      "area": "card shadows",
+      "severity": "P3",
+      "confidence": "High",
+      "status": "resolved",
+      "evidence": ["figma.png", "before/measurements.json", "after/measurements.json"]
+    }
+  ],
+  "unverified": [
+    "precise Figma properties and pixel parity",
+    "Figma mobile and interaction states",
+    "full WCAG audit",
+    "live authenticated API mutations",
+    "console and network diagnostics"
+  ]
+}

@@ -99,7 +99,7 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
   }
 
   return (
-    <Card className="overflow-hidden border-[#dde2e8] shadow-none">
+    <Card className="overflow-hidden border-[#dde2e8] !shadow-none">
       <div className="flex h-12 items-center border-b border-[#dde2e8] px-4">
         <h2 className="text-lg font-semibold text-[#1f5fa8]">{t("accountInfo")}</h2>
       </div>
