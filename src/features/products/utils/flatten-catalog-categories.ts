@@ -5,6 +5,7 @@ type CategoryNode = {
   name: string;
   slug: string;
   sortOrder: number;
+  productCount?: number;
   media: readonly { isPrimary: boolean; sortOrder: number; url: string }[];
   children: readonly CategoryNode[];
 };
@@ -24,6 +25,7 @@ export function flattenCatalogCategories(nodes: readonly CategoryNode[], depth =
           slug: category.slug,
           depth,
           imageUrl: primaryMedia?.url ?? null,
+          productCount: category.productCount,
         },
         ...flattenCatalogCategories(category.children, depth + 1),
       ];

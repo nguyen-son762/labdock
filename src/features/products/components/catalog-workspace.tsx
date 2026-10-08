@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,6 @@ export function CatalogWorkspace({
   categoryPage = false,
 }: CatalogWorkspaceProps) {
   const t = useTranslations("Catalog");
-  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -86,7 +85,7 @@ export function CatalogWorkspace({
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[238px_minmax(0,1fr)]">
+    <div className="grid gap-6 lg:grid-cols-[238px_minmax(0,1fr)]">
       <CatalogFilters
         categories={categories}
         brands={brands}
@@ -104,28 +103,24 @@ export function CatalogWorkspace({
         aria-busy={isPending}
         className={isPending ? "min-w-0 opacity-65 transition-opacity" : "min-w-0 transition-opacity"}
       >
-        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-3 flex flex-col gap-3 sm:h-9 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 id="product-list-title" className="text-xl font-semibold text-[#051a50]">
+            <h2 id="product-list-title" className="text-xl font-medium leading-[30px] text-[#0f3678]">
               {t("listing")}
             </h2>
-            <p className="mt-1 text-xs text-[#73798f]">
-              {t("showing", {
-                count: products.length,
-                total: total.toLocaleString(locale === "vi" ? "vi-VN" : "en-SG"),
-              })}
-            </p>
           </div>
           <Select
-            value={filters.sort}
+            value={filters.sort === "featured" ? "" : filters.sort}
             disabled={isPending || productsError}
             onValueChange={(sort) => updateParams({ sort: sort === "featured" ? null : sort, page: null })}
           >
-            <SelectTrigger aria-label={t("sortProducts")} className="h-10 w-full bg-white sm:w-[200px]">
+            <SelectTrigger
+              aria-label={t("sortProducts")}
+              className="h-10 w-full bg-white data-[placeholder]:text-[#b1bac8] sm:w-[170px]"
+            >
               <SelectValue placeholder={t("sortBy")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="featured">{t("featured")}</SelectItem>
               <SelectItem value="name">{t("nameAsc")}</SelectItem>
               <SelectItem value="price-desc">{t("priceDesc")}</SelectItem>
             </SelectContent>
@@ -140,13 +135,13 @@ export function CatalogWorkspace({
             {t("loadError")}
           </div>
         ) : products.length ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">
             {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} appearance="catalog" />
             ))}
             <QuoteCard />
             {products.slice(3).map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} appearance="catalog" />
             ))}
           </div>
         ) : (

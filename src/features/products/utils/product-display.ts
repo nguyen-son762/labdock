@@ -41,10 +41,21 @@ export function getProductVariantLabel(variant: ProductVariant): string {
 export function getDefaultProductVariant(product: Product): ProductVariant | undefined {
   const activeVariants = product.variants.filter((variant) => variant.isActive);
   const purchasableVariants = activeVariants
-    .filter((variant) => variant.priceVisible && variant.stockQty > 0)
-    .sort((left, right) => left.unitPrice - right.unitPrice);
+    .filter(
+      (variant) =>
+        product.priceVisible &&
+        variant.priceVisible &&
+        variant.stockQty > 0 &&
+        variant.unitPrice !== null &&
+        variant.unitPrice > 0,
+    )
+    .sort((left, right) => getPromotionalPrice(left) - getPromotionalPrice(right));
 
   return purchasableVariants[0] ?? activeVariants[0] ?? product.variants[0];
+}
+
+function getPromotionalPrice(variant: ProductVariant): number {
+  return Math.round((variant.unitPrice ?? 0) * (1 - variant.promotionPercent / 100) * 100) / 100;
 }
 
 export function formatProductPrice(value: number, currency: string): string {
@@ -61,17 +72,25 @@ export function formatProductPrice(value: number, currency: string): string {
 
 export function getProductVariantPresentation(product: Product, variant: ProductVariant | undefined) {
   const outOfStock = !variant?.isActive || variant.stockQty <= 0;
-  const priceVisible = product.priceVisible && variant?.priceVisible;
-  const canPurchase = Boolean(priceVisible && variant.isActive && variant.stockQty > 0 && variant.unitPrice > 0);
-  const originalPrice =
-    priceVisible && variant.rfqBasePrice > variant.unitPrice
-      ? formatProductPrice(variant.rfqBasePrice, variant.currency)
-      : undefined;
+  const priceVisible = Boolean(product.priceVisible && variant?.priceVisible && variant.unitPrice !== null);
+  const canPurchase = Boolean(
+    priceVisible && variant && !outOfStock && variant.unitPrice !== null && variant.unitPrice > 0,
+  );
+  const hasPromotion = Boolean(
+    priceVisible && variant && variant.unitPrice !== null && variant.unitPrice > 0 && variant.promotionPercent > 0,
+  );
 
   return {
-    price: priceVisible && variant ? formatProductPrice(variant.unitPrice, variant.currency) : "Contact for price",
-    originalPrice,
-    discount: variant && variant.promotionPercent > 0 ? `-${variant.promotionPercent}%` : undefined,
+    price:
+      priceVisible && variant
+        ? formatProductPrice(getPromotionalPrice(variant), variant.currency)
+        : "Contact for price",
+    priceVisible,
+    originalPrice:
+      hasPromotion && variant && variant.unitPrice !== null
+        ? formatProductPrice(variant.unitPrice, variant.currency)
+        : undefined,
+    discount: hasPromotion && variant ? `-${variant.promotionPercent}%` : undefined,
     outOfStock,
     canPurchase,
   } as const;

@@ -569,14 +569,15 @@
     "pagination": "Phân trang sản phẩm",
     "page": "Trang {page}",
     "banner": "Chất lượng cao. Giao hàng nhanh. Gửi hàng trong 7–10 ngày",
-    "productCount": "{count} sản phẩm",
+    "productCount": "{count, number} sản phẩm",
     "verifiedProducts": "Sản phẩm phòng thí nghiệm đã xác minh",
     "fastDelivery": "Giao hàng nhanh",
     "bulkPricing": "Có giá ưu đãi số lượng lớn",
     "previous": "Trước",
     "next": "Tiếp",
     "bannerImageAlt": "Dụng cụ thủy tinh trong phòng thí nghiệm nghiên cứu",
-    "categoryCarousel": "Băng chuyền danh mục sản phẩm"
+    "categoryCarousel": "Băng chuyền danh mục sản phẩm",
+    "categoryCountUnavailable": "Chưa tải được số lượng"
   },
   "Product": {
     "information": "Thông tin sản phẩm",
@@ -605,6 +606,8 @@
     "coaAvailable": "Có COA-SDS",
     "brand": "Thương hiệu",
     "categoryNumberLabel": "Mã danh mục",
+    "supplierItemNo": "Mã sản phẩm nhà cung cấp",
+    "contactForPrice": "Liên hệ để biết giá",
     "origin": "Xuất xứ",
     "casNumber": "Mã CAS",
     "notAvailable": "Không có",

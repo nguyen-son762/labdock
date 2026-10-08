@@ -569,14 +569,15 @@
     "pagination": "Product pagination",
     "page": "Page {page}",
     "banner": "Premium quality. Fast delivery. Ships 7-10 days",
-    "productCount": "{count} products",
+    "productCount": "{count, plural, one {# product} other {# products}}",
     "verifiedProducts": "Verified Lab Products",
     "fastDelivery": "Fast Delivery",
     "bulkPricing": "Bulk Pricing Available",
     "previous": "Previous",
     "next": "Next",
     "bannerImageAlt": "Laboratory glassware arranged in a research lab",
-    "categoryCarousel": "Product categories carousel"
+    "categoryCarousel": "Product categories carousel",
+    "categoryCountUnavailable": "Count unavailable"
   },
   "Product": {
     "information": "Product information",
@@ -605,6 +606,8 @@
     "coaAvailable": "COA-SDS Available",
     "brand": "Brand",
     "categoryNumberLabel": "Category no.",
+    "supplierItemNo": "Supplier item no.",
+    "contactForPrice": "Contact for price",
     "origin": "Origin",
     "casNumber": "CAS no.",
     "notAvailable": "N/A",

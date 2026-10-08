@@ -85,6 +85,12 @@ describe("CatalogWorkspace", () => {
       "href",
       `/products?categoryId=${categoryId}&page=2`,
     );
+    expect(screen.getByRole("combobox", { name: "Sort products" })).toHaveTextContent("Sort by");
+    await user.click(screen.getByRole("combobox", { name: "Sort products" }));
+    await user.click(screen.getByRole("option", { name: "Name A-Z" }));
+    expect(routerReplace).toHaveBeenLastCalledWith(`/products?categoryId=${categoryId}&sort=name`, {
+      scroll: false,
+    });
   });
 
   it("keeps product failures separate from available filters", () => {
@@ -104,8 +110,8 @@ describe("CatalogWorkspace", () => {
     );
 
     expect(screen.getByRole("alert")).toHaveTextContent("We could not load products");
-    expect(screen.getByRole("radiogroup", { name: "Filter by brands" })).toBeInTheDocument();
-    expect(screen.getByRole("radiogroup", { name: "Filter by categories" })).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: "Brands" })).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: "Categories" })).toBeInTheDocument();
   });
 
   it("opens a category page when a category is selected from the filter", async () => {

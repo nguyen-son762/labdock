@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithProviders } from "@/test/render-with-providers";
 import type { ComponentProps, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -24,15 +25,35 @@ import { CategoryStrip } from "./category-strip";
 
 describe("CategoryStrip", () => {
   it("opens a category route and carries other catalog filters forward", () => {
-    render(
+    renderWithProviders(
+      <CategoryStrip
+        categories={[
+          {
+            id: categoryId,
+            name: "Rodent Animals",
+            slug: "rodent-animals",
+            depth: 0,
+            imageUrl: null,
+            productCount: 122,
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByText("122 products")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Rodent Animals 122 products" })).toHaveAttribute(
+      "href",
+      `/products/category/rodent-animals?brandId=${brandId}`,
+    );
+  });
+
+  it("does not present a missing category count as zero", () => {
+    renderWithProviders(
       <CategoryStrip
         categories={[{ id: categoryId, name: "Rodent Animals", slug: "rodent-animals", depth: 0, imageUrl: null }]}
       />,
     );
-
-    expect(screen.getByRole("link", { name: "Rodent Animals" })).toHaveAttribute(
-      "href",
-      `/products/category/rodent-animals?brandId=${brandId}`,
-    );
+    expect(screen.getByText("Count unavailable")).toBeInTheDocument();
+    expect(screen.queryByText("0 products")).not.toBeInTheDocument();
   });
 });

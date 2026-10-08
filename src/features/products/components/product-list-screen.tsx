@@ -3,6 +3,7 @@ import { ServiceGuarantees } from "@/components/shared/service-guarantees";
 
 import type { CatalogBrandOption, CatalogCategoryOption, Product } from "../products.types";
 import type { ProductCatalogFilters } from "../schemas/product-catalog.schema";
+import { getCatalogCategoriesWithCounts } from "../server";
 import { CatalogBanner } from "./catalog-banner";
 import { CatalogWorkspace } from "./catalog-workspace";
 import { CategoryStrip } from "./category-strip";
@@ -21,7 +22,7 @@ type ProductListScreenProps = {
   activeCategory?: CatalogCategoryOption & { children: readonly CatalogCategoryOption[] };
 };
 
-export function ProductListScreen({
+export async function ProductListScreen({
   products,
   categories,
   brands,
@@ -35,12 +36,14 @@ export function ProductListScreen({
   activeCategory,
 }: ProductListScreenProps) {
   const topLevelCategories = categories.filter((category) => category.depth === 0);
-  const visibleCategories = activeCategory ? activeCategory.children : topLevelCategories;
+  const visibleCategories = await getCatalogCategoriesWithCounts(
+    activeCategory ? activeCategory.children : topLevelCategories,
+  );
 
   return (
     <div className="bg-white">
       <CatalogBanner total={total} />
-      <div className="container py-12">
+      <div className="container max-w-[1312px] py-12">
         <Breadcrumbs
           items={
             activeCategory
@@ -63,7 +66,7 @@ export function ProductListScreen({
             headingLevel={activeCategory ? "h1" : "h2"}
           />
         </div>
-        <div className="mt-8">
+        <div className="mt-6">
           <CatalogWorkspace
             products={products}
             categories={categories}

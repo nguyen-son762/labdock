@@ -2,7 +2,7 @@ import { clientEnv } from "@/config/client-env";
 import { createServerApiRequestInit } from "@/lib/server-api-request";
 
 import { products } from "./data/products-data";
-import type { Product } from "./products.types";
+import type { CatalogCategoryOption, Product } from "./products.types";
 import { publicProductDetailSchema } from "./schemas/product-detail.schema";
 import {
   publicProductsPageSchema,
@@ -64,6 +64,23 @@ export async function getProductCatalogPage(params: GetPublicProductsParams): Pr
   return { ...page, items: page.items.map(mapPublicProduct) };
 }
 
+export async function getCatalogCategoriesWithCounts(
+  categories: readonly CatalogCategoryOption[],
+): Promise<CatalogCategoryOption[]> {
+  const results = await Promise.allSettled(
+    categories.map(async (category) => {
+      if (category.productCount !== undefined) return category;
+      const page = await getPublicProducts({ page: 1, pageSize: 1, categoryId: category.id });
+      return { ...category, productCount: page.total };
+    }),
+  );
+
+  return categories.map((category, index) => {
+    const result = results[index];
+    return result?.status === "fulfilled" ? result.value : category;
+  });
+}
+
 export async function getPublicProductBySlug(slug: string): Promise<Product> {
   const response = await fetch(
     `${clientEnv.NEXT_PUBLIC_API_BASE_URL}/products/${encodeURIComponent(slug)}`,
@@ -76,5 +93,5 @@ export async function getPublicProductBySlug(slug: string): Promise<Product> {
   if (response.status === 404) throw new ProductNotFoundError(slug);
   if (!response.ok) throw new Error(`Unable to load product (${response.status}).`);
 
-  return publicProductDetailSchema.parse(await response.json());
+  return mapPublicProduct(publicProductDetailSchema.parse(await response.json()));
 }

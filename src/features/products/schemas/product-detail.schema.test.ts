@@ -94,15 +94,17 @@ describe("publicProductDetailSchema", () => {
     expect(publicProductDetailSchema.parse({ ...productDetailResponse, status: 1 }).status).toBe(1);
   });
 
-  it("normalizes hidden UAT prices and an empty related collection", () => {
+  it("preserves hidden prices and normalizes an empty related collection", () => {
     const result = publicProductDetailSchema.parse({
       ...productDetailResponse,
       priceVisible: false,
+      supplierItemNo: "SUPPLIER-001",
       variants: [{ ...productDetailResponse.variants[0], priceVisible: false, unitPrice: null, rfqBasePrice: null }],
       related: null,
     });
 
-    expect(result.variants[0]).toEqual(expect.objectContaining({ unitPrice: 0, rfqBasePrice: 0 }));
+    expect(result.variants[0]).toEqual(expect.objectContaining({ unitPrice: null, rfqBasePrice: null }));
+    expect(result.supplierItemNo).toBe("SUPPLIER-001");
     expect(result.related).toEqual([]);
   });
 });

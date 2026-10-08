@@ -31,17 +31,9 @@ const productVariantSchema: z.ZodType<ProductVariant> = z.object({
   id: guidSchema,
   sku: z.string().min(1),
   priceVisible: z.boolean(),
-  unitPrice: z
-    .number()
-    .nonnegative()
-    .nullable()
-    .transform((value) => value ?? 0),
-  rfqBasePrice: z
-    .number()
-    .nonnegative()
-    .nullable()
-    .transform((value) => value ?? 0),
-  promotionPercent: z.number().nonnegative(),
+  unitPrice: z.number().nonnegative().nullable(),
+  rfqBasePrice: z.number().nonnegative().nullable(),
+  promotionPercent: z.number().min(0).max(100),
   currency: z.string().length(3),
   stockQty: z.number().int().nonnegative(),
   isActive: z.boolean(),
@@ -72,7 +64,7 @@ const relatedProductSchema: z.ZodType<RelatedProduct> = z.object({
   slug: z.string().min(1),
   primaryImageUrl: z.string().min(1),
   priceVisible: z.boolean(),
-  fromPrice: z.number().nonnegative(),
+  fromPrice: z.number().nonnegative().nullable(),
   currency: z.string().length(3),
 });
 
@@ -86,6 +78,7 @@ export const publicProductDetailSchema: z.ZodType<Product> = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
   productNo: z.string().min(1),
+  supplierItemNo: z.string().optional(),
   status: z.union([z.string().min(1), z.number().int()]),
   brandName: z.string().min(1),
   notes: z.string(),
@@ -107,7 +100,7 @@ export const publicProductDetailSchema: z.ZodType<Product> = z.object({
   isOutstanding: z.boolean(),
 });
 
-export type PublicProductDetail = Product;
+export type PublicProductDetail = Omit<Product, "related"> & { related: RelatedProduct[] | null };
 export type PublicProductSpecification = ProductSpecification;
 export type PublicProductVariantSelection = ProductVariantSelection;
 export type PublicProductVariant = ProductVariant;

@@ -4,7 +4,13 @@ vi.mock("next/headers", () => ({
   cookies: vi.fn(async () => ({ get: () => undefined })),
 }));
 
-import { getProductCatalogPage, getPublicProductBySlug, getPublicProducts, ProductNotFoundError } from "./server";
+import {
+  getCatalogCategoriesWithCounts,
+  getProductCatalogPage,
+  getPublicProductBySlug,
+  getPublicProducts,
+  ProductNotFoundError,
+} from "./server";
 
 const productsResponse = {
   items: [
@@ -87,6 +93,19 @@ afterEach(() => {
 });
 
 describe("getPublicProducts", () => {
+  it("preserves complete product records returned by the catalog API", async () => {
+    const detail = { ...productDetailResponse, supplierItemNo: "SUPPLIER-001", related: null };
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(new Response(JSON.stringify({ ...productsResponse, items: [detail] }), { status: 200 })),
+    );
+
+    const result = await getProductCatalogPage({ page: 1, pageSize: 20 });
+    expect(result.items[0]).toEqual({ ...detail, related: [] });
+  });
+
   it("serializes every supported filter with the backend parameter casing", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(JSON.stringify(productsResponse), {
@@ -151,6 +170,38 @@ describe("getPublicProducts", () => {
         variants: [expect.objectContaining({ unitPrice: 99.5, stockQty: 0 })],
       }),
     );
+  });
+});
+
+describe("getCatalogCategoriesWithCounts", () => {
+  const category = {
+    id: "22222222-2222-2222-2222-222222222222",
+    name: "Glassware",
+    slug: "glassware",
+    depth: 0,
+    imageUrl: null,
+  };
+
+  it("uses category-specific totals and skips counts supplied by the category API", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(productsResponse), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await getCatalogCategoriesWithCounts([
+      category,
+      { ...category, id: "known-category", productCount: 42 },
+    ]);
+
+    expect(result.map((option) => option.productCount)).toEqual([10, 42]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(
+      `https://uat-api-labdock.365studio.vn/api/public/v1/products?page=1&pageSize=1&categoryId=${category.id}`,
+      { next: { revalidate: 300, tags: ["products", "products:all"] } },
+    );
+  });
+
+  it("keeps category navigation available when its count request fails", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(null, { status: 503 })));
+    await expect(getCatalogCategoriesWithCounts([category])).resolves.toEqual([category]);
   });
 });
 

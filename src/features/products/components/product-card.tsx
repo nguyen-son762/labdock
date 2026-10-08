@@ -16,7 +16,7 @@ import { getProductCardPresentation } from "../utils/product-display";
 
 type ProductCardProps = {
   product: Product;
-  appearance?: "default" | "outstanding";
+  appearance?: "default" | "outstanding" | "catalog";
 };
 
 export function ProductCard({ product, appearance = "default" }: ProductCardProps) {
@@ -31,6 +31,7 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
     <article
       className={cn(
         "group relative isolate flex min-w-0 flex-col overflow-hidden rounded-[8px] bg-[#f5f7f8] p-1 transition-shadow duration-300",
+        appearance === "catalog" && "bg-white",
         "before:absolute before:inset-0 before:z-0 before:bg-gradient-to-t before:from-white before:via-white before:via-[25%] before:to-[#efa33b] before:opacity-0 before:transition-opacity before:duration-300 before:content-['']",
         "hover:shadow-[0_12px_30px_rgba(239,163,59,0.2)] hover:before:opacity-100",
         "focus-within:shadow-[0_12px_30px_rgba(239,163,59,0.2)] focus-within:before:opacity-100",
@@ -39,7 +40,8 @@ export function ProductCard({ product, appearance = "default" }: ProductCardProp
       <Link
         href={productHref}
         className={cn(
-          "relative z-10 block aspect-square overflow-hidden rounded-[8px] border border-[#ecf0f3] bg-white transition-[border-color] duration-300",
+          "relative z-10 block aspect-square overflow-hidden border border-[#ecf0f3] bg-white transition-[border-color] duration-300",
+          appearance === "catalog" ? "rounded-[4px]" : "rounded-[8px]",
           "group-hover:border-2 group-hover:border-[#fcdb97] group-focus-within:border-2 group-focus-within:border-[#fcdb97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
           appearance === "outstanding" && "border-2 border-[#fcdb97]",

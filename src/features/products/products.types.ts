@@ -16,8 +16,8 @@ export type ProductVariant = {
   id: string;
   sku: string;
   priceVisible: boolean;
-  unitPrice: number;
-  rfqBasePrice: number;
+  unitPrice: number | null;
+  rfqBasePrice: number | null;
   promotionPercent: number;
   currency: string;
   stockQty: number;
@@ -49,7 +49,7 @@ export type RelatedProduct = {
   slug: string;
   primaryImageUrl: string;
   priceVisible: boolean;
-  fromPrice: number;
+  fromPrice: number | null;
   currency: string;
 };
 
@@ -63,6 +63,7 @@ export type Product = {
   name: string;
   slug: string;
   productNo: string;
+  supplierItemNo?: string;
   status: string | number;
   brandName: string;
   notes: string;
@@ -123,4 +124,5 @@ export type CatalogCategoryOption = {
   slug: string;
   depth: number;
   imageUrl: string | null;
+  productCount?: number;
 };

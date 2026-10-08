@@ -45,6 +45,28 @@ describe("mapPublicProduct", () => {
     const product = mapPublicProduct({ ...apiProduct, priceVisible: false, fromPrice: null, outOfStock: false });
 
     expect(product.priceVisible).toBe(false);
-    expect(product.variants[0]).toEqual(expect.objectContaining({ priceVisible: false, unitPrice: 0 }));
+    expect(product.variants[0]).toEqual(expect.objectContaining({ priceVisible: false, unitPrice: null }));
+  });
+
+  it("preserves full product data instead of synthesizing a list variant", () => {
+    const detail = {
+      ...mapPublicProduct(apiProduct),
+      supplierItemNo: "SUPPLIER-001",
+      notes: "Handle with care",
+      description: "Full product description",
+      specialRequirement: true,
+      variants: [
+        {
+          ...mapPublicProduct(apiProduct).variants[0]!,
+          id: "variant-id",
+          unitPrice: null,
+          rfqBasePrice: null,
+          promotionPercent: 10,
+        },
+      ],
+    };
+
+    expect(mapPublicProduct(detail)).toEqual(detail);
+    expect(mapPublicProduct({ ...detail, related: null })).toEqual({ ...detail, related: [] });
   });
 });

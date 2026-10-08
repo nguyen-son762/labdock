@@ -1,6 +1,6 @@
 "use client";
 
-import { Add, ArrowRight, Bookmark, Box1, LocationTick, Minus, ShoppingCart, Verify } from "iconsax-reactjs";
+import { Add, ArrowRight, Bookmark, Box1, Minus, ShoppingCart, Verify } from "iconsax-reactjs";
 import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -24,7 +24,7 @@ function ProductFacts({ product }: { product: Product }) {
   const facts = [
     { label: t("brand"), value: product.brandName, icon: Bookmark },
     { label: t("categoryNumberLabel"), value: product.productNo, icon: Box1 },
-    { label: t("origin"), value: product.brandName || t("notAvailable"), icon: LocationTick },
+    { label: t("supplierItemNo"), value: product.supplierItemNo || t("notAvailable"), icon: Box1 },
     { label: t("casNumber"), value: product.casNumber || t("notAvailable"), icon: Box1 },
   ];
 
@@ -97,7 +97,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         ) : null}
         <h1 className="text-2xl font-semibold leading-[1.3] text-[#051a50]">{product.name}</h1>
         <p className="mt-4 flex flex-wrap items-baseline gap-2 text-[32px] font-bold leading-tight text-[#e57a00]">
-          {presentation.price}
+          {presentation.priceVisible ? presentation.price : t("contactForPrice")}
           {presentation.originalPrice ? (
             <span className="text-lg font-normal text-[#a3abbd] line-through">{presentation.originalPrice}</span>
           ) : null}

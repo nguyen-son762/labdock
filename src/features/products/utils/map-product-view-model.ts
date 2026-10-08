@@ -32,7 +32,7 @@ export function mapProductViewModel(product: ProductViewModel): Product {
         id: `${product.id}-default`,
         sku: product.catalogNumber,
         priceVisible: product.priceVisible !== false,
-        unitPrice,
+        unitPrice: promotionPercent > 0 ? originalPrice : unitPrice,
         rfqBasePrice: originalPrice,
         promotionPercent,
         currency: product.currency,

@@ -53,6 +53,7 @@ type PublicCategoryTreeNodeShape = {
   slug: string;
   level: number;
   sortOrder: number;
+  productCount?: number;
   media: z.infer<typeof publicCategoryMediaSchema>[];
   children: PublicCategoryTreeNodeShape[];
 };
@@ -65,6 +66,7 @@ export const publicCategoryTreeNodeSchema: z.ZodType<PublicCategoryTreeNodeShape
     slug: z.string().min(1),
     level: z.number().int().positive(),
     sortOrder: z.number().int(),
+    productCount: z.number().int().nonnegative().optional(),
     media: z.array(publicCategoryMediaSchema),
     children: z.array(publicCategoryTreeNodeSchema),
   }),

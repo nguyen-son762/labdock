@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { publicProductDetailSchema } from "./product-detail.schema";
+
 const guidSchema = z.string().regex(/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i, "Invalid identifier.");
 
 export const publicProductListItemSchema = z.object({
@@ -19,7 +21,7 @@ export const publicProductListItemSchema = z.object({
 });
 
 export const publicProductsPageSchema = z.object({
-  items: z.array(publicProductListItemSchema),
+  items: z.array(z.union([publicProductDetailSchema, publicProductListItemSchema])),
   page: z.number().int().positive(),
   pageSize: z.number().int().positive(),
   total: z.number().int().nonnegative(),

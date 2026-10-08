@@ -43,7 +43,7 @@ export function CategoryStrip({
   return (
     <section aria-labelledby="categories-title">
       <div className="mb-2 flex items-center justify-between">
-        <Heading id="categories-title" className="text-xl font-semibold text-[#051a50]">
+        <Heading id="categories-title" className="text-xl font-medium leading-[30px] text-[#0f3678]">
           {title}
         </Heading>
         <SwiperNavigation
@@ -66,7 +66,7 @@ export function CategoryStrip({
         a11y={{ containerMessage: t("categoryCarousel") }}
         breakpoints={{
           640: { slidesPerView: 3, grid: { rows: 2, fill: "row" } },
-          1024: { slidesPerView: 5, grid: { rows: 1, fill: "row" } },
+          1024: { slidesPerView: 5, grid: { rows: 2, fill: "row" } },
         }}
         onSwiper={(instance) => {
           setSwiper(instance);
@@ -93,15 +93,20 @@ export function CategoryStrip({
                 href={href}
                 aria-current={selected ? "true" : undefined}
                 className={cn(
-                  "flex min-h-[66px] items-center gap-2 rounded-lg border p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
-                  selected ? "border-[#2f7bc4] bg-[#eaf2f9]" : "border-transparent bg-[#F5F7F8] hover:bg-[#eaf2f9]",
+                  "flex min-h-[66px] items-center gap-2 rounded-lg p-2 ring-1 ring-inset transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]",
+                  selected ? "bg-[#eaf2f9] ring-[#2f7bc4]" : "bg-[#F5F7F8] ring-transparent hover:bg-[#eaf2f9]",
                 )}
               >
                 <span className="relative size-8 shrink-0 overflow-hidden rounded bg-white">
                   <Image src={thumbnail} alt="" fill unoptimized sizes="32px" className="object-contain p-0.5" />
                 </span>
                 <span className="min-w-0">
-                  <strong className="line-clamp-2 text-[11px] leading-4 text-[#051a50]">{category.name}</strong>
+                  <strong className="line-clamp-2 text-[13px] font-medium leading-4 text-[#092661]">{category.name}</strong>
+                  <span className="block text-xs leading-[18px] text-[#73798f]">
+                    {category.productCount === undefined
+                      ? t("categoryCountUnavailable")
+                      : t("productCount", { count: category.productCount })}
+                  </span>
                 </span>
               </Link>
             </SwiperSlide>

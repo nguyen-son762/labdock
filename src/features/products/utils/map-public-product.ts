@@ -1,8 +1,11 @@
 import type { Product, RelatedProduct } from "../products.types";
+import type { PublicProductDetail } from "../schemas/product-detail.schema";
 import type { PublicProductListItem } from "../schemas/product-list.schema";
 
-export function mapPublicProduct(product: PublicProductListItem): Product {
-  const unitPrice = product.fromPrice ?? 0;
+export function mapPublicProduct(product: PublicProductListItem | PublicProductDetail): Product {
+  if ("variants" in product) return { ...product, related: product.related ?? [] };
+
+  const unitPrice = product.fromPrice;
 
   return {
     id: product.id,

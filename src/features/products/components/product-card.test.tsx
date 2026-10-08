@@ -65,7 +65,10 @@ const product: Product = {
 describe("ProductCard", () => {
   it("links an available product to its detail page", () => {
     renderWithProviders(<ProductCard product={product} />);
-    expect(screen.getByRole("link", { name: "Buy now" })).toHaveAttribute("href", "/products/round-bottom-flask");
+    expect(screen.getByRole("link", { name: `Buy now: ${product.name}` })).toHaveAttribute(
+      "href",
+      "/products/round-bottom-flask",
+    );
     expect(screen.getByText(product.brandName)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: `Add ${product.name} to cart` })).toBeInTheDocument();
   });
@@ -76,7 +79,10 @@ describe("ProductCard", () => {
         product={{ ...product, variants: product.variants.map((variant) => ({ ...variant, stockQty: 0 })) }}
       />,
     );
-    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/products/round-bottom-flask");
+    expect(screen.getByRole("link", { name: `Learn more: ${product.name}` })).toHaveAttribute(
+      "href",
+      "/products/round-bottom-flask",
+    );
     expect(screen.queryByRole("button", { name: `Add ${product.name} to cart` })).not.toBeInTheDocument();
   });
 
@@ -84,7 +90,7 @@ describe("ProductCard", () => {
     renderWithProviders(<ProductCard product={{ ...product, priceVisible: false }} />);
 
     expect(screen.getByText("Contact for price")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Learn more" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: `Learn more: ${product.name}` })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: `Add ${product.name} to cart` })).not.toBeInTheDocument();
   });
 
@@ -95,7 +101,7 @@ describe("ProductCard", () => {
 
     await user.click(screen.getByRole("button", { name: `Add ${product.name} to cart` }));
 
-    expect(addSpy).toHaveBeenCalledWith({ variantId: product.variants[0]!.id, quantity: 1 });
+    expect(addSpy.mock.calls[0]?.[0]).toEqual({ variantId: product.variants[0]!.id, quantity: 1 });
     expect(await screen.findByText(`${product.name} added to cart.`)).toBeInTheDocument();
   });
 });

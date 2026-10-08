@@ -15,6 +15,7 @@ const product: Product = {
   name: "Example Product",
   slug: "example-product",
   productNo: "SKU-001",
+  supplierItemNo: "SUPPLIER-001",
   status: "Published",
   brandName: "Example Brand",
   notes: "Handle with care",
@@ -50,7 +51,7 @@ const product: Product = {
       id: "55555555-5555-5555-5555-555555555555",
       sku: "SKU-001-200",
       priceVisible: true,
-      unitPrice: 180,
+      unitPrice: 200,
       rfqBasePrice: 200,
       promotionPercent: 10,
       currency: "SGD",
@@ -83,10 +84,32 @@ describe("ProductPurchasePanel", () => {
     renderWithProviders(<ProductPurchasePanel product={product} />);
 
     await user.click(screen.getByRole("button", { name: "200ml" }));
+    expect(screen.getByText("$180.00")).toBeInTheDocument();
+    expect(screen.getByText("$200.00")).toHaveClass("line-through");
+    expect(screen.getByText("-10%")).toBeInTheDocument();
+    expect(screen.getByText("SUPPLIER-001")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Add to cart" }));
 
-    expect(addSpy).toHaveBeenCalledWith({ variantId: "55555555-5555-5555-5555-555555555555", quantity: 1 });
+    expect(addSpy.mock.calls[0]?.[0]).toEqual({ variantId: "55555555-5555-5555-5555-555555555555", quantity: 1 });
     expect(await screen.findByText(`${product.name} added to cart.`)).toBeInTheDocument();
     expect(screen.getByText("ISO 27001")).toBeInTheDocument();
+  });
+
+  it("shows contact pricing and hides promotions for hidden or missing prices", () => {
+    renderWithProviders(
+      <ProductPurchasePanel
+        product={{
+          ...product,
+          priceVisible: false,
+          variants: [{ ...product.variants[1]!, unitPrice: null, rfqBasePrice: null }],
+        }}
+      />,
+    );
+
+    expect(screen.getByText("Contact for price")).toBeInTheDocument();
+    expect(screen.queryByText("-10%")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Buy now" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Add to cart" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Request a quote" })).toBeEnabled();
   });
 });
