@@ -101,6 +101,8 @@
     "bestSeller": "Best Seller",
     "trending": "Trending",
     "trusted": "Trusted by 500+ Research Leaders",
+    "pauseCarousel": "Pause autoplay",
+    "resumeCarousel": "Resume autoplay",
     "testimonialsTitle": "What research leaders say",
     "visitBrandWebsite": "Visit {name} website",
     "productCount": "{count} products",

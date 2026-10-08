@@ -87,7 +87,13 @@ describe("getPublicHomepage", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(getPublicHomepage()).resolves.toEqual(homepageResponse);
+    await expect(getPublicHomepage()).resolves.toEqual({
+      banners: homepageResponse.banners,
+      topCategories: homepageResponse.topCategories,
+      newestProducts: homepageResponse.newestProducts,
+      personalizedOffers: homepageResponse.personalizedOffers,
+      testimonials: homepageResponse.testimonials,
+    });
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(fetchMock).toHaveBeenCalledWith("https://uat-api-labdock.365studio.vn/api/public/v1/homepage", {
       next: { revalidate: 300, tags: ["homepage"] },
@@ -125,6 +131,18 @@ describe("getPublicHomepage", () => {
 });
 
 describe("getHomePageData", () => {
+  it("loads homepage content even when unused API topBrands is invalid", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(new Response(JSON.stringify({ ...homepageResponse, topBrands: null }), { status: 200 })),
+    );
+    const result = await getHomePageData();
+    expect(result.banners).toHaveLength(1);
+    expect(result).not.toHaveProperty("topBrands");
+  });
+
   it("maps every aggregate section without making secondary API calls", async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(homepageResponse), { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
@@ -143,7 +161,6 @@ describe("getHomePageData", () => {
       location: "Singapore",
       badge: "Featured",
     });
-    expect(result.topBrands[0]?.name).toBe("Example Brand");
     expect(result.topCategories[0]?.slug).toBe("example-category");
     expect(result.outstandingProducts[0]?.slug).toBe("example-new-product");
     expect(result.newestProducts[0]?.slug).toBe("example-new-product");
@@ -159,7 +176,6 @@ describe("getHomePageData", () => {
 
     await expect(getHomePageData()).resolves.toEqual({
       banners: [],
-      topBrands: [],
       topCategories: [],
       outstandingProducts: [],
       newestProducts: [],

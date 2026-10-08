@@ -4,7 +4,6 @@ import { EditorialSection } from "./editorial-section";
 import { HeroSection } from "./hero-section";
 import { NewProductsSection, OutstandingProducts, PersonalizedProducts } from "./product-sections";
 import { SocialProofSection } from "./social-proof-section";
-import type { Brand } from "@/features/brands";
 import type { Product } from "@/features/products";
 import type { HomeBanner, HomeCategory, Testimonial } from "../home.types";
 import Image from "next/image";
@@ -14,7 +13,6 @@ type HomeScreenProps = {
   outstandingProducts: readonly Product[];
   newestProducts: readonly Product[];
   personalizedProducts: readonly Product[];
-  topBrands: readonly Brand[];
   topCategories: readonly HomeCategory[];
   testimonials: readonly Testimonial[];
 };
@@ -24,7 +22,6 @@ export function HomeScreen({
   outstandingProducts,
   newestProducts,
   personalizedProducts,
-  topBrands,
   topCategories,
   testimonials,
 }: HomeScreenProps) {
@@ -48,7 +45,7 @@ export function HomeScreen({
       <NewProductsSection products={newestProducts} />
       <CategoriesSection categories={topCategories} />
       <PersonalizedProducts products={personalizedProducts} />
-      <SocialProofSection brands={topBrands} testimonials={testimonials} />
+      <SocialProofSection testimonials={testimonials} />
       <CtaSection />
     </div>
   );

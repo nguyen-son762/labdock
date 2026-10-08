@@ -101,6 +101,8 @@
     "bestSeller": "Bán chạy",
     "trending": "Xu hướng",
     "trusted": "Được hơn 500 nhà nghiên cứu tin tưởng",
+    "pauseCarousel": "Tạm dừng tự động",
+    "resumeCarousel": "Tiếp tục tự động",
     "testimonialsTitle": "Nhận xét từ các nhà nghiên cứu",
     "visitBrandWebsite": "Truy cập website của {name}",
     "productCount": "{count} sản phẩm",

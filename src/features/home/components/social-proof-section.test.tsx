@@ -1,59 +1,61 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { SocialProofSection } from "./social-proof-section";
 
 vi.mock("@/components/shared/service-guarantees", () => ({
   ServiceGuarantees: () => <div>Service guarantees</div>,
 }));
-
 vi.mock("./testimonial-carousel", () => ({
   TestimonialCarousel: () => <div>Testimonials</div>,
 }));
-
 const messages = {
   Home: {
     trusted: "Trusted by 500+ Research Leaders",
-    visitBrandWebsite: "Visit {name} website",
+    pauseCarousel: "Pause autoplay",
+    resumeCarousel: "Resume autoplay",
   },
 };
 
 describe("SocialProofSection", () => {
-  it("renders API brands as accessible logo cards", () => {
+  afterEach(() => vi.unstubAllGlobals());
+  it("always renders the twelve local Figma logos in design order without API brands", () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn().mockImplementation((media: string) => ({
+        matches: false,
+        media,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    );
     render(
       <NextIntlClientProvider locale="en" messages={messages}>
-        <SocialProofSection
-          testimonials={[]}
-          brands={[
-            {
-              id: "11111111-1111-1111-1111-111111111111",
-              name: "Example Brand",
-              logoUrl: "https://api.example.com/media/public/brand.jpg",
-              websiteUrl: "https://brand.example/",
-            },
-          ]}
-        />
+        <SocialProofSection testimonials={[]} />
       </NextIntlClientProvider>,
     );
-
-    expect(screen.getByRole("heading", { name: "Trusted by 500+ Research Leaders" })).toBeInTheDocument();
-    expect(screen.getByRole("presentation")).toHaveAttribute("src", "https://api.example.com/media/public/brand.jpg");
-    expect(screen.getByText("Example Brand")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Visit Example Brand website" })).toHaveAttribute(
-      "href",
-      "https://brand.example/",
-    );
-  });
-
-  it("hides the research leaders region when the API returns no top brands", () => {
-    render(
-      <NextIntlClientProvider locale="en" messages={messages}>
-        <SocialProofSection brands={[]} testimonials={[]} />
-      </NextIntlClientProvider>,
-    );
-
-    expect(screen.queryByRole("heading", { name: "Trusted by 500+ Research Leaders" })).not.toBeInTheDocument();
+    const region = screen.getByRole("region", { name: "Trusted by 500+ Research Leaders" });
+    const logos = within(region).getAllByRole("img");
+    expect(logos.map((logo) => logo.getAttribute("alt"))).toEqual([
+      "Stack&d Lab",
+      "Magnolia",
+      "Powersurge",
+      "Warpspeed",
+      "Leapyear",
+      "EasyTax",
+      "45 Degrees°",
+      "Acme Corp",
+      "AlphaWave",
+      "Biosynthesia",
+      "Capsule",
+      "Foresight",
+    ]);
+    for (const logo of logos) {
+      expect(logo.getAttribute("src")).toMatch(/^\/home\/research-leaders\/.+\.svg$/);
+      expect(logo).toHaveAttribute("height", "32");
+    }
+    expect(within(region).queryByRole("link")).not.toBeInTheDocument();
     expect(screen.getByText("Service guarantees")).toBeInTheDocument();
   });
 });

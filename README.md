@@ -225,10 +225,10 @@ Detail UI dùng trực tiếp `Product`: gallery lấy media primary/sort order,
 
 ### Homepage
 
-`GET /homepage` là request public duy nhất cho nội dung Home, trả về `banners`, `topBrands`, `topCategories`, `newestProducts`, `personalizedOffers` và `testimonials`. Frontend validate toàn bộ payload bằng Zod rồi map sang view model:
+`GET /homepage` là request public duy nhất cho nội dung Home, trả về `banners`, `topBrands`, `topCategories`, `newestProducts`, `personalizedOffers` và `testimonials`. Frontend validate các section đang sử dụng bằng Zod rồi map sang view model; trường `topBrands` được bỏ qua:
 
 - `banners` cấp ảnh, link, title, description, CTA, badge, thời gian và địa điểm cho Hero. `type` chỉ nhận `Left | Right`: banner `Left` chiếm hai cột, banner `Right` chiếm một cột; description chỉ render khi `showDescription=true`.
-- `topBrands` cấp logo và tên cho Research Leaders.
+- Research Leaders dùng cố định 12 logo SVG local tại `public/home/research-leaders/`, export từ Figma frame `106:4453`; không dùng hoặc validate `topBrands` từ API. Thứ tự và kích thước logo nằm trong `src/features/home/research-leaders.ts`. Mobile dưới 640px dùng Swiper một hàng với autoplay mỗi 5 giây, kéo vuốt và nút trước/sau. Autoplay tiếp tục sau khi bấm nút điều hướng, tạm dừng khi hover trên vùng slide; từ 640px dừng autoplay và hiển thị grid 3 cột, từ 1024px hiển thị grid 6 cột. Khi trở về mobile, autoplay tự bật lại.
 - `topCategories` cấp tên/slug cho Top Categories.
 - `newestProducts` cấp New Products và dùng các item có `isOutstanding=true` cho Outstanding Products.
 - `personalizedOffers` cấp Personalized offer.

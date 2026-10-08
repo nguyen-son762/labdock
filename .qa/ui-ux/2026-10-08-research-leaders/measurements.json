@@ -1,0 +1,614 @@
+[
+  {
+    "width": 1440,
+    "overflow": false,
+    "columns": "200px 200px 200px 200px 200px 200px",
+    "cards": [
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      },
+      {
+        "width": 200,
+        "height": 100
+      }
+    ],
+    "logos": [
+      {
+        "name": "Stack&d Lab",
+        "src": "/home/research-leaders/stack-and-lab.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Magnolia",
+        "src": "/home/research-leaders/magnolia.svg",
+        "width": 121,
+        "height": 32,
+        "naturalWidth": 121,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Powersurge",
+        "src": "/home/research-leaders/powersurge.svg",
+        "width": 130,
+        "height": 32,
+        "naturalWidth": 130,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Warpspeed",
+        "src": "/home/research-leaders/warpspeed.svg",
+        "width": 134,
+        "height": 32,
+        "naturalWidth": 134,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Leapyear",
+        "src": "/home/research-leaders/leapyear.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      },
+      {
+        "name": "EasyTax",
+        "src": "/home/research-leaders/easytax.svg",
+        "width": 106,
+        "height": 32,
+        "naturalWidth": 106,
+        "naturalHeight": 32
+      },
+      {
+        "name": "45 Degrees°",
+        "src": "/home/research-leaders/45-degrees.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Acme Corp",
+        "src": "/home/research-leaders/acme-corp.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "AlphaWave",
+        "src": "/home/research-leaders/alphawave.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Biosynthesia",
+        "src": "/home/research-leaders/biosynthesie.svg",
+        "width": 142,
+        "height": 32,
+        "naturalWidth": 142,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Capsule",
+        "src": "/home/research-leaders/capsule.svg",
+        "width": 100,
+        "height": 32,
+        "naturalWidth": 100,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Foresight",
+        "src": "/home/research-leaders/foresight.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "overflow": false,
+    "columns": "234.656px 234.672px 234.672px",
+    "cards": [
+      {
+        "width": 234.65625,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.65625,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.65625,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.65625,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      },
+      {
+        "width": 234.671875,
+        "height": 100
+      }
+    ],
+    "logos": [
+      {
+        "name": "Stack&d Lab",
+        "src": "/home/research-leaders/stack-and-lab.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Magnolia",
+        "src": "/home/research-leaders/magnolia.svg",
+        "width": 121,
+        "height": 32,
+        "naturalWidth": 121,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Powersurge",
+        "src": "/home/research-leaders/powersurge.svg",
+        "width": 130,
+        "height": 32,
+        "naturalWidth": 130,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Warpspeed",
+        "src": "/home/research-leaders/warpspeed.svg",
+        "width": 134,
+        "height": 32,
+        "naturalWidth": 134,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Leapyear",
+        "src": "/home/research-leaders/leapyear.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      },
+      {
+        "name": "EasyTax",
+        "src": "/home/research-leaders/easytax.svg",
+        "width": 106,
+        "height": 32,
+        "naturalWidth": 106,
+        "naturalHeight": 32
+      },
+      {
+        "name": "45 Degrees°",
+        "src": "/home/research-leaders/45-degrees.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Acme Corp",
+        "src": "/home/research-leaders/acme-corp.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "AlphaWave",
+        "src": "/home/research-leaders/alphawave.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Biosynthesia",
+        "src": "/home/research-leaders/biosynthesie.svg",
+        "width": 142,
+        "height": 32,
+        "naturalWidth": 142,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Capsule",
+        "src": "/home/research-leaders/capsule.svg",
+        "width": 100,
+        "height": 32,
+        "naturalWidth": 100,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Foresight",
+        "src": "/home/research-leaders/foresight.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "overflow": false,
+    "columns": "none",
+    "cards": [
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      }
+    ],
+    "logos": [
+      {
+        "name": "Stack&d Lab",
+        "src": "/home/research-leaders/stack-and-lab.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Magnolia",
+        "src": "/home/research-leaders/magnolia.svg",
+        "width": 121,
+        "height": 32,
+        "naturalWidth": 121,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Powersurge",
+        "src": "/home/research-leaders/powersurge.svg",
+        "width": 130,
+        "height": 32,
+        "naturalWidth": 130,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Warpspeed",
+        "src": "/home/research-leaders/warpspeed.svg",
+        "width": 134,
+        "height": 32,
+        "naturalWidth": 134,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Leapyear",
+        "src": "/home/research-leaders/leapyear.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      },
+      {
+        "name": "EasyTax",
+        "src": "/home/research-leaders/easytax.svg",
+        "width": 106,
+        "height": 32,
+        "naturalWidth": 106,
+        "naturalHeight": 32
+      },
+      {
+        "name": "45 Degrees°",
+        "src": "/home/research-leaders/45-degrees.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Acme Corp",
+        "src": "/home/research-leaders/acme-corp.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "AlphaWave",
+        "src": "/home/research-leaders/alphawave.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Biosynthesia",
+        "src": "/home/research-leaders/biosynthesie.svg",
+        "width": 142,
+        "height": 32,
+        "naturalWidth": 142,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Capsule",
+        "src": "/home/research-leaders/capsule.svg",
+        "width": 100,
+        "height": 32,
+        "naturalWidth": 100,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Foresight",
+        "src": "/home/research-leaders/foresight.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "overflow": false,
+    "columns": "none",
+    "cards": [
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      },
+      {
+        "width": 194.5,
+        "height": 100
+      }
+    ],
+    "logos": [
+      {
+        "name": "Stack&d Lab",
+        "src": "/home/research-leaders/stack-and-lab.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Magnolia",
+        "src": "/home/research-leaders/magnolia.svg",
+        "width": 121,
+        "height": 32,
+        "naturalWidth": 121,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Powersurge",
+        "src": "/home/research-leaders/powersurge.svg",
+        "width": 130,
+        "height": 32,
+        "naturalWidth": 130,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Warpspeed",
+        "src": "/home/research-leaders/warpspeed.svg",
+        "width": 134,
+        "height": 32,
+        "naturalWidth": 134,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Leapyear",
+        "src": "/home/research-leaders/leapyear.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      },
+      {
+        "name": "EasyTax",
+        "src": "/home/research-leaders/easytax.svg",
+        "width": 106,
+        "height": 32,
+        "naturalWidth": 106,
+        "naturalHeight": 32
+      },
+      {
+        "name": "45 Degrees°",
+        "src": "/home/research-leaders/45-degrees.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Acme Corp",
+        "src": "/home/research-leaders/acme-corp.svg",
+        "width": 132,
+        "height": 32,
+        "naturalWidth": 132,
+        "naturalHeight": 32
+      },
+      {
+        "name": "AlphaWave",
+        "src": "/home/research-leaders/alphawave.svg",
+        "width": 126,
+        "height": 32,
+        "naturalWidth": 126,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Biosynthesia",
+        "src": "/home/research-leaders/biosynthesie.svg",
+        "width": 142,
+        "height": 32,
+        "naturalWidth": 142,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Capsule",
+        "src": "/home/research-leaders/capsule.svg",
+        "width": 100,
+        "height": 32,
+        "naturalWidth": 100,
+        "naturalHeight": 32
+      },
+      {
+        "name": "Foresight",
+        "src": "/home/research-leaders/foresight.svg",
+        "width": 109,
+        "height": 32,
+        "naturalWidth": 109,
+        "naturalHeight": 32
+      }
+    ]
+  }
+]

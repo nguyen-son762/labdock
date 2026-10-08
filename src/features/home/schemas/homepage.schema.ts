@@ -1,4 +1,3 @@
-import { publicBrandSchema } from "@/features/brands/schemas/brand.schema";
 import { publicProductListItemSchema } from "@/features/products/schemas/product-list.schema";
 import { z } from "zod";
 
@@ -64,7 +63,6 @@ const homepageTestimonialSchema = z.object({
 
 export const publicHomepageSchema = z.object({
   banners: z.array(homepageBannerSchema),
-  topBrands: z.array(publicBrandSchema),
   topCategories: z.array(homepageCategorySchema),
   newestProducts: z.array(publicProductListItemSchema),
   personalizedOffers: z.array(publicProductListItemSchema),
