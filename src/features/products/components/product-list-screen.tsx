@@ -12,12 +12,13 @@ type ProductListScreenProps = {
   products: readonly Product[];
   categories: readonly CatalogCategoryOption[];
   brands: readonly CatalogBrandOption[];
+  origins: readonly string[];
   filters: ProductCatalogFilters;
   page: number;
   pageSize: number;
   total: number;
   productsError: boolean;
-  categoriesError: boolean;
+  originsError: boolean;
   brandsError: boolean;
   activeCategory?: CatalogCategoryOption & { children: readonly CatalogCategoryOption[] };
 };
@@ -26,12 +27,13 @@ export async function ProductListScreen({
   products,
   categories,
   brands,
+  origins,
   filters,
   page,
   pageSize,
   total,
   productsError,
-  categoriesError,
+  originsError,
   brandsError,
   activeCategory,
 }: ProductListScreenProps) {
@@ -69,14 +71,14 @@ export async function ProductListScreen({
         <div className="mt-6">
           <CatalogWorkspace
             products={products}
-            categories={categories}
+            origins={origins}
             brands={brands}
             filters={filters}
             page={page}
             pageSize={pageSize}
             total={total}
             productsError={productsError}
-            categoriesError={categoriesError}
+            originsError={originsError}
             brandsError={brandsError}
             categoryPage={Boolean(activeCategory)}
           />

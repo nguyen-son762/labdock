@@ -1,0 +1,16 @@
+{
+  "scope": "Origin filter below Brands and product API query contract",
+  "localStatus": "passed",
+  "fullDeployedAuditStatus": "unverified",
+  "resolved": [
+    {
+      "type": "visual mismatch",
+      "area": "Origin input",
+      "severity": "P3",
+      "evidence": "Initial computed radius was 12px; Figma specifies 8px. Final measurements show 8px and matching border/placeholder colors on every viewport.",
+      "component": "src/features/products/components/catalog-origin-filter.tsx"
+    }
+  ],
+  "inScopeUnresolved": [],
+  "outOfScope": ["Existing Select SVG JSX attribute warnings", "Anonymous cart GET returns 401"]
+}

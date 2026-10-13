@@ -211,9 +211,9 @@ Category được tải trong Server Component bằng native `fetch`. Nếu requ
 
 ### Product catalog
 
-Route `/products` tải song song `GET /products`, `GET /categories` và `GET /brands` ở Server Component. Bộ lọc là single-select theo đúng contract API và được lưu trong URL qua `categoryId`, `brandId`; phân trang và sắp xếp dùng `page`, `sort`. Mỗi lần đổi bộ lọc hoặc sort, trang được đưa về page đầu và Server Component request lại `GET /products` với `pageSize=20`.
+Route `/products` tải song song `GET /products`, `GET /categories`, `GET /brands` và `GET /origins` ở Server Component. Thanh category phía trên và bộ lọc Brand giữ lựa chọn đơn qua `categoryId`, `brandId`; nhóm Origin dưới Brand dùng checkbox chọn nhiều, lưu trong URL qua `origins=SG,DE`. Phân trang và sắp xếp dùng `page`, `sort`. Mỗi lần đổi bộ lọc hoặc sort, trang được đưa về page đầu và Server Component request lại `GET /products` với `pageSize=20`. Server chuyển danh sách ID và origin thành chuỗi phân cách bằng dấu phẩy với tên tham số API `CategoryIds`, `brandIds`, `Origins`; các tham số còn lại là `page`, `pageSize`, `Sort`, `IsNew`, `IsOutstanding`. Trang `/products/category/[slug]` dùng cùng bộ lọc Brand/Origin với category lấy từ route.
 
-Category tree được flatten nhưng vẫn giữ độ sâu để hiển thị phân cấp. Ba request có thể lỗi độc lập: lỗi products không khóa bộ lọc, còn lỗi categories hoặc brands không làm mất danh sách products. Request ẩn danh dùng Next Data Cache revalidate 5 phút; URL request khác nhau được cache riêng, còn tag chung hỗ trợ invalidation theo resource. Khi có access token trong cookie, cả ba request gắn Bearer token và dùng `no-store` để không chia sẻ response theo người dùng.
+Category tree được flatten nhưng vẫn giữ độ sâu để hiển thị phân cấp. Các request có thể lỗi độc lập: lỗi products không khóa bộ lọc, còn lỗi categories, brands hoặc origins không làm mất danh sách products. `GET /origins` được validate theo mảng string; danh sách rỗng, lỗi tải và tìm kiếm không khớp có thông báo riêng. Origin hiển thị tối đa 5 lựa chọn ban đầu, hỗ trợ xem thêm và tìm kiếm toàn bộ danh sách. Request ẩn danh dùng Next Data Cache revalidate 5 phút; URL request khác nhau được cache riêng, còn tag chung hỗ trợ invalidation theo resource (`origins` cho danh sách xuất xứ). Khi có access token trong cookie, các request gắn Bearer token và dùng `no-store` để không chia sẻ response theo người dùng.
 
 ### Product detail contract
 
@@ -245,9 +245,9 @@ Response được validate bằng `cartResponseSchema` trước khi map các fie
 ## Cache và session
 
 - Public content không dùng React Query.
-- Mọi server request tới `/homepage`, `/categories`, `/brands` và `/products...` đọc cookie `labdock_access_token`. Khi có token, request gắn `Authorization: Bearer <token>` và dùng `cache: 'no-store'` để response theo phiên không đi vào shared Cache.
+- Mọi server request tới `/homepage`, `/categories`, `/brands`, `/origins` và `/products...` đọc cookie `labdock_access_token`. Khi có token, request gắn `Authorization: Bearer <token>` và dùng `cache: 'no-store'` để response theo phiên không đi vào shared Cache.
 - Marketing/Auth layouts chờ request context trước khi tải dữ liệu server để cookie luôn khả dụng theo từng request; response ẩn danh của từng API vẫn có thể dùng shared Data Cache.
-- Khi không có token, Categories, Brands, Homepage và Products dùng Next Data Cache với `revalidate` 5 phút cùng resource tags tương ứng; filter, sort và page của Product catalog nằm trong URL request.
+- Khi không có token, Categories, Brands, Origins, Homepage và Products dùng Next Data Cache với `revalidate` 5 phút cùng resource tags tương ứng; filter, sort và page của Product catalog nằm trong URL request.
 - Product detail ẩn danh dùng tags `products` và `product:{slug}`, revalidate 5 phút.
 - Products và Brands standalone vẫn có thể dùng các server service riêng khi các màn hình khác cần chúng; Home không gọi các service này.
 - Cart dùng private React Query Cache với key `['cart', 'detail']`, `staleTime` 30 giây và không đi qua Next public Cache.

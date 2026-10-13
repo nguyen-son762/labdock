@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { getPublicBrands } from "@/features/brands/server";
 import { getPublicCategories } from "@/features/categories/server";
 import { parseProductCatalogFilters, ProductListScreen, type ProductCatalogSearchParams } from "@/features/products";
-import { getProductCatalogPage } from "@/features/products/server";
+import { getProductCatalogPage, getPublicProductOrigins } from "@/features/products/server";
 import { flattenCatalogCategories } from "@/features/products/utils/flatten-catalog-categories";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 
@@ -36,16 +36,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const filters = parseProductCatalogFilters(await searchParams);
-  const [productsResult, categoriesResult, brandsResult] = await Promise.allSettled([
+  const [productsResult, categoriesResult, brandsResult, originsResult] = await Promise.allSettled([
     getProductCatalogPage({
       page: filters.page,
       pageSize: PRODUCT_PAGE_SIZE,
-      brandId: filters.brandId,
-      categoryId: filters.categoryId,
+      brandIds: filters.brandIds,
+      categoryIds: filters.categoryId ? [filters.categoryId] : undefined,
+      origins: filters.origins,
       sort: filters.sort === "featured" ? undefined : filters.sort,
     }),
     getPublicCategories(),
     getPublicBrands(),
+    getPublicProductOrigins(),
   ]);
 
   const productsPage =
@@ -65,12 +67,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       products={productsPage.items}
       categories={categories}
       brands={brands}
+      origins={originsResult.status === "fulfilled" ? originsResult.value : []}
       filters={filters}
       page={productsPage.page}
       pageSize={productsPage.pageSize}
       total={productsPage.total}
       productsError={productsResult.status === "rejected"}
-      categoriesError={categoriesResult.status === "rejected"}
+      originsError={originsResult.status === "rejected"}
       brandsError={brandsResult.status === "rejected"}
     />
   );

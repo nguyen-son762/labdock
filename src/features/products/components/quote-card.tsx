@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 export function QuoteCard() {
   const t = useTranslations("Product");
   return (
-    <aside className="relative col-span-2 min-h-[382px] overflow-hidden rounded-lg bg-gradient-to-br from-[#174d91] to-[#72b1de] p-5 text-white">
+    <aside className="relative col-span-2 sm:col-start-2 xl:col-start-4 min-h-[382px] overflow-hidden rounded-lg bg-gradient-to-br from-[#174d91] to-[#72b1de] p-5 text-white">
       <Image
         src="/home/editorial-equipment.png"
         alt={t("laboratoryEquipment")}

@@ -52,6 +52,7 @@ export function CtaSection() {
                 fill
                 sizes="310px"
                 className="rounded-[20px] object-contain object-right-top"
+                unoptimized
               />
             </div>
             <div className="relative z-20 flex h-full max-w-full flex-col items-start justify-end px-6 py-8 text-white">
@@ -62,11 +63,10 @@ export function CtaSection() {
               <Button
                 asChild
                 variant={card.buttonVariant}
-                className={`h-10 w-fit gap-4 rounded-full p-1.5 pl-5 ${
-                  card.key === "partner"
-                    ? "shadow-[0_0_50px_rgba(47,123,196,0.3)]"
-                    : "shadow-[0_0_50px_rgba(239,163,59,0.3)]"
-                }`}
+                className={`h-10 w-fit gap-4 rounded-full p-1.5 pl-5 ${card.key === "partner"
+                  ? "shadow-[0_0_50px_rgba(47,123,196,0.3)]"
+                  : "shadow-[0_0_50px_rgba(239,163,59,0.3)]"
+                  }`}
               >
                 <Link href={card.href}>
                   {t(`cta.${card.key}.action`)}

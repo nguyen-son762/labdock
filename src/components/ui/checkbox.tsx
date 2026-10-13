@@ -22,9 +22,9 @@ const Checkbox = React.forwardRef<
         <path
           d="M8.83325 0.833008L3.33325 6.33301L0.833252 3.83301"
           stroke="#596AB7"
-          stroke-width="1.6666"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.6666"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </CheckboxPrimitive.Indicator>

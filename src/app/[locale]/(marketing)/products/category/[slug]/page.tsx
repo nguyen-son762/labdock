@@ -11,7 +11,7 @@ import {
   type CatalogCategoryOption,
   type ProductCatalogSearchParams,
 } from "@/features/products";
-import { getProductCatalogPage } from "@/features/products/server";
+import { getProductCatalogPage, getPublicProductOrigins } from "@/features/products/server";
 import { flattenCatalogCategories } from "@/features/products/utils/flatten-catalog-categories";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 
@@ -66,15 +66,17 @@ export default async function ProductCategoryPage({ params, searchParams }: Prod
   if (!category) notFound();
 
   const filters = { ...parseProductCatalogFilters(query), categoryId: category.id };
-  const [productsResult, brandsResult] = await Promise.allSettled([
+  const [productsResult, brandsResult, originsResult] = await Promise.allSettled([
     getProductCatalogPage({
       page: filters.page,
       pageSize: PRODUCT_PAGE_SIZE,
-      brandId: filters.brandId,
-      categoryId: category.id,
+      brandIds: filters.brandIds,
+      categoryIds: [category.id],
+      origins: filters.origins,
       sort: filters.sort === "featured" ? undefined : filters.sort,
     }),
     getPublicBrands(),
+    getPublicProductOrigins(),
   ]);
 
   const productsPage =
@@ -101,12 +103,13 @@ export default async function ProductCategoryPage({ params, searchParams }: Prod
       products={productsPage.items}
       categories={categories}
       brands={brands}
+      origins={originsResult.status === "fulfilled" ? originsResult.value : []}
       filters={filters}
       page={productsPage.page}
       pageSize={productsPage.pageSize}
       total={productsPage.total}
       productsError={productsResult.status === "rejected"}
-      categoriesError={false}
+      originsError={originsResult.status === "rejected"}
       brandsError={brandsResult.status === "rejected"}
       activeCategory={activeCategory}
     />

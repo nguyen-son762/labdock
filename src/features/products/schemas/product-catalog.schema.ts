@@ -11,12 +11,45 @@ const optionalGuidSearchParam = z.preprocess(
   z.string().regex(guidPattern).optional().catch(undefined),
 );
 
-export const productCatalogFiltersSchema = z.object({
-  page: z.preprocess(firstSearchParam, z.coerce.number().int().positive().max(100_000).catch(1)),
-  brandId: optionalGuidSearchParam,
-  categoryId: optionalGuidSearchParam,
-  sort: z.preprocess(firstSearchParam, z.enum(["featured", "name", "price-desc"]).catch("featured")),
-});
+export const productCatalogFiltersSchema = z
+  .object({
+    page: z.preprocess(firstSearchParam, z.coerce.number().int().positive().max(100_000).catch(1)),
+    brandId: optionalGuidSearchParam,
+    brandIds: z.preprocess(
+      firstSearchParam,
+      z
+        .string()
+        .optional()
+        .transform((value) => [
+          ...new Set(
+            (value ?? "")
+              .split(",")
+              .map((id) => id.trim())
+              .filter((id) => guidPattern.test(id)),
+          ),
+        ]),
+    ),
+    categoryId: optionalGuidSearchParam,
+    origins: z.preprocess(
+      firstSearchParam,
+      z
+        .string()
+        .optional()
+        .transform((value) => [
+          ...new Set(
+            (value ?? "")
+              .split(",")
+              .map((origin) => origin.trim())
+              .filter(Boolean),
+          ),
+        ]),
+    ),
+    sort: z.preprocess(firstSearchParam, z.enum(["featured", "name", "price-desc"]).catch("featured")),
+  })
+  .transform(({ brandId, brandIds, ...filters }) => ({
+    ...filters,
+    brandIds: brandIds.length ? brandIds : brandId ? [brandId] : [],
+  }));
 
 export type ProductCatalogFilters = z.infer<typeof productCatalogFiltersSchema>;
 export type ProductCatalogSearchParams = Record<string, string | string[] | undefined>;

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
-import type { CatalogBrandOption, CatalogCategoryOption, Product } from "../products.types";
+import type { CatalogBrandOption, Product } from "../products.types";
 import type { ProductCatalogFilters } from "../schemas/product-catalog.schema";
 import { CatalogFilters } from "./catalog-filters";
 import { ProductCard } from "./product-card";
@@ -17,28 +17,28 @@ import { QuoteCard } from "./quote-card";
 
 type CatalogWorkspaceProps = {
   products: readonly Product[];
-  categories: readonly CatalogCategoryOption[];
+  origins: readonly string[];
   brands: readonly CatalogBrandOption[];
   filters: ProductCatalogFilters;
   page: number;
   pageSize: number;
   total: number;
   productsError: boolean;
-  categoriesError: boolean;
+  originsError: boolean;
   brandsError: boolean;
   categoryPage?: boolean;
 };
 
 export function CatalogWorkspace({
   products,
-  categories,
+  origins,
   brands,
   filters,
   page,
   pageSize,
   total,
   productsError,
-  categoriesError,
+  originsError,
   brandsError,
   categoryPage = false,
 }: CatalogWorkspaceProps) {
@@ -48,7 +48,9 @@ export function CatalogWorkspace({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const hasFilters = Boolean(filters.brandId || filters.categoryId || filters.sort !== "featured");
+  const hasFilters = Boolean(
+    filters.brandIds.length || filters.categoryId || filters.origins.length || filters.sort !== "featured",
+  );
 
   function buildHref(updates: Record<string, string | number | null>): string {
     const params = new URLSearchParams(searchParams.toString());
@@ -64,37 +66,25 @@ export function CatalogWorkspace({
     startTransition(() => router.replace(buildHref(updates), { scroll: false }));
   }
 
-  function changeCategory(categoryId: string | null) {
-    const selectedCategory = categories.find((category) => category.id === categoryId);
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("categoryId");
-    params.delete("page");
-    const query = params.toString();
-    const basePath = selectedCategory ? `/products/category/${selectedCategory.slug}` : "/products";
-    startTransition(() => {
-      router.push(query ? `${basePath}?${query}` : basePath);
-    });
-  }
-
   function clearFilters() {
     if (categoryPage) {
       startTransition(() => router.push("/products"));
       return;
     }
-    updateParams({ brandId: null, categoryId: null, sort: null, page: null });
+    updateParams({ brandIds: null, brandId: null, categoryId: null, origins: null, sort: null, page: null });
   }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[238px_minmax(0,1fr)]">
       <CatalogFilters
-        categories={categories}
+        origins={origins}
         brands={brands}
         filters={filters}
         disabled={isPending}
-        categoriesError={categoriesError}
+        originsError={originsError}
         brandsError={brandsError}
-        onBrandChange={(brandId) => updateParams({ brandId, page: null })}
-        onCategoryChange={changeCategory}
+        onBrandChange={(brandIds) => updateParams({ brandIds: brandIds.join(","), brandId: null, page: null })}
+        onOriginsChange={(origins) => updateParams({ origins: origins.join(","), page: null })}
         onClear={clearFilters}
       />
 
@@ -137,11 +127,11 @@ export function CatalogWorkspace({
         ) : products.length ? (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">
             {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.id} product={product} appearance="catalog" />
+              <ProductCard key={product.id} product={product} />
             ))}
             <QuoteCard />
             {products.slice(3).map((product) => (
-              <ProductCard key={product.id} product={product} appearance="catalog" />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (

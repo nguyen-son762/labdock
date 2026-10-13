@@ -10,12 +10,13 @@ import { mapPublicProduct } from "../utils/map-public-product";
 import { CatalogWorkspace } from "./catalog-workspace";
 
 const routerReplace = vi.hoisted(() => vi.fn());
+const searchQuery = vi.hoisted(() => ({ value: "" }));
 const routerPush = vi.hoisted(() => vi.fn());
 const categoryId = "22222222-2222-2222-2222-222222222222";
 const brandId = "33333333-3333-3333-3333-333333333333";
 
 vi.mock("next/navigation", () => ({
-  useSearchParams: () => new URLSearchParams(`categoryId=${categoryId}`),
+  useSearchParams: () => new URLSearchParams(searchQuery.value),
 }));
 
 vi.mock("@/i18n/navigation", () => ({
@@ -48,14 +49,16 @@ const product = mapPublicProduct({
 
 const filters: ProductCatalogFilters = {
   page: 1,
-  brandId: undefined,
+  brandIds: [],
   categoryId,
   sort: "featured",
+  origins: [],
 };
 
 beforeEach(() => {
   routerReplace.mockReset();
   routerPush.mockReset();
+  searchQuery.value = `categoryId=${categoryId}`;
 });
 
 describe("CatalogWorkspace", () => {
@@ -64,21 +67,21 @@ describe("CatalogWorkspace", () => {
     renderWithProviders(
       <CatalogWorkspace
         products={[product]}
-        categories={[{ id: categoryId, name: "Chemicals", slug: "chemicals", depth: 0, imageUrl: null }]}
+        origins={["SG", "Germany"]}
         brands={[{ id: brandId, name: "Example Brand" }]}
         filters={filters}
         page={1}
         pageSize={20}
         total={40}
         productsError={false}
-        categoriesError={false}
+        originsError={false}
         brandsError={false}
       />,
     );
 
     await user.click(screen.getByLabelText("Example Brand"));
 
-    expect(routerReplace).toHaveBeenCalledWith(`/products?categoryId=${categoryId}&brandId=${brandId}`, {
+    expect(routerReplace).toHaveBeenCalledWith(`/products?categoryId=${categoryId}&brandIds=${brandId}`, {
       scroll: false,
     });
     expect(screen.getByRole("link", { name: "Page 2" })).toHaveAttribute(
@@ -93,51 +96,132 @@ describe("CatalogWorkspace", () => {
     });
   });
 
+  it("adds multiple brands, migrates legacy links and resets pagination", async () => {
+    const user = userEvent.setup();
+    const secondBrandId = "44444444-4444-4444-4444-444444444444";
+    searchQuery.value = `categoryId=${categoryId}&brandId=${brandId}&sort=name&page=3`;
+    renderWithProviders(
+      <CatalogWorkspace
+        products={[product]}
+        origins={[]}
+        brands={[
+          { id: brandId, name: "Example Brand" },
+          { id: secondBrandId, name: "Second Brand" },
+        ]}
+        filters={{ ...filters, brandIds: [brandId], sort: "name", page: 3 }}
+        page={3}
+        pageSize={20}
+        total={60}
+        productsError={false}
+        originsError={false}
+        brandsError={false}
+      />,
+    );
+    await user.click(screen.getByRole("checkbox", { name: "Second Brand" }));
+    expect(routerReplace).toHaveBeenCalledWith(
+      `/products?categoryId=${categoryId}&sort=name&brandIds=${brandId}%2C${secondBrandId}`,
+      { scroll: false },
+    );
+  });
+
   it("keeps product failures separate from available filters", () => {
     renderWithProviders(
       <CatalogWorkspace
         products={[]}
-        categories={[{ id: categoryId, name: "Chemicals", slug: "chemicals", depth: 0, imageUrl: null }]}
+        origins={["SG", "Germany"]}
         brands={[{ id: brandId, name: "Example Brand" }]}
         filters={filters}
         page={1}
         pageSize={20}
         total={0}
         productsError
-        categoriesError={false}
+        originsError={false}
         brandsError={false}
       />,
     );
 
     expect(screen.getByRole("alert")).toHaveTextContent("We could not load products");
-    expect(screen.getByRole("radiogroup", { name: "Brands" })).toBeInTheDocument();
-    expect(screen.getByRole("radiogroup", { name: "Categories" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Brands" })).toBeInTheDocument();
+    expect(screen.getByRole("checkbox", { name: "SG" })).toBeEnabled();
+    expect(screen.queryByRole("radiogroup", { name: "Categories" })).not.toBeInTheDocument();
   });
 
-  it("opens a category page when a category is selected from the filter", async () => {
+  it("adds and removes origins while preserving category, brand and sort, and resetting pagination", async () => {
     const user = userEvent.setup();
-    const categorySlug = "laboratory-glassware";
+    searchQuery.value = `categoryId=${categoryId}&brandId=${brandId}&sort=name&origins=SG&page=3`;
+    const selectedFilters = { ...filters, brandIds: [brandId], sort: "name" as const, origins: ["SG"], page: 3 };
+    const props = {
+      products: [product],
+      origins: ["SG", "Germany"],
+      brands: [{ id: brandId, name: "Example Brand" }],
+      filters: selectedFilters,
+      page: 3,
+      pageSize: 20,
+      total: 80,
+      productsError: false,
+      originsError: false,
+      brandsError: false,
+    };
+    const { rerender } = renderWithProviders(<CatalogWorkspace {...props} />);
+    await user.click(screen.getByRole("checkbox", { name: "Germany" }));
+    const href = `/products?categoryId=${categoryId}&brandId=${brandId}&sort=name&origins=SG%2CGermany`;
+    expect(routerReplace).toHaveBeenLastCalledWith(href, { scroll: false });
+    expect(screen.getByRole("link", { name: "Page 2" })).toHaveAttribute(
+      "href",
+      `/products?categoryId=${categoryId}&brandId=${brandId}&sort=name&origins=SG&page=2`,
+    );
 
+    searchQuery.value = href.split("?")[1] ?? "";
+    rerender(<CatalogWorkspace {...props} filters={{ ...selectedFilters, origins: ["SG", "Germany"], page: 1 }} />);
+    await user.click(screen.getByRole("checkbox", { name: "SG" }));
+    expect(routerReplace).toHaveBeenLastCalledWith(
+      `/products?categoryId=${categoryId}&brandId=${brandId}&sort=name&origins=Germany`,
+      { scroll: false },
+    );
+    await user.click(screen.getByRole("button", { name: "Clear" }));
+    expect(routerReplace).toHaveBeenLastCalledWith("/products", { scroll: false });
+  });
+
+  it("clears the last origin and exposes clear filters in an empty result", async () => {
+    const user = userEvent.setup();
+    searchQuery.value = "origins=SG&page=2";
     renderWithProviders(
       <CatalogWorkspace
-        products={[product]}
-        categories={[
-          { id: categoryId, name: "Chemicals", slug: "chemicals", depth: 0, imageUrl: null },
-          { id: brandId, name: "Laboratory Glassware", slug: categorySlug, depth: 1, imageUrl: null },
-        ]}
-        brands={[{ id: "44444444-4444-4444-4444-444444444444", name: "Example Brand" }]}
-        filters={filters}
-        page={1}
+        products={[]}
+        origins={["SG"]}
+        brands={[]}
+        filters={{ ...filters, categoryId: undefined, origins: ["SG"], page: 2 }}
+        page={2}
         pageSize={20}
-        total={40}
+        total={0}
         productsError={false}
-        categoriesError={false}
+        originsError={false}
         brandsError={false}
       />,
     );
+    expect(screen.getByRole("button", { name: "Clear filters" })).toBeInTheDocument();
+    await user.click(screen.getByRole("checkbox", { name: "SG" }));
+    expect(routerReplace).toHaveBeenLastCalledWith("/products", { scroll: false });
+  });
 
-    await user.click(screen.getByLabelText("Laboratory Glassware"));
-
-    expect(routerPush).toHaveBeenCalledWith(`/products/category/${categorySlug}`);
+  it("keeps products and brand filters usable when origins fail", () => {
+    renderWithProviders(
+      <CatalogWorkspace
+        products={[product]}
+        origins={[]}
+        brands={[{ id: brandId, name: "Example Brand" }]}
+        filters={filters}
+        page={1}
+        pageSize={20}
+        total={1}
+        productsError={false}
+        originsError
+        brandsError={false}
+      />,
+    );
+    expect(screen.getByText("Example Product")).toBeInTheDocument();
+    expect(screen.getByRole("checkbox", { name: "Example Brand" })).toBeEnabled();
+    expect(screen.getByRole("textbox", { name: "Search origins" })).toBeDisabled();
+    expect(screen.getByRole("status")).toHaveTextContent("Unable to load origins");
   });
 });

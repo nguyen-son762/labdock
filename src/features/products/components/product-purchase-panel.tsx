@@ -127,7 +127,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
                     className={cn(
                       "h-8 min-w-[72px] flex-1 rounded-lg border-[#d4d4d4] bg-white px-2 text-sm text-[#404040] shadow-none",
                       selectedVariant?.id === variant.id &&
-                        "border-[#164990] bg-[#164990] text-white hover:bg-[#164990] hover:text-white",
+                      "border-[#164990] bg-[#164990] text-white hover:bg-[#164990] hover:text-white",
                     )}
                   >
                     {label}

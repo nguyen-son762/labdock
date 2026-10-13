@@ -1,0 +1,215 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "metrics": {
+      "bounds": {
+        "x": 80,
+        "y": 389,
+        "width": 238,
+        "height": 121
+      },
+      "overflow": false,
+      "inputHeight": 40,
+      "inputRadius": "8px",
+      "inputBorderColor": "rgb(221, 226, 232)",
+      "placeholderColor": "rgb(177, 186, 200)",
+      "labelSize": "14px",
+      "labelLineHeight": "20px",
+      "checkboxWidth": 16,
+      "assets": [
+        {
+          "src": "/products/filters/chevron-up.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        },
+        {
+          "src": "/products/filters/search.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        }
+      ]
+    },
+    "errors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-width strokeWidth",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linecap strokeLinecap",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linejoin strokeLinejoin",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "interactions": "passed"
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "metrics": {
+      "bounds": {
+        "x": 16,
+        "y": 339,
+        "width": 238,
+        "height": 121
+      },
+      "overflow": false,
+      "inputHeight": 40,
+      "inputRadius": "8px",
+      "inputBorderColor": "rgb(221, 226, 232)",
+      "placeholderColor": "rgb(177, 186, 200)",
+      "labelSize": "14px",
+      "labelLineHeight": "20px",
+      "checkboxWidth": 16,
+      "assets": [
+        {
+          "src": "/products/filters/chevron-up.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        },
+        {
+          "src": "/products/filters/search.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        }
+      ]
+    },
+    "errors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-width strokeWidth",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linecap strokeLinecap",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linejoin strokeLinejoin"
+    ],
+    "interactions": "passed"
+  },
+  {
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "metrics": {
+      "bounds": {
+        "x": 32,
+        "y": 903,
+        "width": 704,
+        "height": 121
+      },
+      "overflow": false,
+      "inputHeight": 40,
+      "inputRadius": "8px",
+      "inputBorderColor": "rgb(221, 226, 232)",
+      "placeholderColor": "rgb(177, 186, 200)",
+      "labelSize": "14px",
+      "labelLineHeight": "20px",
+      "checkboxWidth": 16,
+      "assets": [
+        {
+          "src": "/products/filters/chevron-up.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        },
+        {
+          "src": "/products/filters/search.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        }
+      ]
+    },
+    "errors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-width strokeWidth",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linecap strokeLinecap",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linejoin strokeLinejoin"
+    ],
+    "interactions": "passed"
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "metrics": {
+      "bounds": {
+        "x": 32,
+        "y": 361,
+        "width": 326,
+        "height": 121
+      },
+      "overflow": false,
+      "inputHeight": 40,
+      "inputRadius": "8px",
+      "inputBorderColor": "rgb(221, 226, 232)",
+      "placeholderColor": "rgb(177, 186, 200)",
+      "labelSize": "14px",
+      "labelLineHeight": "20px",
+      "checkboxWidth": 16,
+      "assets": [
+        {
+          "src": "/products/filters/chevron-up.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        },
+        {
+          "src": "/products/filters/search.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        }
+      ]
+    },
+    "errors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-width strokeWidth",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linecap strokeLinecap",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linejoin strokeLinejoin",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "interactions": "passed"
+  },
+  {
+    "viewport": {
+      "width": 320,
+      "height": 720
+    },
+    "metrics": {
+      "bounds": {
+        "x": 32,
+        "y": 299,
+        "width": 256,
+        "height": 121
+      },
+      "overflow": false,
+      "inputHeight": 40,
+      "inputRadius": "8px",
+      "inputBorderColor": "rgb(221, 226, 232)",
+      "placeholderColor": "rgb(177, 186, 200)",
+      "labelSize": "14px",
+      "labelLineHeight": "20px",
+      "checkboxWidth": 16,
+      "assets": [
+        {
+          "src": "/products/filters/chevron-up.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        },
+        {
+          "src": "/products/filters/search.svg",
+          "width": 16,
+          "height": 16,
+          "loaded": true
+        }
+      ]
+    },
+    "errors": [
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-width strokeWidth",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linecap strokeLinecap",
+      "Invalid DOM property `%s`. Did you mean `%s`? stroke-linejoin strokeLinejoin",
+      "Failed to load resource: the server responded with a status of 401 ()"
+    ],
+    "interactions": "passed"
+  }
+]

@@ -9,6 +9,7 @@ import {
   getProductCatalogPage,
   getPublicProductBySlug,
   getPublicProducts,
+  getPublicProductOrigins,
   ProductNotFoundError,
 } from "./server";
 
@@ -119,8 +120,9 @@ describe("getPublicProducts", () => {
       getPublicProducts({
         page: 1,
         pageSize: 12,
-        brandId: "brand-id",
-        categoryId: "category-id",
+        brandIds: ["brand-id", "second-brand"],
+        categoryIds: ["category-id", "second-category"],
+        origins: ["SG", "Germany"],
         sort: "newest",
         isNew: true,
         isOutstanding: true,
@@ -128,7 +130,7 @@ describe("getPublicProducts", () => {
     ).resolves.toEqual(productsResponse);
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://uat-api-labdock.365studio.vn/api/public/v1/products?page=1&pageSize=12&brandId=brand-id&categoryId=category-id&sort=newest&isNew=true&IsOutstanding=true",
+      "https://uat-api-labdock.365studio.vn/api/public/v1/products?page=1&pageSize=12&brandIds=brand-id%2Csecond-brand&CategoryIds=category-id%2Csecond-category&Origins=SG%2CGermany&Sort=newest&IsNew=true&IsOutstanding=true",
       { next: { revalidate: 300, tags: ["products", "products:outstanding"] } },
     );
   });
@@ -156,6 +158,27 @@ describe("getPublicProducts", () => {
     await expect(getPublicProducts({ page: 1, pageSize: 6 })).rejects.toThrow();
   });
 
+  it("omits empty lists and preserves explicit false flags", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(productsResponse)));
+    vi.stubGlobal("fetch", fetchMock);
+    await getPublicProducts({
+      page: 2,
+      pageSize: 20,
+      brandIds: [],
+      categoryIds: [],
+      origins: [],
+      isNew: false,
+      isOutstanding: false,
+    });
+    const url = new URL(fetchMock.mock.calls[0]?.[0]);
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      page: "2",
+      pageSize: "20",
+      IsNew: "false",
+      IsOutstanding: "false",
+    });
+  });
+
   it("maps product list items into the Product contract consumed by cards", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(productsResponse), { status: 200 })));
 
@@ -170,6 +193,32 @@ describe("getPublicProducts", () => {
         variants: [expect.objectContaining({ unitPrice: 99.5, stockQty: 0 })],
       }),
     );
+  });
+});
+
+describe("getPublicProductOrigins", () => {
+  it("loads string origins with the catalog cache policy and removes duplicates", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(["SG", "United States", "SG"])));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(getPublicProductOrigins()).resolves.toEqual(["SG", "United States"]);
+    expect(fetchMock).toHaveBeenCalledWith("https://uat-api-labdock.365studio.vn/api/public/v1/origins", {
+      next: { revalidate: 300, tags: ["origins"] },
+    });
+  });
+
+  it("supports an empty list", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("[]")));
+    await expect(getPublicProductOrigins()).resolves.toEqual([]);
+  });
+
+  it("rejects failed requests and malformed payloads", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(null, { status: 503 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify([{ name: "SG" }])));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(getPublicProductOrigins()).rejects.toThrow("Unable to load origins (503)");
+    await expect(getPublicProductOrigins()).rejects.toThrow();
   });
 });
 
@@ -194,7 +243,7 @@ describe("getCatalogCategoriesWithCounts", () => {
     expect(result.map((option) => option.productCount)).toEqual([10, 42]);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock).toHaveBeenCalledWith(
-      `https://uat-api-labdock.365studio.vn/api/public/v1/products?page=1&pageSize=1&categoryId=${category.id}`,
+      `https://uat-api-labdock.365studio.vn/api/public/v1/products?page=1&pageSize=1&CategoryIds=${category.id}`,
       { next: { revalidate: 300, tags: ["products", "products:all"] } },
     );
   });

@@ -33,8 +33,9 @@ export type PublicProductsPage = z.infer<typeof publicProductsPageSchema>;
 export type GetPublicProductsParams = {
   page: number;
   pageSize: number;
-  brandId?: string;
-  categoryId?: string;
+  brandIds?: readonly string[];
+  categoryIds?: readonly string[];
+  origins?: readonly string[];
   sort?: string;
   isNew?: boolean;
   isOutstanding?: boolean;

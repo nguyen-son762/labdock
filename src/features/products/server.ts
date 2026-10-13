@@ -4,6 +4,7 @@ import { createServerApiRequestInit } from "@/lib/server-api-request";
 import { products } from "./data/products-data";
 import type { CatalogCategoryOption, Product } from "./products.types";
 import { publicProductDetailSchema } from "./schemas/product-detail.schema";
+import { publicProductOriginsSchema } from "./schemas/product-origin.schema";
 import {
   publicProductsPageSchema,
   type GetPublicProductsParams,
@@ -28,10 +29,11 @@ function createProductsQuery(params: GetPublicProductsParams): string {
     pageSize: String(params.pageSize),
   });
 
-  if (params.brandId) query.set("brandId", params.brandId);
-  if (params.categoryId) query.set("categoryId", params.categoryId);
-  if (params.sort) query.set("sort", params.sort);
-  if (params.isNew !== undefined) query.set("isNew", String(params.isNew));
+  if (params.brandIds?.length) query.set("brandIds", params.brandIds.join(","));
+  if (params.categoryIds?.length) query.set("CategoryIds", params.categoryIds.join(","));
+  if (params.origins?.length) query.set("Origins", params.origins.join(","));
+  if (params.sort) query.set("Sort", params.sort);
+  if (params.isNew !== undefined) query.set("IsNew", String(params.isNew));
   if (params.isOutstanding !== undefined) query.set("IsOutstanding", String(params.isOutstanding));
 
   return query.toString();
@@ -64,13 +66,24 @@ export async function getProductCatalogPage(params: GetPublicProductsParams): Pr
   return { ...page, items: page.items.map(mapPublicProduct) };
 }
 
+export async function getPublicProductOrigins(): Promise<string[]> {
+  const response = await fetch(
+    `${clientEnv.NEXT_PUBLIC_API_BASE_URL}/origins`,
+    await createServerApiRequestInit({ revalidate: 300, tags: ["origins"] }),
+  );
+
+  if (!response.ok) throw new Error(`Unable to load origins (${response.status}).`);
+
+  return [...new Set(publicProductOriginsSchema.parse(await response.json()))];
+}
+
 export async function getCatalogCategoriesWithCounts(
   categories: readonly CatalogCategoryOption[],
 ): Promise<CatalogCategoryOption[]> {
   const results = await Promise.allSettled(
     categories.map(async (category) => {
       if (category.productCount !== undefined) return category;
-      const page = await getPublicProducts({ page: 1, pageSize: 1, categoryId: category.id });
+      const page = await getPublicProducts({ page: 1, pageSize: 1, categoryIds: [category.id] });
       return { ...category, productCount: page.total };
     }),
   );
