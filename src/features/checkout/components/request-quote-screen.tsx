@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { Alert } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useCartQuery } from "../api/use-cart-query";
@@ -63,6 +64,7 @@ export function RequestQuoteScreen({ initialItemIds }: { initialItemIds?: string
           <ArrowLeft2 className="size-4" aria-hidden="true" /> {t("backToProducts")}
         </Link>
         <div className="mt-6 grid items-start gap-4 lg:grid-cols-[minmax(0,821px)_minmax(340px,403px)]">
+          {updateCart.isError ? <Alert className="lg:col-span-2">{t("updateItemError")}</Alert> : null}
           <CartItemsTable
             items={items}
             selectedIds={selectedIds}
@@ -75,6 +77,7 @@ export function RequestQuoteScreen({ initialItemIds }: { initialItemIds?: string
                   : undefined
             }
             onQuantityChange={(itemId, quantity) => updateCart.mutate({ itemId, quantity })}
+            onVariantChange={(itemId, variantId, quantity) => updateCart.mutate({ itemId, variantId, quantity })}
             onRemove={(itemId) => removeCart.mutate({ itemId })}
           />
           <QuoteContactForm

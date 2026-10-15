@@ -3,8 +3,8 @@ import type { CheckoutItem, OrderTotals } from "../checkout.types";
 export const checkoutItems: CheckoutItem[] = [
   {
     id: "beaker-griffin",
-    name: "Beakers, Griffin, Low Form, with spout",
-    catalogNumber: "9000000001",
+    productName: "Beakers, Griffin, Low Form, with spout",
+    sku: "9000000001",
     image: "/checkout/cart-beaker.png",
     unitPrice: 35,
     quantity: 100,
@@ -12,8 +12,8 @@ export const checkoutItems: CheckoutItem[] = [
   },
   {
     id: "digital-microscope",
-    name: "Digital Laboratory Microscope with HD Camera",
-    catalogNumber: "1000000001",
+    productName: "Digital Laboratory Microscope with HD Camera",
+    sku: "1000000001",
     unitPrice: 1000,
     originalPrice: 1200,
     quantity: 1,

@@ -92,7 +92,7 @@ export function CartHeaderPopover() {
                       : selectedIds.filter((id) => id !== item.id),
                   )
                 }
-                aria-label={checkoutT("selectProduct", { name: item.name })}
+                aria-label={checkoutT("selectProduct", { name: item.productName })}
               />
               <div className="flex size-12 items-center justify-center overflow-hidden rounded-md border border-[#e7e9ed] bg-[#f8f9fa]">
                 {item.image ? (
@@ -102,12 +102,12 @@ export function CartHeaderPopover() {
                 )}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-xs font-semibold">{item.name}</p>
+                <p className="truncate text-xs font-semibold">{item.productName}</p>
                 <strong className="mt-1 block text-sm text-[#e57a00]">
                   {formatCurrency(item.unitPrice, item.currency)}
                 </strong>
                 <p className="mt-1 text-[11px] text-[#868da5]">
-                  SKU: {item.catalogNumber} · x{item.quantity}
+                  SKU: {item.sku} · x{item.quantity}
                 </p>
               </div>
               <Button
@@ -117,7 +117,7 @@ export function CartHeaderPopover() {
                 className="size-8 rounded-full text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20]"
                 disabled={removeCartItem.isPending && removeCartItem.variables?.itemId === item.id}
                 onClick={() => removeCartItem.mutate({ itemId: item.id })}
-                aria-label={checkoutT("removeProduct", { name: item.name })}
+                aria-label={checkoutT("removeProduct", { name: item.productName })}
               >
                 <Trash className="size-4" aria-hidden="true" />
               </Button>

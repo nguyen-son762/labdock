@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import type { CheckoutItem } from "../checkout.types";
 import { formatCurrency } from "../data/checkout-data";
+import { getCartItemOption } from "../utils/get-cart-item-option";
 
 function ProductIdentity({ item }: { item: CheckoutItem }) {
   const t = useTranslations("Checkout");
@@ -19,8 +20,8 @@ function ProductIdentity({ item }: { item: CheckoutItem }) {
         )}
       </div>
       <div className="min-w-0">
-        <p className="line-clamp-2 text-xs font-semibold leading-4 text-[#164990]">{item.name}</p>
-        <p className="mt-1 text-[10px] text-[#868da5]">{t("categoryNumber", { number: item.catalogNumber })}</p>
+        <p className="line-clamp-2 text-xs font-semibold leading-4 text-[#164990]">{item.productName}</p>
+        <p className="mt-1 text-[10px] text-[#868da5]">{t("categoryNumber", { number: item.sku })}</p>
       </div>
     </div>
   );
@@ -37,7 +38,7 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
         <span>{t("product")}</span>
         <span>{t("price")}</span>
         <span>{t("quantity")}</span>
-        <span>{t("size")}</span>
+        <span>{t("option")}</span>
       </div>
       <div className="divide-y divide-[#ecf0f3]">
         {items.map((item) => (
@@ -59,8 +60,8 @@ export function CheckoutItems({ items }: { items: CheckoutItem[] }) {
               <span>×{item.quantity}</span>
             </div>
             <div className="flex items-center justify-between text-xs text-[#051a50] sm:block">
-              <span className="text-[10px] font-medium text-[#868da5] sm:hidden">{t("size")}</span>
-              <span>{item.size}</span>
+              <span className="text-[10px] font-medium text-[#868da5] sm:hidden">{t("option")}</span>
+              <span>{getCartItemOption(item)}</span>
             </div>
           </article>
         ))}

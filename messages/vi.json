@@ -402,7 +402,7 @@
     "product": "Sản phẩm",
     "price": "Giá",
     "quantity": "SL",
-    "size": "Quy cách",
+    "option": "Tùy chọn",
     "categoryNumber": "Mã danh mục: {number}",
     "payment": "Thanh toán",
     "paymentSuccess": "Thanh toán thành công!",
@@ -467,7 +467,8 @@
     "selectAllProducts": "Chọn tất cả sản phẩm",
     "selectAll": "Chọn tất cả ({count})",
     "remove": "Xóa",
-    "sizeForProduct": "Quy cách của {name}",
+    "optionForProduct": "Tùy chọn của {name}",
+    "updateItemError": "Không thể cập nhật sản phẩm này. Vui lòng thử lại.",
     "removeItemError": "Không thể xóa sản phẩm này. Vui lòng thử lại."
   },
   "Profile": {

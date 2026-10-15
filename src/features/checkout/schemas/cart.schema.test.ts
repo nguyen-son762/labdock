@@ -16,6 +16,27 @@ const response = {
       currency: "SGD",
       lineTotal: 995,
       stockQty: 10,
+      productStatus: "Published",
+      isDeleted: false,
+      variants: [
+        {
+          id: "33333333-3333-3333-3333-333333333333",
+          sku: "SKU-001",
+          unitPrice: 99.5,
+          currency: "SGD",
+          stockQty: 10,
+          selections: [
+            {
+              attributeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+              attributeCode: "size",
+              attributeName: "Size",
+              valueId: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+              valueCode: "1l",
+              value: "1 L",
+            },
+          ],
+        },
+      ],
     },
   ],
   subtotal: 995,
@@ -35,5 +56,16 @@ describe("cartResponseSchema", () => {
         items: [{ ...response.items[0], quantity: 0 }],
       }),
     ).toThrow();
+  });
+});
+
+describe("cart response item metadata", () => {
+  it.each([
+    { productStatus: "" },
+    { isDeleted: "false" },
+    { variants: [{ ...response.items[0]?.variants[0], stockQty: -1 }] },
+    { variants: [{ ...response.items[0]?.variants[0], selections: [{ attributeCode: "size" }] }] },
+  ])("rejects invalid status, deletion flags, variants or selections: %o", (fields) => {
+    expect(() => cartResponseSchema.parse({ ...response, items: [{ ...response.items[0], ...fields }] })).toThrow();
   });
 });

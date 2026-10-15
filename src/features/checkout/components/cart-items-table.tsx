@@ -10,12 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import type { CartItem } from "../schemas/cart.schema";
 import { formatCurrency } from "../data/checkout-data";
+import { getCartItemOption, getCartVariantLabel } from "../utils/get-cart-item-option";
 
 type CartItemsTableProps = {
   items: CartItem[];
   selectedIds: string[];
   onSelectedIdsChange: (ids: string[]) => void;
   onQuantityChange: (itemId: string, quantity: number) => void;
+  onVariantChange: (itemId: string, variantId: string, quantity: number) => void;
   onRemove: (itemId: string) => void;
   pendingItemId?: string;
 };
@@ -36,8 +38,8 @@ function ProductDetails({ item }: { item: CartItem }) {
   const t = useTranslations("Checkout");
   return (
     <div className="min-w-0">
-      <p className="line-clamp-2 text-sm font-semibold leading-5 text-[#1f5fa8]">{item.name}</p>
-      <p className="mt-1 text-xs leading-4 text-[#73798f]">{t("productNumber", { number: item.catalogNumber })}</p>
+      <p className="line-clamp-2 text-sm font-semibold leading-5 text-[#1f5fa8]">{item.productName}</p>
+      <p className="mt-1 text-xs leading-4 text-[#73798f]">{t("productNumber", { number: item.sku })}</p>
     </div>
   );
 }
@@ -92,7 +94,7 @@ function QuantityInput({
       allowNegative={false}
       allowLeadingZeros={false}
       inputMode="numeric"
-      aria-label={t("quantityForProduct", { name: item.name })}
+      aria-label={t("quantityForProduct", { name: item.productName })}
       aria-busy={pending}
       disabled={pending}
       className="h-11 bg-white text-center text-sm text-[#051a50]"
@@ -114,6 +116,7 @@ export function CartItemsTable({
   selectedIds,
   onSelectedIdsChange,
   onQuantityChange,
+  onVariantChange,
   onRemove,
   pendingItemId,
 }: CartItemsTableProps) {
@@ -138,13 +141,14 @@ export function CartItemsTable({
         <span>{t("selectAll", { count: items.length })}</span>
         <span>{t("price")}</span>
         <span>{t("quantity")}</span>
-        <span>{t("size")}</span>
+        <span>{t("option")}</span>
         <span className="sr-only">{t("remove")}</span>
       </div>
 
       {items.map((item) => {
         const selected = selectedIds.includes(item.id);
         const pending = pendingItemId === item.id;
+        const option = getCartItemOption(item);
         return (
           <article
             key={item.id}
@@ -154,7 +158,7 @@ export function CartItemsTable({
               className="size-4 rounded-[4px] border-[#c8d0d9] bg-white shadow-none data-[state=checked]:border-[#596ab7] data-[state=checked]:bg-[#f2f7fd] data-[state=checked]:text-[#596ab7] md:col-auto"
               checked={selected}
               onCheckedChange={(checked) => toggleItem(item.id, checked === true)}
-              aria-label={t("selectProduct", { name: item.name })}
+              aria-label={t("selectProduct", { name: item.productName })}
             />
             <div className="col-start-2 row-start-1 flex min-w-0 items-center gap-3 md:col-auto md:row-auto">
               <ProductImage item={item} />
@@ -168,16 +172,30 @@ export function CartItemsTable({
               <QuantityInput item={item} pending={pending} onCommit={onQuantityChange} />
             </label>
             <div className="col-span-3 col-start-1 row-start-3 min-w-0 md:col-auto md:row-auto">
-              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">{t("size")}</span>
-              <Select value={item.size ?? item.catalogNumber}>
+              <span className="mb-1 block text-[11px] font-medium text-[#73798f] md:hidden">{t("option")}</span>
+              <Select
+                value={item.variantId ?? item.id}
+                disabled={pending}
+                onValueChange={(variantId) => {
+                  if (variantId !== item.variantId) onVariantChange(item.id, variantId, item.quantity);
+                }}
+              >
                 <SelectTrigger
-                  aria-label={t("sizeForProduct", { name: item.name })}
+                  aria-label={t("optionForProduct", { name: item.productName })}
                   className="h-11 rounded-lg border-[#dde2e8] bg-white px-3 text-sm text-[#051a50] shadow-[0_1px_1px_rgba(10,13,18,0.05)]"
                 >
-                  <SelectValue />
+                  <SelectValue>{option}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={item.size ?? item.catalogNumber}>{item.size ?? item.catalogNumber}</SelectItem>
+                  {item.variants?.length ? (
+                    item.variants.map((variant) => (
+                      <SelectItem key={variant.id} value={variant.id}>
+                        {getCartVariantLabel(variant)}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value={item.variantId ?? item.id}>{option}</SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -188,7 +206,7 @@ export function CartItemsTable({
               className="col-start-3 row-start-1 size-8 justify-self-end rounded-full text-[#d92d20] hover:bg-[#fef3f2] hover:text-[#d92d20] md:col-auto md:row-auto md:justify-self-center"
               disabled={pending}
               onClick={() => onRemove(item.id)}
-              aria-label={t("removeProduct", { name: item.name })}
+              aria-label={t("removeProduct", { name: item.productName })}
             >
               <Trash className="size-4" aria-hidden="true" />
             </Button>

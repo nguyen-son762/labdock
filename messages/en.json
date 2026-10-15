@@ -402,7 +402,7 @@
     "product": "Product",
     "price": "Price",
     "quantity": "Qty",
-    "size": "Size",
+    "option": "Option",
     "categoryNumber": "Category no.: {number}",
     "payment": "Payment",
     "paymentSuccess": "Payment successful!",
@@ -467,7 +467,8 @@
     "selectAllProducts": "Select all products",
     "selectAll": "Select all ({count})",
     "remove": "Remove",
-    "sizeForProduct": "Size for {name}",
+    "optionForProduct": "Option for {name}",
+    "updateItemError": "We could not update this item. Please try again.",
     "removeItemError": "We could not remove this item. Please try again."
   },
   "Profile": {

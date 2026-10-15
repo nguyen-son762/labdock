@@ -23,6 +23,7 @@ export function CartScreen({ forceEmpty = false }: { forceEmpty?: boolean }) {
   const removeCart = useRemoveCartItemMutation();
   const [selection, setSelection] = useState<string[] | null>(null);
   const items = cartQuery.data ?? [];
+  console.warn('items', items);
   const selectedIds =
     selection === null ? items.map(({ id }) => id) : selection.filter((id) => items.some((item) => item.id === id));
   const selectedItems = items.filter((item) => selectedIds.includes(item.id));
@@ -49,6 +50,7 @@ export function CartScreen({ forceEmpty = false }: { forceEmpty?: boolean }) {
           <ArrowLeft2 className="size-4" aria-hidden="true" /> {t("backToProducts")}
         </Link>
         {cartQuery.isError ? <Alert className="mt-5">{t("loadCartError")}</Alert> : null}
+        {updateCart.isError ? <Alert className="mt-5">{t("updateItemError")}</Alert> : null}
         <div
           id="cart-products"
           className="mt-6 grid items-start gap-4 lg:grid-cols-[minmax(0,832px)_minmax(320px,392px)]"
@@ -65,6 +67,7 @@ export function CartScreen({ forceEmpty = false }: { forceEmpty?: boolean }) {
                   : undefined
             }
             onQuantityChange={(itemId, quantity) => updateCart.mutate({ itemId, quantity })}
+            onVariantChange={(itemId, variantId, quantity) => updateCart.mutate({ itemId, variantId, quantity })}
             onRemove={(itemId) => removeCart.mutate({ itemId })}
           />
           <CartOrderSummary items={selectedItems} />

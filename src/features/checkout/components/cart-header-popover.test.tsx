@@ -16,7 +16,7 @@ describe("CartHeaderPopover", () => {
     renderWithProviders(<CartHeaderPopover />);
 
     await user.click(await screen.findByRole("button", { name: "Cart with 2 products" }));
-    await user.click(screen.getByRole("button", { name: `Remove ${checkoutItems[0]?.name}` }));
+    await user.click(screen.getByRole("button", { name: `Remove ${checkoutItems[0]?.productName}` }));
 
     expect(removeSpy).toHaveBeenCalledWith({ itemId: checkoutItems[0]?.id }, expect.anything());
     expect(await screen.findByRole("button", { name: "Cart with 1 products" })).toBeInTheDocument();
