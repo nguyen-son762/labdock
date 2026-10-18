@@ -9,7 +9,7 @@ import { ArrowRight, Refresh } from "iconsax-reactjs";
 
 import type { useSignupMutation } from "../api/use-signup-mutation";
 import type { SignupValues } from "../schemas/signup.schema";
-import { countries, Field, PhoneField, SelectField } from "./signup-fields";
+import { CountryField, Field, PhoneField } from "./signup-fields";
 
 type SignupAccountFormProps = {
   form: UseFormReturn<SignupValues>;
@@ -57,14 +57,7 @@ export function SignupAccountForm({ form, signupMutation, onSubmit, errorMessage
             required
           />
           <PhoneField control={form.control} />
-          <SelectField
-            name="country"
-            label={t("country")}
-            placeholder={t("selectPlease")}
-            options={countries}
-            control={form.control}
-            required
-          />
+          <CountryField label={t("country")} placeholder={t("selectPlease")} control={form.control} required />
           <Field name="region" label={t("region")} placeholder={t("enterRegion")} control={form.control} required />
           <Field
             name="address"

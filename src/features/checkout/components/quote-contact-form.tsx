@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
+import { CountrySelect } from "@/components/shared/country-select";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { quoteContactSchema, type QuoteContactValues } from "../schemas/quote.schema";
 
@@ -59,23 +59,23 @@ export function QuoteContactForm({ onSubmit, pending, error }: QuoteContactFormP
             <legend className="mb-2 text-sm font-medium leading-none">
               {t("phoneNumber")} <span className="text-destructive">*</span>
             </legend>
-            <div className="grid grid-cols-[92px_1fr] gap-2">
+            <div className="grid grid-cols-[116px_1fr] gap-2">
               <FormField
                 control={form.control}
                 name="phoneCountry"
                 render={({ field }) => (
                   <FormItem>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger aria-label={t("phoneCountryCode")} className="bg-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="bg-white">
-                        <SelectItem value="65">+65</SelectItem>
-                        <SelectItem value="84">+84</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <CountrySelect
+                        {...field}
+                        onValueChange={field.onChange}
+                        valueFormat="dialDigits"
+                        display="callingCode"
+                        countryCodes={["SG", "VN"]}
+                        aria-label={t("phoneCountryCode")}
+                        className="bg-white px-2"
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -132,17 +132,16 @@ export function QuoteContactForm({ onSubmit, pending, error }: QuoteContactFormP
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("region")}</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder={t("selectRegion")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="Singapore">Singapore</SelectItem>
-                    <SelectItem value="Vietnam">{t("vietnam")}</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <CountrySelect
+                    {...field}
+                    onValueChange={field.onChange}
+                    valueFormat="name"
+                    countryCodes={["SG", "VN"]}
+                    placeholder={t("selectRegion")}
+                    className="bg-white"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

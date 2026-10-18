@@ -57,6 +57,7 @@ describe("ProfileScreen", () => {
     await interaction.click(screen.getByRole("button", { name: "Edit" }));
 
     expect(screen.getByRole("textbox", { name: /Full name/ })).toHaveValue("Sarah Chen");
+    expect(screen.getByRole("combobox", { name: "Country *" })).toHaveTextContent("Singapore");
     expect(screen.queryByLabelText(/Current password/)).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Save changes" })).toBeDisabled();
 

@@ -1,4 +1,10 @@
 {
+  "CountrySelect": {
+    "placeholder": "Select country",
+    "search": "Search country or code",
+    "countries": "Countries",
+    "empty": "No countries found."
+  },
   "Metadata": {
     "siteDescription": "The bio marketplace for verified laboratory equipment, chemicals, reagents and consumables.",
     "homeTitle": "Laboratory Products & Procurement",

@@ -5,13 +5,13 @@ import { Refresh2, TickCircle } from "iconsax-reactjs";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
+import { CountrySelect } from "@/components/shared/country-select";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getApiErrorMessage } from "@/lib/api-error";
 
 import { useUpdateProfileMutation } from "../api/use-update-profile-mutation";
@@ -141,18 +141,14 @@ export function ProfileForm({ user, onCancel }: { user: CurrentUser; onCancel: (
                   <FormLabel className="text-xs text-[#051a50]">
                     {t("country")} <span className="text-red-600">*</span>
                   </FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger className="h-10 border-[#dde2e8] bg-white">
-                        <SelectValue placeholder={t("selectCountry")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="SG">{t("singapore")}</SelectItem>
-                      <SelectItem value="MY">{t("malaysia")}</SelectItem>
-                      <SelectItem value="VN">{t("vietnam")}</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <CountrySelect
+                      {...field}
+                      onValueChange={field.onChange}
+                      placeholder={t("selectCountry")}
+                      className="h-10 border-[#dde2e8] bg-white"
+                    />
+                  </FormControl>
                   <FormMessage className="text-xs" />
                 </FormItem>
               )}

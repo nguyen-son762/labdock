@@ -1,10 +1,10 @@
 import type { UseFormReturn } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
-import { countries, getCountryCallingCode } from "@/features/auth";
+import { CountrySelect } from "@/components/shared/country-select";
+import { getCountryCallingCode } from "@/constants/country-options";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import type { CheckoutFormValues } from "../schemas/checkout.schema";
 import { CountryCallingCodePicker } from "./country-calling-code-picker";
@@ -75,7 +75,7 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
                 {t("phoneNumber")} <span className="text-destructive">*</span>
               </FormLabel>
               <div className="flex h-11 min-w-0 overflow-hidden rounded-md border border-input shadow-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                <CountryCallingCodePicker value={country} callingCode={callingCode} onChange={changeCountry} />
+                <CountryCallingCodePicker value={country} onChange={changeCountry} />
                 <FormControl>
                   <Input
                     name={field.name}
@@ -147,20 +147,9 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
               <FormLabel>
                 {t("country")} <span className="text-destructive">*</span>
               </FormLabel>
-              <Select value={field.value} onValueChange={changeCountry}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("selectCountry")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {countries.map(({ code, name }) => (
-                    <SelectItem key={code} value={code}>
-                      {name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <CountrySelect {...field} onValueChange={changeCountry} placeholder={t("selectCountry")} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

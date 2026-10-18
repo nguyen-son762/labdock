@@ -27,7 +27,8 @@ describe("SignupForm", () => {
     await user.type(screen.getByLabelText("Full name *"), "Example Name");
     await user.type(screen.getByLabelText("Email address *"), "user@labdock.local");
     await user.click(screen.getByRole("combobox", { name: "Calling code" }));
-    await user.click(screen.getByRole("option", { name: "+84" }));
+    await user.type(screen.getByRole("combobox", { name: "Search country or code" }), "+84");
+    await user.click(screen.getByRole("option", { name: "Vietnam +84" }));
     await user.type(screen.getByLabelText("Phone number"), "0901234567");
     await user.click(screen.getByRole("combobox", { name: "Country *" }));
     await user.click(screen.getByRole("option", { name: "Vietnam" }));

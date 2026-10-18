@@ -1,4 +1,10 @@
 {
+  "CountrySelect": {
+    "placeholder": "Chọn quốc gia",
+    "search": "Tìm quốc gia hoặc mã gọi",
+    "countries": "Danh sách quốc gia",
+    "empty": "Không tìm thấy quốc gia."
+  },
   "Metadata": {
     "siteDescription": "Sàn thương mại sinh học cung cấp thiết bị, hóa chất, thuốc thử và vật tư phòng thí nghiệm đã được xác minh.",
     "homeTitle": "Sản phẩm và giải pháp mua sắm phòng thí nghiệm",

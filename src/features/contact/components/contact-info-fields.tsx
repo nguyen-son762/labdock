@@ -3,10 +3,10 @@
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
+import { CountrySelect } from "@/components/shared/country-select";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import type { ContactFormValues } from "../schemas/contact.schema";
 
@@ -69,27 +69,23 @@ export function ContactInfoFields() {
         <Label htmlFor="contact-phone" className="text-xs text-[#051a50]">
           {t("phone")} <RequiredMark />
         </Label>
-        <div className="grid grid-cols-[74px_1fr]">
+        <div className="grid grid-cols-[112px_1fr]">
           <FormField
             control={form.control}
             name="phoneCountry"
             render={({ field }) => (
               <FormItem>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger
-                      aria-label={t("phoneCountryCode")}
-                      className="h-11 rounded-r-none border-[#d5dce5] bg-white px-2"
-                    >
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="65">+65</SelectItem>
-                    <SelectItem value="60">+60</SelectItem>
-                    <SelectItem value="84">+84</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <CountrySelect
+                    {...field}
+                    onValueChange={field.onChange}
+                    valueFormat="dialDigits"
+                    display="callingCode"
+                    countryCodes={["SG", "MY", "VN"]}
+                    aria-label={t("phoneCountryCode")}
+                    className="h-11 rounded-r-none border-[#d5dce5] bg-white px-2"
+                  />
+                </FormControl>
               </FormItem>
             )}
           />

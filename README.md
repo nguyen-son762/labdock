@@ -163,10 +163,15 @@ Khôi phục mật khẩu dùng luồng public ba bước tại route `/forgot-p
 
 Sau response thành công, form xóa hai trường password khỏi state mutation/form và hiển thị link quay lại login. Các mutation không tự retry để tránh gửi OTP hoặc reset mật khẩu lặp ngoài ý muốn.
 
-Dữ liệu select của signup nằm tại:
+Dữ liệu chọn quốc gia dùng chung nằm tại:
 
-- `src/features/auth/data/countries.json`: 249 quốc gia/vùng lãnh thổ, dùng `code` ISO alpha-2 làm giá trị `country` gửi API.
-- `src/features/auth/data/calling-codes.json`: mapping quốc gia với `dialCode`; UI gom các mã trùng nhau thành một option như `+1`, `+44` hoặc `+7`.
+- `src/constants/countries.json`: danh sách 249 quốc gia/vùng lãnh thổ với mã ISO alpha-2.
+- `src/constants/calling-codes.json`: mapping mã quốc gia với mã gọi điện thoại.
+- `src/constants/flag.json`: ảnh cờ và tên hiển thị. `country-options.ts` đối chiếu mã ISO từ tên file ảnh Twemoji vì một số trường `code` trong dữ liệu cờ bị thiếu, trùng hoặc sai.
+
+`src/components/shared/country-select.tsx` compose Shadcn Popover, Button và Command (`cmdk`) để dùng trong đăng ký, hồ sơ, checkout, liên hệ và yêu cầu báo giá. Menu hiển thị ảnh cờ + tên, tìm theo tên, mã ISO hoặc mã gọi; hỗ trợ phím mũi tên, Enter và Escape. Ảnh tải lỗi sẽ thay bằng mã ISO và giữ tên quốc gia.
+
+`valueFormat` giữ định dạng theo form: `code` mặc định cho quốc gia, `name` cho khu vực trong báo giá, `dialCode` cho mã gọi signup và `dialDigits` cho liên hệ/báo giá. `display="callingCode"` hiển thị cờ + mã gọi trên trigger, còn menu giữ đầy đủ tên quốc gia. Các quốc gia cùng mã gọi vẫn là các lựa chọn riêng; `countryCodes` giới hạn danh sách khi form đã có phạm vi hỗ trợ cụ thể. Dữ liệu hồ sơ cũ lưu tên quốc gia vẫn được nhận diện để hiển thị.
 
 ### Current User
 

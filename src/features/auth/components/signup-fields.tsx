@@ -1,17 +1,15 @@
 import { Control } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
+import { CountrySelect } from "@/components/shared/country-select";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/class-names";
 
-import { callingCodes, countryOptions } from "../data/country-options";
 import { type SignupValues } from "../schemas/signup.schema";
 
 export const inputClassName =
   "h-[42px] rounded-lg border-[#d5d7da] px-3.5 py-2.5 text-base shadow-[0_1px_2px_rgba(10,13,18,0.05)]";
-export const countries = countryOptions;
 
 export function Field({
   name,
@@ -62,44 +60,34 @@ export function Field({
   );
 }
 
-export function SelectField({
-  name,
+export function CountryField({
   label,
   placeholder,
-  options,
   control,
   required = false,
 }: {
-  name: "country" | "region";
   label: string;
   placeholder: string;
-  options: ReadonlyArray<{ value: string; label: string }>;
   control: Control<SignupValues>;
   required?: boolean;
 }) {
   return (
     <FormField
       control={control}
-      name={name}
+      name="country"
       render={({ field }) => (
         <FormItem>
           <FormLabel>
             {label} {required ? <span className="text-destructive">*</span> : null}
           </FormLabel>
-          <Select value={field.value} onValueChange={field.onChange}>
-            <FormControl>
-              <SelectTrigger className={inputClassName}>
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <FormControl>
+            <CountrySelect
+              {...field}
+              onValueChange={field.onChange}
+              placeholder={placeholder}
+              className={inputClassName}
+            />
+          </FormControl>
           <FormMessage />
         </FormItem>
       )}
@@ -114,27 +102,22 @@ export function PhoneField({ control }: { control: Control<SignupValues> }) {
       <p className="text-sm font-medium leading-none">
         Phone no. <span className="text-destructive">*</span>
       </p>
-      <div className="grid grid-cols-[88px_1fr] gap-2">
+      <div className="grid grid-cols-[116px_1fr] gap-2">
         <FormField
           control={control}
           name="phoneCode"
           render={({ field }) => (
             <FormItem className="space-y-0">
               <FormLabel className="sr-only">{t("callingCode")}</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger className={cn(inputClassName, "px-3 text-sm")}>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {callingCodes.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <CountrySelect
+                  {...field}
+                  onValueChange={field.onChange}
+                  valueFormat="dialCode"
+                  display="callingCode"
+                  className={cn(inputClassName, "px-2 text-sm")}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

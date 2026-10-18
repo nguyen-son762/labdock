@@ -12,7 +12,7 @@ import { Alert } from "@/components/ui/alert";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCountryCallingCode, resolveCountryCode } from "@/features/auth";
+import { getCountryCallingCode, resolveCountryCode } from "@/constants/country-options";
 import { useCurrentUserQuery } from "@/features/profile";
 
 import { useCartQuery } from "../api/use-cart-query";
