@@ -1,11 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
+import { renderWithProviders } from "@/test/render-with-providers";
 
 import { AboutScreen } from "./about-screen";
 
 describe("AboutScreen", () => {
   it("renders the About content, partner grid and product call to action", () => {
-    render(<AboutScreen />);
+    renderWithProviders(<AboutScreen />);
 
     expect(screen.getByRole("heading", { level: 1, name: "About Labdock" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Why choose Labdock?" })).toBeInTheDocument();

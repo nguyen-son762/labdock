@@ -66,3 +66,46 @@ it("keeps the previous option and displays an error when the API rejects the cha
   expect(await screen.findByRole("alert")).toHaveTextContent("We could not update this item. Please try again.");
   expect(select).toHaveTextContent("BEAKER-1L");
 });
+
+it("CART-002 shows the empty cart after loading an empty response", async () => {
+  vi.spyOn(cartService, "get").mockResolvedValue([]);
+  renderWithProviders(<CartScreen />);
+  expect(await screen.findByRole("heading", { name: "Your cart is empty" })).toBeInTheDocument();
+});
+it("CART-003 reports a cart loading failure", async () => {
+  vi.spyOn(cartService, "get").mockRejectedValue(new Error("Cart unavailable"));
+  renderWithProviders(<CartScreen />);
+  expect(await screen.findByRole("alert")).toHaveTextContent("We could not load your cart.");
+});
+it("CART-015 preserves the item and reports a failed removal", async () => {
+  vi.spyOn(cartService, "remove").mockRejectedValue(new Error("Remove unavailable"));
+  renderWithProviders(<CartScreen />);
+  await userEvent.setup().click(await screen.findByRole("button", { name: `Remove ${item.productName}` }));
+  expect(await screen.findByRole("alert")).toHaveTextContent("We could not remove this item.");
+  expect(screen.getByText(item.productName)).toBeInTheDocument();
+});
+it("CART-014 removes the final item and displays the empty state", async () => {
+  vi.spyOn(cartService, "get").mockResolvedValueOnce([item]).mockResolvedValue([]);
+  vi.spyOn(cartService, "remove").mockResolvedValue();
+  renderWithProviders(<CartScreen />);
+  await userEvent.setup().click(await screen.findByRole("button", { name: `Remove ${item.productName}` }));
+  expect(await screen.findByRole("heading", { name: "Your cart is empty" })).toBeInTheDocument();
+});
+it("CART-004 CART-005 CART-024 defaults to all items and changes checkout/quote links with selection", async () => {
+  const interaction = userEvent.setup();
+  vi.spyOn(cartService, "get").mockResolvedValue(checkoutItems);
+  renderWithProviders(<CartScreen />);
+  const first = await screen.findByRole("checkbox", { name: `Select ${checkoutItems[0]?.productName}` });
+  expect(first).toBeChecked();
+  const checkout = screen.getByRole("link", { name: "Proceed to checkout" });
+  expect(checkout).toHaveAttribute("href", "/checkout?items=beaker-griffin%2Cdigital-microscope");
+  await interaction.click(first);
+  expect(checkout).toHaveAttribute("href", "/checkout?items=digital-microscope");
+  expect(screen.getByRole("link", { name: "Request for quote" })).toHaveAttribute(
+    "href",
+    "/request-quote?items=digital-microscope",
+  );
+  await interaction.click(screen.getByRole("checkbox", { name: `Select ${checkoutItems[1]?.productName}` }));
+  expect(checkout).toHaveAttribute("aria-disabled", "true");
+  expect(checkout).toHaveAttribute("href", "#cart-products");
+});

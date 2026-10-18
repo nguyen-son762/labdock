@@ -1,8 +1,8 @@
 "use client";
 
 import { ArrowLeft2 } from "iconsax-reactjs";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -53,6 +53,8 @@ export function RequestQuoteScreen({ initialItemIds }: { initialItemIds?: string
   return (
     <div className="min-h-[873px] bg-[#f5f8fb] py-10">
       <div className="container">
+        {cartQuery.isError ? <Alert>{t("loadCartError")}</Alert> : null}
+        {removeCart.isError ? <Alert>{t("removeItemError")}</Alert> : null}
         <Breadcrumbs
           items={[{ label: "Home", href: "/" }, { label: "Cart", href: "/cart" }, { label: "Request for quote" }]}
         />

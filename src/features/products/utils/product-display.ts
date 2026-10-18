@@ -54,7 +54,7 @@ export function getDefaultProductVariant(product: Product): ProductVariant | und
   return purchasableVariants[0] ?? activeVariants[0] ?? product.variants[0];
 }
 
-function getPromotionalPrice(variant: ProductVariant): number {
+export function getPromotionalPrice(variant: ProductVariant): number {
   return Math.round((variant.unitPrice ?? 0) * (1 - variant.promotionPercent / 100) * 100) / 100;
 }
 

@@ -1,0 +1,132 @@
+{
+  "baseURL": "http://localhost:3100",
+  "browser": "153.0.8010.12",
+  "environment": "Synthetic local API; no real payment, OTP, email or persistence",
+  "observedRuntimeErrors": [],
+  "observedHydrationMessages": [],
+  "results": [
+    {
+      "ids": [
+        "SYS-022"
+      ],
+      "name": "Production security response headers",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "UI-014"
+      ],
+      "name": "Home content carousels enable autoplay",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "HOME-012",
+        "UI-016"
+      ],
+      "name": "Mobile autoplay advances and keyboard pause/resume works",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "HOME-012"
+      ],
+      "name": "Manual mobile swipe remains available while paused",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "HOME-013"
+      ],
+      "name": "Research Leaders changes to 3/6 columns at documented breakpoints",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "UI-019"
+      ],
+      "name": "Desktop collections do not autoplay when all slides fit",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "LOC-006"
+      ],
+      "name": "Vietnamese HTML language is correct before hydration",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "LOC-001"
+      ],
+      "name": "Vietnamese auth links retain the locale prefix",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "PDP-017",
+        "UI-015"
+      ],
+      "name": "Product gallery uses API images, autoplay and thumbnail controls",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "UI-017"
+      ],
+      "name": "Focusing gallery thumbnails pauses image autoplay",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "SEO-005",
+        "SEO-006"
+      ],
+      "name": "SSR product offer matches the promotional price",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "CHK-002"
+      ],
+      "name": "Repeated checkout selection query does not crash SSR",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "SEO-008"
+      ],
+      "name": "Public product content is visible with JavaScript disabled",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "UI-019"
+      ],
+      "name": "A single catalog category keeps navigation and autoplay inactive",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "UI-018"
+      ],
+      "name": "Reduced motion shortens transitions and retains manual pause/navigation",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "SEO-003",
+        "SEO-004"
+      ],
+      "name": "Sitemap uses unique public URLs that resolve in the fixture environment",
+      "status": "Pass"
+    },
+    {
+      "ids": [
+        "SYS-024"
+      ],
+      "name": "Browser has no uncaught application or hydration errors",
+      "status": "Pass"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+[
+  {
+    "run": "regression-red",
+    "file": "src/lib/http-client.test.ts",
+    "behavior": "httpClient authentication does not restore a session when refresh finishes after logout",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected 'refreshed-access-token' to be null"
+  },
+  {
+    "run": "regression-red",
+    "file": "src/lib/http-client.test.ts",
+    "behavior": "httpClient authentication rejects a response from the previous user after account switching",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected 'accepted' to be 'rejected' // Object.is equality"
+  },
+  {
+    "run": "regression-red",
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "behavior": "OTP regressions preserves empty middle slots while replacing a digit",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toHaveValue()"
+  },
+  {
+    "run": "regression-red",
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "behavior": "OTP regressions clears the previous digit without shifting later slots",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toHaveValue()"
+  },
+  {
+    "run": "regression-red",
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "behavior": "OTP regressions expires against wall time after a hidden tab resumes",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toBeDisabled()"
+  },
+  {
+    "run": "regression-red",
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "behavior": "ProfileScreen clears the old selection when a replacement file is invalid",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toBeDisabled()"
+  },
+  {
+    "run": "regression-red",
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "behavior": "ProfileScreen resets a saved file before the dialog is reopened",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "more-red",
+    "file": "src/lib/http-client.test.ts",
+    "behavior": "httpClient authentication keeps the active session after a public category 401",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected [ '/categories', '/auth/refresh' ] to deeply equal [ '/categories' ]"
+  },
+  {
+    "run": "more-red",
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "behavior": "cart write ordering serializes full-cart writes and removal",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+  },
+  {
+    "run": "more-red",
+    "file": "src/features/checkout/components/checkout-screen.test.tsx",
+    "behavior": "CheckoutScreen starts with blank identity fields when no profile is available",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toHaveValue()"
+  },
+  {
+    "run": "more-red",
+    "file": "src/features/checkout/components/request-quote-screen.test.tsx",
+    "behavior": "RequestQuoteScreen starts with blank identity fields",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toHaveValue()"
+  },
+  {
+    "run": "contact-date-red",
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "behavior": "ProfileScreen displays the password change date returned by the API",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toHaveTextContent()"
+  },
+  {
+    "run": "confirm-phone-red",
+    "file": "src/features/checkout/components/address-fields.test.tsx",
+    "behavior": "preserves national digits when the international prefix differs from the country",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).toHaveValue(901234567)"
+  },
+  {
+    "run": "confirm-phone-red",
+    "file": "src/features/contact/components/contact-form.test.tsx",
+    "behavior": "ContactForm validates a product name when Confirm is clicked",
+    "result": "Failed before fix",
+    "reason": "Error: Unable to find an element with the text: Enter a product name.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher "
+  },
+  {
+    "run": "banner-red",
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "behavior": "HeroSection homepage banners rejects unsafe banner destination javascript:alert(1)",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "banner-red",
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "behavior": "HeroSection homepage banners rejects unsafe banner destination data:text/html,bad",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "banner-red",
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "behavior": "HeroSection homepage banners rejects unsafe banner destination //untrusted.example",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "banner-red",
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "behavior": "HeroSection homepage banners rejects unsafe banner destination /\\untrusted.example",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "banner-red",
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "behavior": "HeroSection homepage banners rejects unsafe banner destination java\nscript:alert(1)",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "sitemap-red",
+    "file": "src/app/sitemap.test.ts",
+    "behavior": "sitemap indexes API product slugs instead of demo product identifiers",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected [ { …(4) }, { …(4) }, { …(4) }, …(9) ] to have a length of 2 but got 12"
+  },
+  {
+    "run": "sitemap-red",
+    "file": "src/app/sitemap.test.ts",
+    "behavior": "sitemap reads subsequent API pages and deduplicates repeated slugs",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected \"spy\" to be called 3 times, but got 0 times"
+  },
+  {
+    "run": "selection-red",
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "behavior": "checkout selection query accepts repeated URL parameters and deduplicates identifiers",
+    "result": "Failed before fix",
+    "reason": "TypeError: items?.split is not a function"
+  },
+  {
+    "run": "selection-red",
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "behavior": "checkout selection query handles selection {\"items\":\"\"}",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected [] to deeply equal undefined"
+  },
+  {
+    "run": "selection-red",
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "behavior": "quote selection query accepts repeated URL parameters and deduplicates identifiers",
+    "result": "Failed before fix",
+    "reason": "TypeError: items?.split is not a function"
+  },
+  {
+    "run": "selection-red",
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "behavior": "quote selection query handles selection {\"items\":\"\"}",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected [] to deeply equal undefined"
+  },
+  {
+    "run": "home-error-red",
+    "file": "src/features/home/server.test.ts",
+    "behavior": "getHomePageData returns empty sections when the single homepage request fails",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected { Object (banners, topCategories, ...) } to deeply equal { loadFailed: true, banners: [], …(5) }"
+  },
+  {
+    "run": "clipboard-red",
+    "file": "src/features/news/components/copy-link-button.test.tsx",
+    "behavior": "provides feedback and a selectable URL when clipboard access fails",
+    "result": "Failed before fix",
+    "reason": "Error: Unable to find role=\"alert\""
+  },
+  {
+    "run": "fragment-red",
+    "file": "src/components/layout/main-header.test.tsx",
+    "behavior": "MainHeader preserves both query and fragment while switching locale",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected \"spy\" to be called with arguments: [ '/vi/cart?items=I1#cart-products' ]"
+  },
+  {
+    "run": "product-ssr-red",
+    "file": "src/features/products/components/product-information.test.tsx",
+    "behavior": "ProductInformation renders every tab panel and preserves its accessible relationship",
+    "result": "Failed before fix",
+    "reason": "Error: expect(received).toBeInTheDocument()"
+  },
+  {
+    "run": "error-red",
+    "file": "src/lib/api-error.test.ts",
+    "behavior": "getApiErrorMessage hides internal messages and details from server failures",
+    "result": "Failed before fix",
+    "reason": "AssertionError: expected 'database_password=synthetic-secret' not to match /synthetic-secret|stack trace/"
+  },
+  {
+    "run": "payment-copy-red",
+    "file": "src/features/checkout/components/payment-success-screen.test.tsx",
+    "behavior": "does not claim a confirmation email was sent to a demo identity",
+    "result": "Failed before fix",
+    "reason": "Error: expect(element).not.toBeInTheDocument()"
+  },
+  {
+    "run": "browser-red",
+    "behavior": "Desktop collections do not autoplay when all slides fit",
+    "result": "Failed before fix",
+    "reason": "Expected values to be strictly equal:"
+  },
+  {
+    "run": "browser-red",
+    "behavior": "Focusing gallery thumbnails pauses image autoplay",
+    "result": "Failed before fix",
+    "reason": "Expected values to be strictly equal:"
+  },
+  {
+    "run": "browser-red",
+    "behavior": "Public product content is visible with JavaScript disabled",
+    "result": "Failed before fix",
+    "reason": "The expression evaluated to a falsy value:"
+  },
+  {
+    "run": "browser-green",
+    "behavior": "Research Leaders changes to 3/6 columns at documented breakpoints",
+    "result": "Failed before fix",
+    "reason": "Manual pause must survive breakpoint changes"
+  }
+]

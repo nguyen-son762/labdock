@@ -1,0 +1,44 @@
+{
+  "baseURL": "http://localhost:3100",
+  "browser": "153.0.8010.12",
+  "environment": "Local synthetic API; temporary QA route outside source checkout",
+  "results": [
+    {
+      "name": "Desktop: six, single and empty product sets hide navigation when all slides fit",
+      "status": "Pass"
+    },
+    {
+      "name": "1024px: navigation reappears when six products overflow four columns",
+      "status": "Pass"
+    },
+    {
+      "name": "Mobile: manual navigation remains visible, including single and empty sets",
+      "status": "Pass"
+    },
+    {
+      "name": "1280px and repeated resizing: desktop navigation hides again when all six products fit",
+      "status": "Pass"
+    },
+    {
+      "name": "Home desktop: every carousel hides controls only when locked or rendered as a grid",
+      "status": "Pass"
+    },
+    {
+      "name": "Testimonials: desktop controls follow overflow when resizing from 1440px to 1024px and back",
+      "status": "Pass"
+    },
+    {
+      "name": "Home mobile: existing carousel navigation stays available",
+      "status": "Pass"
+    },
+    {
+      "name": "Category strip: an all-fit desktop category hides navigation and mobile restores it",
+      "status": "Pass"
+    },
+    {
+      "name": "No uncaught browser errors",
+      "status": "Pass"
+    }
+  ],
+  "errors": []
+}

@@ -12,7 +12,10 @@ import { RequestQuoteScreen } from "./request-quote-screen";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+vi.mock("@/i18n/navigation", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/i18n/navigation")>()),
+  useRouter: () => navigation,
+}));
 
 describe("RequestQuoteScreen", () => {
   beforeEach(() => {
@@ -31,7 +34,10 @@ describe("RequestQuoteScreen", () => {
     renderWithProviders(<RequestQuoteScreen />);
     const submit = await screen.findByRole("button", { name: "Submit request" });
     expect(screen.getByRole("combobox", { name: "Phone country code" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Phone number" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Phone no." })).toBeInTheDocument();
+    await user.type(screen.getByRole("textbox", { name: "Full name *" }), "QA Tester");
+    await user.type(screen.getByRole("textbox", { name: "Email address *" }), "qa@example.test");
+    await user.type(screen.getByRole("textbox", { name: "Phone no." }), "88009900");
     await user.click(submit);
     await user.click(submit);
 
@@ -40,5 +46,10 @@ describe("RequestQuoteScreen", () => {
 
     resolveQuote?.({ reference: "RFQ-ABC12345", status: "submitted" });
     await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/request-quote/success?reference=RFQ-ABC12345"));
+  });
+  it("QUOTE-004 starts with blank identity fields", async () => {
+    renderWithProviders(<RequestQuoteScreen />);
+    expect(await screen.findByRole("textbox", { name: "Full name *" })).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: "Email address *" })).toHaveValue("");
   });
 });

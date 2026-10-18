@@ -49,4 +49,22 @@ describe("product pricing", () => {
     const missingPrice = { ...variant, id: "missing", unitPrice: null };
     expect(getDefaultProductVariant({ ...product, variants: [missingPrice, variant, promoted] })).toEqual(promoted);
   });
+  it("PDP-007 distinguishes a visible zero price from a missing price", () => {
+    expect(getProductVariantPresentation(product, { ...variant, unitPrice: 0 })).toMatchObject({
+      price: "$0.00",
+      priceVisible: true,
+      canPurchase: false,
+    });
+    expect(getProductVariantPresentation(product, { ...variant, unitPrice: null })).toMatchObject({
+      price: "Contact for price",
+      priceVisible: false,
+      canPurchase: false,
+    });
+  });
+  it.each([{ stockQty: 0 }, { isActive: false }])("PDP-009 blocks purchase for unavailable variant %j", (values) => {
+    expect(getProductVariantPresentation(product, { ...variant, ...values })).toMatchObject({
+      outOfStock: true,
+      canPurchase: false,
+    });
+  });
 });

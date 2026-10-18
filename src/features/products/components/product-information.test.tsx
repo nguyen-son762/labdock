@@ -58,4 +58,13 @@ describe("ProductInformation", () => {
       "https://uat-api-labdock.365studio.vn/media/public/safety-sheet.pdf",
     );
   });
+  it("PDP-020 SEO-008 renders every tab panel and preserves its accessible relationship", () => {
+    renderWithProviders(<ProductInformation product={product} />);
+    for (const tab of screen.getAllByRole("tab")) {
+      const panelId = tab.getAttribute("aria-controls");
+      expect(panelId).not.toBeNull();
+      expect(document.getElementById(panelId ?? "")).toBeInTheDocument();
+    }
+    expect(document.getElementById("product-panel-description")).toHaveTextContent(product.description);
+  });
 });

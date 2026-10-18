@@ -17,7 +17,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { getApiErrorMessage } from "@/lib/api-error";
 
 import { useUpdateAvatarMutation } from "../api/use-update-avatar-mutation";
@@ -34,9 +33,11 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
   const updateAvatar = useUpdateAvatarMutation();
 
   function selectFile(nextFile: File | undefined) {
+    if (updateAvatar.isPending) return;
     setValidationError(undefined);
     updateAvatar.reset();
     if (!nextFile) return;
+    clearFile();
     if (!acceptedTypes.has(nextFile.type)) return setValidationError(t("uploadTypeError"));
     if (nextFile.size > MAX_FILE_SIZE) return setValidationError(t("uploadSizeError"));
     setFile(nextFile);
@@ -63,11 +64,17 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
 
   function handleSave() {
     if (!file) return;
-    updateAvatar.mutate(file, { onSuccess: () => setOpen(false) });
+    if (updateAvatar.isPending) return;
+    updateAvatar.mutate(file, { onSuccess: () => handleOpenChange(false) });
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!updateAvatar.isPending) handleOpenChange(nextOpen);
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent hideClose className="max-w-[480px] gap-6 p-6">
         <DialogHeader>
@@ -90,6 +97,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
               variant="ghost"
               className="h-auto p-0 font-normal text-[#164990]"
               onClick={() => inputRef.current?.click()}
+              disabled={updateAvatar.isPending}
             >
               {t("clickUpload")}
             </Button>
@@ -114,10 +122,6 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-[#051a50]">{file.name}</p>
                 <p className="text-sm text-[#73798f]">{Math.ceil(file.size / 1024)} KB</p>
-                <div className="mt-3 flex items-center gap-3">
-                  <Progress value={100} aria-label={t("uploadComplete")} />
-                  <span className="text-sm text-[#051a50]">100%</span>
-                </div>
               </div>
               <Button
                 type="button"
@@ -126,6 +130,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
                 className="size-8 text-red-600"
                 aria-label={t("removeImage")}
                 onClick={clearFile}
+                disabled={updateAvatar.isPending}
               >
                 <Trash className="size-5" aria-hidden="true" />
               </Button>
@@ -138,6 +143,7 @@ export function ProfileAvatarDialog({ children }: { children: ReactNode }) {
               type="button"
               variant="outline"
               className="rounded-full border-[#c8d0d9] font-normal text-[#051a50]"
+              disabled={updateAvatar.isPending}
             >
               {t("cancel")}
             </Button>

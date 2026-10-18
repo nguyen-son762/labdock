@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const httpClient = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn(), patch: vi.fn() }));
+const httpClient = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn(), patch: vi.fn(), delete: vi.fn() }));
 
 vi.mock("@/lib/http-client", () => ({ httpClient }));
 
@@ -125,5 +125,26 @@ describe("cartService.update variant selection", () => {
     await expect(
       cartService.update({ itemId: "cart-item", variantId: "33333333-3333-3333-3333-333333333333", quantity: 2 }),
     ).rejects.toBe(error);
+  });
+});
+
+describe("cart write ordering", () => {
+  it("CART-016 CART-017 serializes full-cart writes and removal", async () => {
+    let finishFirst: (() => void) | undefined;
+    httpClient.patch.mockImplementationOnce(async () => {
+      await new Promise<void>((resolve) => {
+        finishFirst = resolve;
+      });
+      return { data: cartResponse };
+    });
+    httpClient.delete.mockResolvedValue({});
+    const update = cartService.update({ itemId: "cart-item", quantity: 2 });
+    const remove = cartService.remove({ itemId: "cart-item" });
+    await vi.waitFor(() => expect(httpClient.patch).toHaveBeenCalledOnce());
+    expect(httpClient.delete).not.toHaveBeenCalled();
+    finishFirst?.();
+    await update;
+    await remove;
+    expect(httpClient.delete).toHaveBeenCalledWith("/cart/items/cart-item");
   });
 });

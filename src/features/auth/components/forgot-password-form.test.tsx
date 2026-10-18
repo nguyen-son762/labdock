@@ -33,7 +33,7 @@ describe("ForgotPasswordForm", () => {
     }
     await user.click(screen.getByRole("button", { name: "Verify" }));
 
-    expect(await screen.findByRole("heading", { name: "Set a new password" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "New password" })).toBeInTheDocument();
     expect(verifySpy).toHaveBeenCalledWith({ challengeId: challenge.challengeId, code: "123456" }, expect.anything());
 
     await user.type(screen.getByLabelText("New password *"), "Passw0rd!");

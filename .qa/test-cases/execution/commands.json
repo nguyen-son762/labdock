@@ -1,0 +1,32 @@
+[
+  {
+    "command": "npm test -- --reporter=json",
+    "cwd": "/Users/son/Documents/workspace/labdock/user-portal",
+    "exitCode": 0,
+    "result": "377/377 passed; 78 files; 0 failed suites"
+  },
+  {
+    "command": "npm run typecheck -- --incremental false",
+    "cwd": "/Users/son/Documents/workspace/labdock/user-portal",
+    "exitCode": 0,
+    "result": "Pass"
+  },
+  {
+    "command": "npm run lint",
+    "cwd": "/Users/son/Documents/workspace/labdock/user-portal",
+    "exitCode": 0,
+    "result": "Pass; 0 errors, 0 warnings"
+  },
+  {
+    "command": "NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:3101/api/public/v1 NEXT_PUBLIC_SITE_URL=http://localhost:3100 npm run build",
+    "cwd": "/tmp/labdock-qa-app",
+    "exitCode": 0,
+    "result": "Next.js production build passed; copy has identical runtime source"
+  },
+  {
+    "command": "node scripts/qa/browser-checks.cjs (QA_BASE_URL and bundled Playwright/Chromium paths configured)",
+    "cwd": "/Users/son/Documents/workspace/labdock/user-portal",
+    "exitCode": 0,
+    "result": "17/17 checks passed"
+  }
+]

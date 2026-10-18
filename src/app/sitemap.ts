@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { siteConfig } from "@/config/site";
 import { newsArticles } from "@/features/news/server";
-import { products } from "@/features/products/server";
+import { getPublicProducts } from "@/features/products/server";
 import { getLanguageAlternates, getLocalizedPath } from "@/i18n/locale";
 import { routing, type AppLocale } from "@/i18n/routing";
 
@@ -21,9 +21,16 @@ const createLocalizedEntries = (path: string, attributes: Omit<MetadataRoute.Sit
     ...attributes,
   }));
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const productEntries = products.flatMap((product) =>
-    createLocalizedEntries(`/products/${product.id}`, { changeFrequency: "weekly", priority: 0.7 }),
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const firstPage = await getPublicProducts({ page: 1, pageSize: 100 });
+  const slugs = new Set(firstPage.items.map((product) => product.slug));
+  const pageCount = Math.ceil(firstPage.total / firstPage.pageSize);
+  for (let page = 2; page <= pageCount; page += 1) {
+    const result = await getPublicProducts({ page, pageSize: firstPage.pageSize });
+    result.items.forEach((product) => slugs.add(product.slug));
+  }
+  const productEntries = [...slugs].flatMap((slug) =>
+    createLocalizedEntries(`/products/${encodeURIComponent(slug)}`, { changeFrequency: "weekly", priority: 0.7 }),
   );
 
   const articles = newsArticles.flatMap((article) =>

@@ -8,6 +8,8 @@ import { A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button } from "@/components/ui/button";
+import { useCarouselAutoplay } from "@/components/ui/use-carousel-autoplay";
+import { cn } from "@/lib/class-names";
 
 import type { Testimonial } from "../home.types";
 
@@ -15,10 +17,13 @@ import "swiper/css";
 
 export function TestimonialCarousel({ testimonials }: { testimonials: readonly Testimonial[] }) {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
+  useCarouselAutoplay(swiper);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
   const updateActiveIndex = (instance: SwiperInstance) => {
     setActiveIndex(instance.realIndex);
   };
+  const updateOverflow = (instance: SwiperInstance) => setIsLocked(instance.isLocked);
 
   return (
     <div>
@@ -27,10 +32,15 @@ export function TestimonialCarousel({ testimonials }: { testimonials: readonly T
         slidesPerView="auto"
         spaceBetween={20}
         watchOverflow
-        loop
-        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         a11y={{ containerMessage: "Research leader testimonials" }}
-        onSwiper={setSwiper}
+        onSwiper={(instance) => {
+          setSwiper(instance);
+          updateOverflow(instance);
+        }}
+        onLock={updateOverflow}
+        onUnlock={updateOverflow}
+        onResize={updateOverflow}
         onSlideChange={updateActiveIndex}
       >
         {testimonials.map((testimonial) => (
@@ -89,7 +99,10 @@ export function TestimonialCarousel({ testimonials }: { testimonials: readonly T
           </SwiperSlide>
         ))}
       </Swiper>
-      <nav aria-label="Testimonials carousel controls" className="mt-8 flex items-center justify-center gap-12">
+      <nav
+        aria-label="Testimonials carousel controls"
+        className={cn("mt-8 flex items-center justify-center gap-12", isLocked && "lg:hidden")}
+      >
         <Button
           type="button"
           variant="brand"

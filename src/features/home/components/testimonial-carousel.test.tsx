@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { renderWithProviders } from "@/test/render-with-providers";
+import { screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -25,7 +26,7 @@ const testimonial: Testimonial = {
 
 describe("TestimonialCarousel", () => {
   it("renders the API author, profile image, content, and accessible rating", () => {
-    render(<TestimonialCarousel testimonials={[testimonial]} />);
+    renderWithProviders(<TestimonialCarousel testimonials={[testimonial]} />);
 
     expect(screen.getByText(/Great experience with the team/)).toBeInTheDocument();
     expect(screen.getByText("test1")).toBeInTheDocument();

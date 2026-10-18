@@ -6,8 +6,11 @@ import { authTokenStore } from "./auth-token-store";
 
 const refreshExcludedPaths = ["/auth/login", "/auth/refresh", "/auth/signup/", "/auth/forgot-password/"] as const;
 const authorizationExcludedPaths = [...refreshExcludedPaths, "/categories"] as const;
-const retriedRequests = new WeakSet<InternalAxiosRequestConfig>();
-let refreshPromise: Promise<void> | null = null;
+type SessionRequestConfig = InternalAxiosRequestConfig & {
+  _labdockSessionVersion?: number;
+  _labdockRetried?: boolean;
+};
+let refreshFlight: { version: number; promise: Promise<void> } | null = null;
 
 export const httpClient = axios.create({
   baseURL: clientEnv.NEXT_PUBLIC_API_BASE_URL,
@@ -19,7 +22,15 @@ export const httpClient = axios.create({
 });
 
 httpClient.interceptors.request.use((request) => {
+  const sessionRequest: SessionRequestConfig = request;
   const accessToken = authTokenStore.getAccessToken();
+
+  if (!authorizationExcludedPaths.some((path) => request.url?.startsWith(path))) {
+    sessionRequest._labdockSessionVersion ??= authTokenStore.getSessionVersion();
+    if (sessionRequest._labdockSessionVersion !== authTokenStore.getSessionVersion()) {
+      throw new axios.CanceledError("The account session changed.");
+    }
+  }
 
   if (accessToken && !authorizationExcludedPaths.some((path) => request.url?.startsWith(path))) {
     request.headers.Authorization = `Bearer ${accessToken}`;
@@ -29,24 +40,39 @@ httpClient.interceptors.request.use((request) => {
 });
 
 function isRefreshExcluded(url: string | undefined): boolean {
-  return refreshExcludedPaths.some((path) => url?.startsWith(path));
+  return authorizationExcludedPaths.some((path) => url?.startsWith(path));
 }
 
 httpClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const request: SessionRequestConfig = response.config;
+    if (
+      request._labdockSessionVersion !== undefined &&
+      request._labdockSessionVersion !== authTokenStore.getSessionVersion()
+    ) {
+      throw new axios.CanceledError("The account session changed.");
+    }
+    return response;
+  },
   async (error: unknown) => {
     if (!axios.isAxiosError(error)) {
       return Promise.reject(error);
     }
 
-    const request = error.config;
+    const request: SessionRequestConfig | undefined = error.config;
+    if (
+      request?._labdockSessionVersion !== undefined &&
+      request._labdockSessionVersion !== authTokenStore.getSessionVersion()
+    ) {
+      return Promise.reject(new axios.CanceledError("The account session changed."));
+    }
     const refreshToken = authTokenStore.getRefreshToken();
     const shouldRefresh =
       error.response?.status === 401 &&
       request !== undefined &&
       refreshToken !== null &&
       !isRefreshExcluded(request.url) &&
-      !retriedRequests.has(request);
+      !request._labdockRetried;
 
     if (!shouldRefresh) {
       if (error.response?.status === 401 && !isRefreshExcluded(request?.url)) {
@@ -55,23 +81,29 @@ httpClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    retriedRequests.add(request);
+    request._labdockRetried = true;
+    const version = authTokenStore.getSessionVersion();
 
-    refreshPromise ??= httpClient
-      .post<unknown>("/auth/refresh", { refreshToken })
-      .then((response) => {
-        authTokenStore.set(response.data);
-      })
-      .catch((refreshError: unknown) => {
-        authTokenStore.clear();
-        return Promise.reject(refreshError);
-      })
-      .finally(() => {
-        refreshPromise = null;
-      });
+    if (!refreshFlight || refreshFlight.version !== version) {
+      const promise = httpClient
+        .post<unknown>("/auth/refresh", { refreshToken })
+        .then((response) => {
+          if (authTokenStore.getSessionVersion() !== version)
+            throw new axios.CanceledError("The account session changed.");
+          authTokenStore.set(response.data, { preserveSession: true });
+        })
+        .catch((refreshError: unknown) => {
+          if (authTokenStore.getSessionVersion() === version) authTokenStore.clear();
+          return Promise.reject(refreshError);
+        })
+        .finally(() => {
+          if (refreshFlight?.promise === promise) refreshFlight = null;
+        });
+      refreshFlight = { version, promise };
+    }
 
     try {
-      await refreshPromise;
+      await refreshFlight.promise;
       return await httpClient.request(request);
     } catch {
       return Promise.reject(error);

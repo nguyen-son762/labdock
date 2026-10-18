@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+
+import { renderWithProviders } from "@/test/render-with-providers";
 
 import type { OrderSummary } from "../schemas/order.schema";
 import { OrdersTable } from "./orders-table";
@@ -23,7 +25,7 @@ const orders: OrderSummary[] = [
 
 describe("OrdersTable", () => {
   it("shows the order data and exposes a detail link", () => {
-    render(<OrdersTable orders={orders} total={1} page={1} pageSize={10} onPageChange={vi.fn()} />);
+    renderWithProviders(<OrdersTable orders={orders} total={1} page={1} pageSize={10} onPageChange={vi.fn()} />);
 
     expect(screen.getAllByRole("link", { name: "#OR-3000" })[0]).toHaveAttribute(
       "href",
@@ -37,7 +39,7 @@ describe("OrdersTable", () => {
   it("requests the next page when more orders are available", async () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
-    render(<OrdersTable orders={orders} total={11} page={1} pageSize={10} onPageChange={onPageChange} />);
+    renderWithProviders(<OrdersTable orders={orders} total={11} page={1} pageSize={10} onPageChange={onPageChange} />);
 
     expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled();
     await user.click(screen.getByRole("button", { name: "Next" }));

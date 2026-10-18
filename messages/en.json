@@ -76,6 +76,8 @@
     }
   },
   "Home": {
+    "loadError": "We could not load the homepage content. Please try again.",
+    "retry": "Retry",
     "heroTitle": "Your Trusted Partner for Laboratory Procurement",
     "heroDescription": "Explore the new iDNA-Centrifuge series. <br /> Efficiency redefined for modern research.",
     "guarantees": {
@@ -107,8 +109,6 @@
     "bestSeller": "Best Seller",
     "trending": "Trending",
     "trusted": "Trusted by 500+ Research Leaders",
-    "pauseCarousel": "Pause autoplay",
-    "resumeCarousel": "Resume autoplay",
     "testimonialsTitle": "What research leaders say",
     "visitBrandWebsite": "Visit {name} website",
     "productCount": "{count} products",
@@ -597,6 +597,7 @@
     "categoryCountUnavailable": "Count unavailable"
   },
   "Product": {
+    "noDescription": "No description is available.",
     "information": "Product information",
     "descriptionTab": "Description",
     "specificationsTab": "Specifications",
@@ -708,6 +709,10 @@
     "imageAlt": "Laboratory equipment and research facilities available through Labdock"
   },
   "News": {
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "copyError": "Could not copy the link. Select and copy the URL below.",
+    "linkToCopy": "Link to copy",
     "home": "Home",
     "title": "News",
     "description": "Stay informed with the latest research breakthroughs, industry news, best lab practices, and upcoming scientific events.",

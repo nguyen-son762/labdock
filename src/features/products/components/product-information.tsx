@@ -78,65 +78,74 @@ export function ProductInformation({ product }: { product: Product }) {
           </Button>
         ))}
       </div>
-      <div
-        id={`product-panel-${activeTab.toLowerCase()}`}
-        role="tabpanel"
-        aria-labelledby={`product-tab-${activeTab.toLowerCase()}`}
-        tabIndex={0}
-        className="p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#164990]"
-      >
-        {activeTab === "Description" ? (
-          <p className="text-sm leading-6 text-[#5e6375]">
-            {product.description || product.notes || "No description is available."}
-          </p>
-        ) : null}
-        {activeTab === "Specifications" ? (
-          product.specifications.length ? (
-            <dl className="overflow-hidden rounded-[10px] border border-[#ecf0f3]">
-              {product.specifications.map((item, index) => (
-                <div
-                  key={`${item.name}-${item.value}`}
-                  className={cn(
-                    "grid min-h-11 grid-cols-1 gap-1 px-5 py-3 text-sm sm:grid-cols-2 sm:gap-4",
-                    index % 2 === 0 ? "bg-[#f5f7f8]" : "bg-white",
-                  )}
-                >
-                  <dt className="font-medium text-[#051a50]">{item.name}</dt>
-                  <dd className="text-[#051a50]">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
-          ) : (
-            <p className="text-sm leading-6 text-[#5e6375]">{t("noSpecifications")}</p>
-          )
-        ) : null}
-        {activeTab === "References" ? (
-          product.documents.length ? (
-            <ul className="space-y-2">
-              {[...product.documents]
-                .sort((left, right) => left.sortOrder - right.sortOrder)
-                .map((document) => (
-                  <li key={document.id}>
-                    <a
-                      href={resolveProductMediaUrl(document.url)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-2 rounded-lg border border-[#e5e9ef] px-4 py-3 text-sm font-medium text-[#164990] transition-colors hover:bg-[#f3f8fc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
-                    >
-                      <DocumentDownload className="size-5 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 flex-1 truncate">{document.displayName}</span>
-                      <span className="text-xs font-normal text-[#73798f]">
-                        {(document.sizeBytes / 1024).toLocaleString("en-SG", { maximumFractionDigits: 1 })} KB
-                      </span>
-                    </a>
-                  </li>
+      {tabs.map((tab) => (
+        <div
+          key={tab}
+          hidden={activeTab !== tab}
+          id={`product-panel-${tab.toLowerCase()}`}
+          role="tabpanel"
+          aria-labelledby={`product-tab-${tab.toLowerCase()}`}
+          tabIndex={0}
+          className="p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#164990]"
+        >
+          {tab === "Description" ? (
+            <p className="text-sm leading-6 text-[#5e6375]">
+              {product.description || product.notes || t("noDescription")}
+            </p>
+          ) : null}
+          {tab === "Specifications" ? (
+            product.specifications.length ? (
+              <dl className="overflow-hidden rounded-[10px] border border-[#ecf0f3]">
+                {product.specifications.map((item, index) => (
+                  <div
+                    key={`${item.name}-${item.value}`}
+                    className={cn(
+                      "grid min-h-11 grid-cols-1 gap-1 px-5 py-3 text-sm sm:grid-cols-2 sm:gap-4",
+                      index % 2 === 0 ? "bg-[#f5f7f8]" : "bg-white",
+                    )}
+                  >
+                    <dt className="font-medium text-[#051a50]">{item.name}</dt>
+                    <dd className="text-[#051a50]">{item.value}</dd>
+                  </div>
                 ))}
-            </ul>
-          ) : (
-            <p className="text-sm leading-6 text-[#5e6375]">{t("noDocuments")}</p>
-          )
-        ) : null}
-      </div>
+              </dl>
+            ) : (
+              <p className="text-sm leading-6 text-[#5e6375]">{t("noSpecifications")}</p>
+            )
+          ) : null}
+          {tab === "References" ? (
+            product.documents.length ? (
+              <ul className="space-y-2">
+                {[...product.documents]
+                  .sort((left, right) => left.sortOrder - right.sortOrder)
+                  .map((document) => (
+                    <li key={document.id}>
+                      <a
+                        href={resolveProductMediaUrl(document.url)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 rounded-lg border border-[#e5e9ef] px-4 py-3 text-sm font-medium text-[#164990] transition-colors hover:bg-[#f3f8fc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
+                      >
+                        <DocumentDownload className="size-5 shrink-0" aria-hidden="true" />
+                        <span className="min-w-0 flex-1 truncate">{document.displayName}</span>
+                        <span className="text-xs font-normal text-[#73798f]">
+                          {(document.sizeBytes / 1024).toLocaleString("en-SG", { maximumFractionDigits: 1 })} KB
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p className="text-sm leading-6 text-[#5e6375]">{t("noDocuments")}</p>
+            )
+          ) : null}
+        </div>
+      ))}
+      <noscript>
+        <p className="p-4 text-sm leading-6 text-[#5e6375]">
+          {product.description || product.notes || t("noDescription")}
+        </p>
+      </noscript>
     </section>
   );
 }

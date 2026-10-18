@@ -121,4 +121,16 @@ describe("MainHeader", () => {
     expect(disclosure).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("link", { name: "Mice Level 2" })).toBeInTheDocument();
   });
+  it("LOC-003 preserves both query and fragment while switching locale", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState(null, "", "/cart?items=I1#cart-products");
+    try {
+      renderWithProviders(<MainHeader />);
+      await user.click(screen.getByRole("button", { name: "Language" }));
+      await user.click(screen.getByRole("button", { name: /Tiếng Việt/ }));
+      expect(navigation.replace).toHaveBeenCalledWith("/vi/cart?items=I1#cart-products");
+    } finally {
+      window.history.replaceState(null, "", "/");
+    }
+  });
 });

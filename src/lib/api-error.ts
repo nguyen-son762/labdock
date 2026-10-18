@@ -23,7 +23,7 @@ export function getApiErrorMessage(error: unknown): string {
   const payload = apiErrorPayloadSchema.safeParse(error.response?.data);
   const status = error.response?.status;
 
-  if (payload.success && payload.data.message) {
+  if (payload.success && payload.data.message && status !== undefined && status < 500) {
     return payload.data.message;
   }
 

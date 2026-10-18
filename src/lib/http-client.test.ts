@@ -5,7 +5,7 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from "axios";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { authTokenStore } from "./auth-token-store";
 import { httpClient } from "./http-client";
@@ -106,5 +106,76 @@ describe("httpClient authentication", () => {
 
     expect(authTokenStore.getAccessToken()).toBeNull();
     expect(authTokenStore.getRefreshToken()).toBeNull();
+  });
+
+  it("SYS-006 does not restore a session when refresh finishes after logout", async () => {
+    authTokenStore.set(initialTokens);
+    let finishRefresh: (() => void) | undefined;
+    const started = vi.fn();
+    httpClient.defaults.adapter = (async (config) => {
+      if (config.url === "/auth/refresh") {
+        started();
+        await new Promise<void>((resolve) => {
+          finishRefresh = resolve;
+        });
+        return createResponse(config, refreshedTokens);
+      }
+      if (config.headers.get("Authorization") === `Bearer ${initialTokens.accessToken}`) throw unauthorized(config);
+      return createResponse(config, {});
+    }) satisfies AxiosAdapter;
+    const request = httpClient.get("/protected").catch((error: unknown) => error);
+    await vi.waitFor(() => expect(started).toHaveBeenCalledOnce());
+    authTokenStore.clear();
+    finishRefresh?.();
+    await request;
+    expect(authTokenStore.getAccessToken()).toBeNull();
+  });
+
+  it("SYS-015 rejects a response from the previous user after account switching", async () => {
+    authTokenStore.set(initialTokens);
+    let finishRequest: (() => void) | undefined;
+    const started = vi.fn();
+    httpClient.defaults.adapter = (async (config) => {
+      started();
+      await new Promise<void>((resolve) => {
+        finishRequest = resolve;
+      });
+      return createResponse(config, { private: "user A" });
+    }) satisfies AxiosAdapter;
+    const request = httpClient.get("/me/profile").then(
+      () => "accepted",
+      () => "rejected",
+    );
+    await vi.waitFor(() => expect(started).toHaveBeenCalledOnce());
+    authTokenStore.clear();
+    authTokenStore.set({ ...initialTokens, accessToken: "user-B" });
+    finishRequest?.();
+    expect(await request).toBe("rejected");
+  });
+  it("SYS-004 stops after a single refresh when the retried request still returns 401", async () => {
+    authTokenStore.set(initialTokens);
+    let refreshCalls = 0;
+    httpClient.defaults.adapter = (async (config) => {
+      if (config.url === "/auth/refresh") {
+        refreshCalls += 1;
+        return createResponse(config, refreshedTokens);
+      }
+      throw unauthorized(config);
+    }) satisfies AxiosAdapter;
+    await expect(httpClient.get("/protected")).rejects.toSatisfy(axios.isAxiosError);
+    expect(refreshCalls).toBe(1);
+    expect(authTokenStore.getAccessToken()).toBeNull();
+  });
+
+  it("SYS-005 keeps the active session after a public category 401", async () => {
+    authTokenStore.set(initialTokens);
+    const paths: string[] = [];
+    httpClient.defaults.adapter = (async (config) => {
+      paths.push(config.url ?? "");
+      throw unauthorized(config);
+    }) satisfies AxiosAdapter;
+    await expect(httpClient.get("/categories")).rejects.toSatisfy(axios.isAxiosError);
+    expect(paths).toEqual(["/categories"]);
+    expect(authTokenStore.getAccessToken()).toBe(initialTokens.accessToken);
   });
 });

@@ -115,3 +115,43 @@ it("disables option changes while the cart item is being updated", () => {
 
   expect(screen.getByRole("combobox", { name: /option for beakers/i })).toBeDisabled();
 });
+
+it.each(["", "0"])("CART-008 commits empty or zero quantity %s as one", async (value) => {
+  const interaction = userEvent.setup();
+  const update = vi.fn();
+  renderWithProviders(
+    <CartItemsTable
+      items={[{ ...item, quantity: 2 }]}
+      selectedIds={[item.id]}
+      onSelectedIdsChange={vi.fn()}
+      onQuantityChange={update}
+      onVariantChange={vi.fn()}
+      onRemove={vi.fn()}
+    />,
+  );
+  const input = screen.getByRole("textbox", { name: /quantity for beakers/i });
+  await interaction.clear(input);
+  if (value) await interaction.type(input, value);
+  await interaction.keyboard("{Enter}");
+  expect(update).toHaveBeenCalledExactlyOnceWith(item.id, 1);
+});
+it("CART-010 allows reducing an item whose stock fell below the current quantity", async () => {
+  const interaction = userEvent.setup();
+  const update = vi.fn();
+  renderWithProviders(
+    <CartItemsTable
+      items={[{ ...item, quantity: 10, stockQty: 2 }]}
+      selectedIds={[item.id]}
+      onSelectedIdsChange={vi.fn()}
+      onQuantityChange={update}
+      onVariantChange={vi.fn()}
+      onRemove={vi.fn()}
+    />,
+  );
+  const input = screen.getByRole("textbox", { name: /quantity for beakers/i });
+  expect(input).toBeEnabled();
+  await interaction.clear(input);
+  await interaction.type(input, "2");
+  await interaction.tab();
+  expect(update).toHaveBeenCalledExactlyOnceWith(item.id, 2);
+});

@@ -8,12 +8,12 @@ import { renderWithProviders } from "@/test/render-with-providers";
 import type { CheckoutFormValues } from "../schemas/checkout.schema";
 import { DeliveryAddressFields } from "./address-fields";
 
-function AddressForm() {
+function AddressForm({ phone = "+65 88009900" }: { phone?: string }) {
   const form = useForm<CheckoutFormValues>({
     defaultValues: {
       fullName: "Sarah Chen",
       email: "sarah@example.com",
-      phone: "+65 88009900",
+      phone,
       companyName: "Example",
       address: "123 Example Street",
       postalCode: "319455",
@@ -47,4 +47,9 @@ it("keeps the national phone number and synchronizes both country pickers", asyn
   expect(country).toHaveTextContent("Malaysia");
   expect(screen.getByLabelText("Stored phone")).toHaveTextContent("+60 88009900");
   expect(screen.getByLabelText("Stored country")).toHaveTextContent("MY");
+});
+
+it("CHK-017 preserves national digits when the international prefix differs from the country", () => {
+  renderWithProviders(<AddressForm phone="+84901234567" />);
+  expect(screen.getByRole("textbox", { name: "Phone no. *" })).toHaveValue("901234567");
 });

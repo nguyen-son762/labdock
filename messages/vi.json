@@ -76,6 +76,8 @@
     }
   },
   "Home": {
+    "loadError": "Không thể tải nội dung trang chủ. Vui lòng thử lại.",
+    "retry": "Thử lại",
     "heroTitle": "Đối tác đáng tin cậy cho hoạt động mua sắm phòng thí nghiệm",
     "heroDescription": "Khám phá dòng máy ly tâm iDNA mới. Hiệu suất được tái định nghĩa cho nghiên cứu hiện đại.",
     "guarantees": {
@@ -107,8 +109,6 @@
     "bestSeller": "Bán chạy",
     "trending": "Xu hướng",
     "trusted": "Được hơn 500 nhà nghiên cứu tin tưởng",
-    "pauseCarousel": "Tạm dừng tự động",
-    "resumeCarousel": "Tiếp tục tự động",
     "testimonialsTitle": "Nhận xét từ các nhà nghiên cứu",
     "visitBrandWebsite": "Truy cập website của {name}",
     "productCount": "{count} sản phẩm",
@@ -597,6 +597,7 @@
     "categoryCountUnavailable": "Chưa tải được số lượng"
   },
   "Product": {
+    "noDescription": "Chưa có mô tả sản phẩm.",
     "information": "Thông tin sản phẩm",
     "descriptionTab": "Mô tả",
     "specificationsTab": "Thông số kỹ thuật",
@@ -708,6 +709,10 @@
     "imageAlt": "Thiết bị và cơ sở nghiên cứu phòng thí nghiệm có trên Labdock"
   },
   "News": {
+    "copyLink": "Sao chép liên kết",
+    "copied": "Đã sao chép",
+    "copyError": "Không thể sao chép liên kết. Vui lòng chọn và sao chép URL bên dưới.",
+    "linkToCopy": "Liên kết để sao chép",
     "home": "Trang chủ",
     "title": "Tin tức",
     "description": "Cập nhật đột phá nghiên cứu, tin tức ngành, thực hành phòng thí nghiệm và các sự kiện khoa học sắp tới.",

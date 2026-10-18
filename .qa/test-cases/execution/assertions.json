@@ -1,0 +1,1887 @@
+[
+  {
+    "file": "src/app/sitemap.test.ts",
+    "name": "sitemap contains unique public URLs",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/sitemap.test.ts",
+    "name": "sitemap SEO-003 indexes API product slugs instead of demo product identifiers",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/sitemap.test.ts",
+    "name": "sitemap reads subsequent API pages and deduplicates repeated slugs",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/sitemap.test.ts",
+    "name": "sitemap only supplies evidence-based modification dates",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/client-env.test.ts",
+    "name": "resolveApiBaseUrl uses the Labdock UAT API when no override is configured",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/client-env.test.ts",
+    "name": "resolveApiBaseUrl normalizes trailing slashes",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/client-env.test.ts",
+    "name": "resolveApiBaseUrl rejects an invalid API base URL: not-a-url",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/client-env.test.ts",
+    "name": "resolveApiBaseUrl rejects an invalid API base URL: ftp://api.example.com",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/client-env.test.ts",
+    "name": "resolveApiBaseUrl rejects an invalid API base URL: //api.example.com",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/client-env.test.ts",
+    "name": "resolveApiBaseUrl rejects an invalid API base URL: /",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/site.test.ts",
+    "name": "resolveSiteUrl normalizes a valid origin",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/site.test.ts",
+    "name": "resolveSiteUrl uses localhost when a development URL is not configured",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/site.test.ts",
+    "name": "resolveSiteUrl rejects an invalid production URL: undefined",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/site.test.ts",
+    "name": "resolveSiteUrl rejects an invalid production URL: not-a-url",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/site.test.ts",
+    "name": "resolveSiteUrl rejects an invalid production URL: ftp://labdock.example",
+    "status": "passed"
+  },
+  {
+    "file": "src/config/site.test.ts",
+    "name": "resolveSiteUrl rejects a site URL with a path",
+    "status": "passed"
+  },
+  {
+    "file": "src/constants/country-data.test.ts",
+    "name": "country data contains a complete ISO country list with a calling code for every entry",
+    "status": "passed"
+  },
+  {
+    "file": "src/constants/country-data.test.ts",
+    "name": "country data includes the default Singapore and Vietnam calling codes",
+    "status": "passed"
+  },
+  {
+    "file": "src/constants/country-data.test.ts",
+    "name": "country data provides a matching flag from flag.json for all 249 ISO countries",
+    "status": "passed"
+  },
+  {
+    "file": "src/constants/country-data.test.ts",
+    "name": "country data keeps the ISO identity and calling code when supplied flag codes are incorrect or missing",
+    "status": "passed"
+  },
+  {
+    "file": "src/constants/country-data.test.ts",
+    "name": "country data resolves existing stored names as well as case-insensitive ISO codes",
+    "status": "passed"
+  },
+  {
+    "file": "src/i18n/locale.test.ts",
+    "name": "locale routing keeps the default locale unprefixed",
+    "status": "passed"
+  },
+  {
+    "file": "src/i18n/locale.test.ts",
+    "name": "locale routing prefixes Vietnamese routes",
+    "status": "passed"
+  },
+  {
+    "file": "src/i18n/locale.test.ts",
+    "name": "locale routing provides canonical and hreflang alternatives",
+    "status": "passed"
+  },
+  {
+    "file": "src/i18n/locale.test.ts",
+    "name": "locale routing narrows supported locales",
+    "status": "passed"
+  },
+  {
+    "file": "src/i18n/messages.test.ts",
+    "name": "translation messages keeps Vietnamese and English message contracts in sync",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage reads RFC problem details returned by the authentication API",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-019 hides internal messages and details from server failures",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 uses the fallback for status 400",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 uses the fallback for status 401",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 uses the fallback for status 403",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 uses the fallback for status 404",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 uses the fallback for status 409",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 uses the fallback for status 429",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/api-error.test.ts",
+    "name": "getApiErrorMessage SYS-018 prefers a public message to detail and handles opaque failures",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/auth-token-store.test.ts",
+    "name": "authTokenStore keeps tokens in session cookies and only exposes non-secret session metadata",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/auth-token-store.test.ts",
+    "name": "authTokenStore restores tokens from cookies after the in-memory module state is recreated",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/auth-token-store.test.ts",
+    "name": "authTokenStore rejects malformed token responses",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/auth-token-store.test.ts",
+    "name": "authTokenStore notifies subscribers when an active session is cleared",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication adds the Bearer access token to requests",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication does not send an access token to public category, signup and password reset endpoints",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication refreshes once for concurrent 401 responses and retries with the new access token",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication clears tokens when refresh fails",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication SYS-006 does not restore a session when refresh finishes after logout",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication SYS-015 rejects a response from the previous user after account switching",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication SYS-004 stops after a single refresh when the retried request still returns 401",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/http-client.test.ts",
+    "name": "httpClient authentication SYS-005 keeps the active session after a public category 401",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/server-api-request.test.ts",
+    "name": "createServerApiRequestInit keeps the public Next cache policy when the access-token cookie is missing",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/server-api-request.test.ts",
+    "name": "createServerApiRequestInit adds the bearer token and disables shared caching for an authenticated request",
+    "status": "passed"
+  },
+  {
+    "file": "src/lib/server-api-request.test.ts",
+    "name": "createServerApiRequestInit does not create an authorization header from a malformed cookie value",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/layout/main-header.test.tsx",
+    "name": "MainHeader renders account state from session data instead of the pathname",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/layout/main-header.test.tsx",
+    "name": "MainHeader switches locale while preserving the current pathname",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/layout/main-header.test.tsx",
+    "name": "MainHeader opens child categories in a horizontal panel on hover",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/layout/main-header.test.tsx",
+    "name": "MainHeader opens child categories from the accessible disclosure button",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/layout/main-header.test.tsx",
+    "name": "MainHeader LOC-003 preserves both query and fragment while switching locale",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect searches by name and ISO code, selects with the keyboard, and restores focus",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect shows an empty state and preserves the selection when dismissing the search",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect returns ISO codes when an existing profile stores a country name",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect searches calling codes and preserves each form's value format and allowed countries",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect retains the chosen flag when several countries share a calling code",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect keeps country names as the submitted value when requested",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/shared/country-select.test.tsx",
+    "name": "CountrySelect handles disabled controls and image failures without losing the country name",
+    "status": "passed"
+  },
+  {
+    "file": "src/components/ui/swiper-navigation.test.tsx",
+    "name": "SwiperNavigation exposes accessible Swiper controls and respects edge state",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/brands/server.test.ts",
+    "name": "getPublicBrands loads and validates the public brands with the shared cache policy",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/brands/server.test.ts",
+    "name": "getPublicBrands rejects unsuccessful responses",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/brands/server.test.ts",
+    "name": "getPublicBrands rejects malformed payloads",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/brands/server.test.ts",
+    "name": "getTopBrands keeps top brands with logos and normalizes the logo path returned by UAT",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/categories/server.test.ts",
+    "name": "getPublicCategories loads and validates the recursive public category tree",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/categories/server.test.ts",
+    "name": "getPublicCategories rejects unsuccessful responses",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/categories/server.test.ts",
+    "name": "getPublicCategories rejects malformed category payloads",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getPublicHomepage loads the complete homepage contract through one cached request",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getPublicHomepage rejects unsuccessful responses",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getPublicHomepage rejects malformed aggregate payloads",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getPublicHomepage rejects unsupported homepage banner types",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getHomePageData loads homepage content even when unused API topBrands is invalid",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getHomePageData maps every aggregate section without making secondary API calls",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/server.test.ts",
+    "name": "getHomePageData returns empty sections when the single homepage request fails",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProducts preserves complete product records returned by the catalog API",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProducts serializes every supported filter with the backend parameter casing",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProducts omits optional filters for the normal product feed",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProducts rejects malformed product payloads",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProducts omits empty lists and preserves explicit false flags",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProducts maps product list items into the Product contract consumed by cards",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProductOrigins loads string origins with the catalog cache policy and removes duplicates",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProductOrigins supports an empty list",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProductOrigins rejects failed requests and malformed payloads",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getCatalogCategoriesWithCounts uses category-specific totals and skips counts supplied by the category API",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getCatalogCategoriesWithCounts keeps category navigation available when its count request fails",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProductBySlug loads and validates a product detail by encoded slug",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProductBySlug maps a 404 response to ProductNotFoundError",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/server.test.ts",
+    "name": "getPublicProductBySlug rejects malformed product detail payloads",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService logs in with the API request contract and exposes sanitized session metadata",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService rejects an invalid token response without creating a session",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService clears the persisted session on logout",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService starts signup with the public API contract and a normalized international phone",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService verifies the signup OTP and completes the challenge",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService rejects an OTP response that was not verified",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService starts, verifies and resets a forgot-password challenge",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/api/auth.service.test.ts",
+    "name": "authService rejects a forgot-password OTP response that was not verified",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-003 validates login email before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-004 validates login email before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-005 validates login email before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-006 validates login email before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-007 validates login password before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-008 validates login password before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-009 validates login password before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-010 validates login password before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-016 validates signup company before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-017 validates signup company before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-018 validates signup fullName before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-019 validates signup fullName before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-020 validates signup region before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-021 validates signup region before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-022 validates signup address before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-023 validates signup address before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-024 validates signup company before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-025 validates signup company before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-026 validates signup phone before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-027 validates signup phone before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-028 validates signup phone before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-029 validates signup phone before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-boundaries.test.tsx",
+    "name": "Authentication boundaries from the QA catalogue AUTH-030 validates signup phone before calling the service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/auth-shell.test.tsx",
+    "name": "AuthShell keeps the researcher artwork uncropped and anchored to the bottom of the auth panel",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/forgot-password-form.test.tsx",
+    "name": "ForgotPasswordForm completes the email, OTP verification and new password flow",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/header-account-menu.test.tsx",
+    "name": "HeaderAccountMenu opens accessibly, closes with Escape, and logs the user out",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/login-form.test.tsx",
+    "name": "LoginForm hiển thị lỗi accessible khi submit dữ liệu rỗng",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/login-form.test.tsx",
+    "name": "LoginForm gửi dữ liệu qua service và chuyển về trang chủ khi thành công",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/login-form.test.tsx",
+    "name": "LoginForm vẫn hoàn tất đăng nhập và chỉ gọi profile một lần khi profile lỗi",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-form.test.tsx",
+    "name": "SignupForm completes the start, OTP verification and password flow with one challenge id",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-037 preserves empty middle slots while replacing a digit",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-037 clears the previous digit without shifting later slots",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-043 AUTH-047 expires against wall time after a hidden tab resumes",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-038 validates complete code 01234",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-039 validates complete code 012345",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-040 validates complete code 0123456",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-041 validates complete code 12a456",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-036 pastes digits into slot 1 without exceeding six positions",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-036 pastes digits into slot 4 without exceeding six positions",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/components/signup-verification-form.test.tsx",
+    "name": "OTP regressions AUTH-035 moves focus for typed digits and arrow keys",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/forgot-password.schema.test.ts",
+    "name": "forgot-password schemas accepts the API challenge and OTP contracts",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/forgot-password.schema.test.ts",
+    "name": "forgot-password schemas rejects invalid identifiers and verification codes",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/forgot-password.schema.test.ts",
+    "name": "forgot-password schemas requires matching passwords in the form and API payload",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/login.schema.test.ts",
+    "name": "loginSchema chuẩn hóa email và chấp nhận thông tin đăng nhập hợp lệ",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/login.schema.test.ts",
+    "name": "loginSchema từ chối email sai và mật khẩu ngắn",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/signup.schema.test.ts",
+    "name": "signupSchema chấp nhận và chuẩn hóa đầy đủ thông tin tài khoản",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/signup.schema.test.ts",
+    "name": "signupSchema từ chối các trường bắt buộc còn thiếu",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/auth/schemas/signup.schema.test.ts",
+    "name": "verificationSchema chỉ chấp nhận mã OTP gồm đúng 6 chữ số",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/about/components/about-screen.test.tsx",
+    "name": "AboutScreen renders the About content, partner grid and product call to action",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService.get loads the authenticated cart with cancellation and preserves backend field names",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService.get rejects a malformed cart payload",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService.get propagates HTTP failures for React Query error handling",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService response validation preserves the cart items returned after adding or updating an item",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService response validation keeps deleted items and handles an unavailable selected variant",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService.update variant selection sends the selected variant and current quantity to the API",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService.update variant selection rejects invalid variant identifiers before sending a request",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cartService.update variant selection propagates update failures without returning a replacement cart",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/api/cart.service.test.ts",
+    "name": "cart write ordering CART-016 CART-017 serializes full-cart writes and removal",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/address-fields.test.tsx",
+    "name": "keeps the national phone number and synchronizes both country pickers",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/address-fields.test.tsx",
+    "name": "CHK-017 preserves national digits when the international prefix differs from the country",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-header-popover.test.tsx",
+    "name": "CartHeaderPopover removes products through the shared cart service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-items-table.test.tsx",
+    "name": "CartItemsTable keeps quantity focused while typing and commits the formatted value on blur",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-items-table.test.tsx",
+    "name": "lists variants using every selection value and notifies when the option changes",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-items-table.test.tsx",
+    "name": "disables option changes while the cart item is being updated",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-items-table.test.tsx",
+    "name": "CART-008 commits empty or zero quantity  as one",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-items-table.test.tsx",
+    "name": "CART-008 commits empty or zero quantity 0 as one",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-items-table.test.tsx",
+    "name": "CART-010 allows reducing an item whose stock fell below the current quantity",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "updates the selected variant through the API and renders the returned cart",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "keeps the previous option and displays an error when the API rejects the change",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "CART-002 shows the empty cart after loading an empty response",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "CART-003 reports a cart loading failure",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "CART-015 preserves the item and reports a failed removal",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "CART-014 removes the final item and displays the empty state",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/cart-screen.test.tsx",
+    "name": "CART-004 CART-005 CART-024 defaults to all items and changes checkout/quote links with selection",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-006 validates fullName before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-007 validates fullName before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-008 validates address before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-009 validates address before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-010 validates postalCode before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-011 validates postalCode before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-012 validates postalCode before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-013 validates companyName before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-014 validates companyName before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-boundaries.test.tsx",
+    "name": "Checkout boundaries from the QA catalogue CHK-015 validates companyName before preparing payment",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-screen.test.tsx",
+    "name": "CheckoutScreen prevents duplicate checkout submits while payment is being prepared",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/checkout-screen.test.tsx",
+    "name": "CheckoutScreen CHK-005 starts with blank identity fields when no profile is available",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/payment-screen.test.tsx",
+    "name": "PaymentScreen opens the order returned by the payment API",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/payment-success-screen.test.tsx",
+    "name": "PAY-016 does not claim a confirmation email was sent to a demo identity",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/request-quote-screen.test.tsx",
+    "name": "RequestQuoteScreen submits selected products once and opens the success screen",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/components/request-quote-screen.test.tsx",
+    "name": "RequestQuoteScreen QUOTE-004 starts with blank identity fields",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/cart.schema.test.ts",
+    "name": "cartResponseSchema validates the complete cart response",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/cart.schema.test.ts",
+    "name": "cartResponseSchema rejects malformed nested cart items",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/cart.schema.test.ts",
+    "name": "cart response item metadata rejects invalid status, deletion flags, variants or selections: { productStatus: '' }",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/cart.schema.test.ts",
+    "name": "cart response item metadata rejects invalid status, deletion flags, variants or selections: { isDeleted: 'false' }",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/cart.schema.test.ts",
+    "name": "cart response item metadata rejects invalid status, deletion flags, variants or selections: { variants: [ { id: '33333333-3333-3333-3333-333333333333', sku: 'SKU-001', unitPrice: 99.5, currency: 'SGD', stockQty: -1, selections: [ { attributeId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', attributeCode: 'size', attributeName: 'Size', valueId: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', valueCode: '1l', value: '1 L' } ] } ] }",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/cart.schema.test.ts",
+    "name": "cart response item metadata rejects invalid status, deletion flags, variants or selections: { variants: [ { id: '33333333-3333-3333-3333-333333333333', sku: 'SKU-001', unitPrice: 99.5, currency: 'SGD', stockQty: 10, selections: [ { attributeCode: 'size' } ] } ] }",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/checkout.schema.test.ts",
+    "name": "checkoutSchema accepts the designed checkout values",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/checkout/schemas/checkout.schema.test.ts",
+    "name": "checkoutSchema requires billing fields when billing differs from delivery",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-005 validates fullName before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-006 validates fullName before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-007 validates company before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-008 validates company before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-009 validates subject before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-010 validates subject before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-011 validates message before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-boundaries.test.tsx",
+    "name": "Contact boundaries from the QA catalogue CON-012 validates message before calling the submit service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-form.test.tsx",
+    "name": "ContactForm prevents duplicate general inquiry submissions and announces success",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-form.test.tsx",
+    "name": "ContactForm switches inquiry variants and manages quote product rows",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-form.test.tsx",
+    "name": "ContactForm CON-015 shows an accessible error after removing the last quote product",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/contact/components/contact-form.test.tsx",
+    "name": "ContactForm CON-018 validates a product name when Confirm is clicked",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/categories/utils/build-category-tree.test.ts",
+    "name": "buildCategoryTree maps unordered categories into an arbitrarily deep parent-child tree",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/categories/utils/build-category-tree.test.ts",
+    "name": "buildCategoryTree sorts every level and promotes active children whose parent is inactive",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/categories/utils/build-category-tree.test.ts",
+    "name": "buildCategoryTree keeps cyclic categories reachable as roots instead of creating a recursive structure",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/categories-section.test.tsx",
+    "name": "Homepage category navigation links a category to its product catalog page",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "name": "HeroSection homepage banners renders API content and sizes cards from the Left and Right banner types",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "name": "HeroSection homepage banners HOME-005 rejects unsafe banner destination javascript:alert(1)",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "name": "HeroSection homepage banners HOME-005 rejects unsafe banner destination data:text/html,bad",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "name": "HeroSection homepage banners HOME-005 rejects unsafe banner destination //untrusted.example",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "name": "HeroSection homepage banners HOME-005 rejects unsafe banner destination /\\untrusted.example",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/hero-section.test.tsx",
+    "name": "HeroSection homepage banners HOME-005 rejects unsafe banner destination java\nscript:alert(1)",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/home-screen.test.tsx",
+    "name": "HOME-007 announces a homepage load failure and offers retry navigation",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/social-proof-section.test.tsx",
+    "name": "SocialProofSection always renders the twelve local Figma logos in design order without API brands",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/home/components/testimonial-carousel.test.tsx",
+    "name": "TestimonialCarousel renders the API author, profile image, content, and accessible rating",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/legal/components/legal-document-screen.test.tsx",
+    "name": "LegalDocumentScreen renders all Terms and Conditions sections with a single page heading",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/legal/components/legal-document-screen.test.tsx",
+    "name": "LegalDocumentScreen renders Privacy Policy lists as accessible lists",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/news/components/copy-link-button.test.tsx",
+    "name": "CMS-006 copies the current URL and confirms success",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/news/components/copy-link-button.test.tsx",
+    "name": "CMS-007 provides feedback and a selectable URL when clipboard access fails",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/news/components/news-feed.test.tsx",
+    "name": "NewsFeed filters the visible articles by category",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/news/data/news-data.test.ts",
+    "name": "news SEO data contains no placeholder copy",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/news/data/news-data.test.ts",
+    "name": "news SEO data gives every article a unique body",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/api/orders.service.test.ts",
+    "name": "ordersService fetches a paginated order list and validates the response",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/api/orders.service.test.ts",
+    "name": "ordersService fetches order detail by id and validates invoice data",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/api/orders.service.test.ts",
+    "name": "ordersService rejects an invalid order id before making a request",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/components/orders-table.test.tsx",
+    "name": "OrdersTable shows the order data and exposes a detail link",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/components/orders-table.test.tsx",
+    "name": "OrdersTable requests the next page when more orders are available",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/utils/order-formatters.test.ts",
+    "name": "order formatters formats order dates in the day-month-year order used by the design",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/orders/utils/order-formatters.test.ts",
+    "name": "order formatters formats prices as USD values",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/data/products-data.test.ts",
+    "name": "product catalog SEO data keeps every indexable product URL unique",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/data/products-data.test.ts",
+    "name": "product catalog SEO data only repeats real products in the display grid",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/data/products-data.test.ts",
+    "name": "product catalog SEO data provides distinct searchable descriptions and catalog numbers",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-catalog.schema.test.ts",
+    "name": "parseProductCatalogFilters parses valid product catalog URL filters",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-catalog.schema.test.ts",
+    "name": "parseProductCatalogFilters falls back safely for invalid or repeated URL values",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-catalog.schema.test.ts",
+    "name": "parseProductCatalogFilters normalizes multiple brand IDs and ignores invalid or duplicate IDs",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-catalog.schema.test.ts",
+    "name": "parseProductCatalogFilters normalizes comma-separated origins without dropping spaces within a name",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-detail.schema.test.ts",
+    "name": "publicProductDetailSchema validates the complete product detail payload",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-detail.schema.test.ts",
+    "name": "publicProductDetailSchema rejects malformed nested variant data",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-detail.schema.test.ts",
+    "name": "publicProductDetailSchema accepts the numeric status still returned by the current product detail endpoint",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/schemas/product-detail.schema.test.ts",
+    "name": "publicProductDetailSchema preserves hidden prices and normalizes an empty related collection",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-filters.test.tsx",
+    "name": "CatalogFilters brands shows five checkboxes, expands the list and searches hidden brands",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-filters.test.tsx",
+    "name": "CatalogFilters brands adds another brand and allows deselecting a selected brand",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-filters.test.tsx",
+    "name": "CatalogFilters brands collapses brands independently and preserves selections when reopened",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-filters.test.tsx",
+    "name": "CatalogFilters brands hides See more for at most five brands",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-origin-filter.test.tsx",
+    "name": "CatalogOriginFilter reveals more origins and searches the entire API list without changing selection",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-origin-filter.test.tsx",
+    "name": "CatalogOriginFilter shows an empty search result and retains a keyboard-operable checkbox",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-origin-filter.test.tsx",
+    "name": "CatalogOriginFilter collapses and reopens from the keyboard without clearing selected origins",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-origin-filter.test.tsx",
+    "name": "CatalogOriginFilter reports an empty API list and disables controls during navigation",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-workspace.test.tsx",
+    "name": "CatalogWorkspace writes brand filters to the URL and preserves the selected category",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-workspace.test.tsx",
+    "name": "CatalogWorkspace adds multiple brands, migrates legacy links and resets pagination",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-workspace.test.tsx",
+    "name": "CatalogWorkspace keeps product failures separate from available filters",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-workspace.test.tsx",
+    "name": "CatalogWorkspace adds and removes origins while preserving category, brand and sort, and resetting pagination",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-workspace.test.tsx",
+    "name": "CatalogWorkspace clears the last origin and exposes clear filters in an empty result",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/catalog-workspace.test.tsx",
+    "name": "CatalogWorkspace keeps products and brand filters usable when origins fail",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/category-strip.test.tsx",
+    "name": "CategoryStrip opens a category route and carries other catalog filters forward",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/category-strip.test.tsx",
+    "name": "CategoryStrip does not present a missing category count as zero",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-card.test.tsx",
+    "name": "ProductCard links an available product to its detail page",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-card.test.tsx",
+    "name": "ProductCard shows learn more and hides cart for out of stock products",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-card.test.tsx",
+    "name": "ProductCard shows contact pricing and hides cart when the API price is not visible",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-card.test.tsx",
+    "name": "ProductCard adds the selected product to the shared cart",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-information.test.tsx",
+    "name": "ProductInformation renders API specifications and product documents",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-information.test.tsx",
+    "name": "ProductInformation PDP-020 SEO-008 renders every tab panel and preserves its accessible relationship",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-purchase-panel.test.tsx",
+    "name": "ProductPurchasePanel adds the variant selected from the API payload to cart",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/components/product-purchase-panel.test.tsx",
+    "name": "ProductPurchasePanel shows contact pricing and hides promotions for hidden or missing prices",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/map-public-product.test.ts",
+    "name": "mapPublicProduct maps the public list item into the shared Product contract",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/map-public-product.test.ts",
+    "name": "mapPublicProduct does not expose a hidden price as purchasable",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/map-public-product.test.ts",
+    "name": "mapPublicProduct preserves full product data instead of synthesizing a list variant",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing applies promotions to the list price independently of RFQ pricing",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing does not display missing or hidden prices and promotions",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing does not display missing or hidden prices and promotions",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing defaults to the cheapest available variant after promotions",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing PDP-007 distinguishes a visible zero price from a missing price",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing PDP-009 blocks purchase for unavailable variant {\"stockQty\":0}",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/products/utils/product-display.test.ts",
+    "name": "product pricing PDP-009 blocks purchase for unavailable variant {\"isActive\":false}",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/rfqs/api/rfqs.service.test.ts",
+    "name": "rfqsService fetches a paginated RFQ list and validates the response",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/rfqs/api/rfqs.service.test.ts",
+    "name": "rfqsService fetches RFQ detail by id and validates its items and remarks",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/rfqs/api/rfqs.service.test.ts",
+    "name": "rfqsService rejects an invalid RFQ id before making a request",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/rfqs/components/rfqs-table.test.tsx",
+    "name": "RfqsTable shows API RFQ data and links to detail by id",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/rfqs/components/rfqs-table.test.tsx",
+    "name": "RfqsTable requests the next page when more RFQs are available",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService loads and maps the authenticated profile contract",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService rejects an invalid profile response at the API boundary",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService normalizes optional profile fields that are null for incomplete accounts",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService updates the authenticated profile with the API contract and maps the response",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService preserves the current billing address when it differs from delivery",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService rejects an invalid update response at the API boundary",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService changes the authenticated user's password with the API contract",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService uploads the profile image as multipart form data",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService saves the uploaded media id on the profile after the media upload succeeds",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/api/profile.service.test.ts",
+    "name": "profileService does not send an invalid password change request",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-043 validates avatar type image/png and byte size 1024",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-044 validates avatar type image/jpeg and byte size 1048576",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-045 validates avatar type image/png and byte size 1048577",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-046 validates avatar type image/gif and byte size 1024",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-047 validates avatar type image/svg+xml and byte size 1024",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-048 validates avatar type  and byte size 1024",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-050 retains the selected file and current avatar when saving fails",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-avatar-states.test.tsx",
+    "name": "PRO-052 locks changes and dismissal while a single avatar save is pending",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-006 validates fullName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-007 validates fullName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-008 validates fullName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-009 validates fullName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-010 validates phone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-011 validates phone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-012 validates phone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-013 validates phone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-014 validates companyName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-015 validates companyName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-016 validates companyName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-017 validates companyName before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-018 validates deliveryAddress before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-019 validates deliveryAddress before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-020 validates deliveryAddress before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-021 validates deliveryAddress before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-022 validates postalCode before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-023 validates postalCode before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-024 validates postalCode before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-025 validates postalCode before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-026 validates companyPhone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-027 validates companyPhone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-028 validates companyPhone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-029 validates companyPhone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-030 validates companyPhone before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-031 validates businessRegistrationNumber before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-032 validates businessRegistrationNumber before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-033 validates businessRegistrationNumber before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-034 validates businessRegistrationNumber before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-boundaries.test.tsx",
+    "name": "Profile field boundaries from the QA catalogue PRO-035 validates businessRegistrationNumber before calling the update service",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "name": "ProfileScreen keeps profile and password editing independent",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "name": "ProfileScreen submits and clears the change-password form after a successful request",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "name": "ProfileScreen uploads and saves a selected avatar on the profile",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "name": "ProfileScreen PRO-049 clears the old selection when a replacement file is invalid",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "name": "ProfileScreen PRO-051 resets a saved file before the dialog is reopened",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/components/profile-screen.test.tsx",
+    "name": "ProfileScreen PRO-042 displays the password change date returned by the API",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/schemas/profile-form.schema.test.ts",
+    "name": "profileFormSchema trims user-entered profile values",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/schemas/profile-form.schema.test.ts",
+    "name": "profileFormSchema rejects an invalid email address",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/schemas/profile-form.schema.test.ts",
+    "name": "profileFormSchema allows company phone and business registration number to be empty",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/schemas/profile-form.schema.test.ts",
+    "name": "profileFormSchema still rejects partially entered optional company fields",
+    "status": "passed"
+  },
+  {
+    "file": "src/features/profile/schemas/profile-form.schema.test.ts",
+    "name": "passwordFormSchema rejects mismatched passwords",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "checkout selection query CHK-002 accepts repeated URL parameters and deduplicates identifiers",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "checkout selection query CHK-001 handles selection {}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "checkout selection query CHK-001 handles selection {\"items\":\"\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "checkout selection query CHK-001 handles selection {\"items\":\"I1,I2\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "quote selection query CHK-002 accepts repeated URL parameters and deduplicates identifiers",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "quote selection query CHK-001 handles selection {}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "quote selection query CHK-001 handles selection {\"items\":\"\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/checkout/selection-routes.test.tsx",
+    "name": "quote selection query CHK-001 handles selection {\"items\":\"I1,I2\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-001 passes a well-formed payment session to the screen",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-002 rejects a malformed payment query {}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-003 rejects a malformed payment query {\"reference\":\"PAY-abc12345\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-004 rejects a malformed payment query {\"reference\":\"PAY-ABC1234\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-005 rejects a malformed payment query {\"amount\":\"0\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-006 rejects a malformed payment query {\"amount\":\"-1\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-007 rejects a malformed payment query {\"amount\":\"NaN\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-008 rejects a malformed payment query {\"amount\":\"Infinity\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-009 rejects a malformed payment query {}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-010 defaults unsupported method undefined to paynow",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-010 defaults unsupported method card to paynow",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-015 rejects malformed success queries {\"orderId\":\"invalid\",\"amount\":\"10\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-015 rejects malformed success queries {\"orderId\":\"11111111-1111-4111-8111-111111111111\",\"amount\":\"10\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-015 rejects malformed success queries {\"orderId\":\"OR-3000\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-015 rejects malformed success queries {\"orderId\":\"OR-3000\",\"amount\":\"0\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-015 rejects malformed success queries {\"orderId\":\"OR-3000\",\"amount\":\"-1\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/payment/page.test.tsx",
+    "name": "Payment route URL validation PAY-015 rejects malformed success queries {\"orderId\":\"OR-3000\",\"amount\":\"Infinity\"}",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "SEO-005 uses the promotional price seen by the customer",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "SEO-005 omits the offer for hidden or missing price product",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "SEO-005 omits the offer for hidden or missing price variant",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "SEO-005 omits the offer for hidden or missing price null",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "SEO-006 escapes script-breaking text while retaining the original description",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "SEO-001 SEO-007 supplies localized canonical/OG URLs and product imagery",
+    "status": "passed"
+  },
+  {
+    "file": "src/app/[locale]/(marketing)/products/[slug]/page.test.tsx",
+    "name": "PDP-002 distinguishes a missing record from a server failure",
+    "status": "passed"
+  }
+]

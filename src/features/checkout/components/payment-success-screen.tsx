@@ -1,13 +1,13 @@
 import { ArrowRight, TickCircle } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
 import { formatCurrency } from "../data/checkout-data";
 
-export function PaymentSuccessScreen({ orderId, amount }: { orderId: string; amount: number }) {
+export function PaymentSuccessScreen({ amount }: { amount: number }) {
   const t = useTranslations("Checkout");
   return (
     <section className="relative isolate min-h-[490px] overflow-hidden" aria-labelledby="payment-success-title">
@@ -29,7 +29,6 @@ export function PaymentSuccessScreen({ orderId, amount }: { orderId: string; amo
           {t("paymentSuccess")}
         </h1>
         <p className="mt-7 text-sm">{t("thankYou")}</p>
-        <p className="mt-2 text-sm">{t("confirmationEmail", { email: "sarah_chen@biogenix.com.sg" })}</p>
         <div className="mt-4 w-full max-w-[550px] rounded-2xl border border-white bg-gradient-to-b from-white to-white/50 px-4 py-4">
           <p className="font-semibold">{t("orderTotal")}</p>
           <strong className="mt-1 block text-xl text-[#164990]">{formatCurrency(amount)}</strong>
@@ -40,7 +39,7 @@ export function PaymentSuccessScreen({ orderId, amount }: { orderId: string; amo
           </Button>
           <Button asChild variant="brand" className="rounded-full pl-5 pr-1.5 shadow-none">
             <Link href="/products">
-              Continue shopping{" "}
+              {t("continueShopping")}
               <span className="flex size-8 items-center justify-center rounded-full bg-[#efa33b]">
                 <ArrowRight className="size-4" aria-hidden="true" />
               </span>
@@ -48,10 +47,10 @@ export function PaymentSuccessScreen({ orderId, amount }: { orderId: string; amo
           </Button>
         </div>
         <Link
-          href={`/orders/${orderId}`}
+          href="/orders"
           className="mt-4 rounded text-sm text-[#164990] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164990]"
         >
-          View order details
+          {t("viewOrders")}
         </Link>
       </div>
     </section>

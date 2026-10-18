@@ -18,5 +18,5 @@ export default async function PaymentSuccessPage({
   const amount = Number(rawAmount);
   if (!orderId || !/^OR-\d+$/.test(orderId) || !Number.isFinite(amount) || amount <= 0) redirect("/checkout");
 
-  return <PaymentSuccessScreen orderId={orderId} amount={amount} />;
+  return <PaymentSuccessScreen amount={amount} />;
 }

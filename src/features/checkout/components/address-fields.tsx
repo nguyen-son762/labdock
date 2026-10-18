@@ -6,15 +6,9 @@ import { getCountryCallingCode } from "@/constants/country-options";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { getNationalPhone } from "../utils/national-phone";
 import type { CheckoutFormValues } from "../schemas/checkout.schema";
 import { CountryCallingCodePicker } from "./country-calling-code-picker";
-
-function getNationalPhone(phone: string, callingCode: string): string {
-  const trimmedPhone = phone.trim();
-  if (callingCode && trimmedPhone.startsWith(callingCode)) return trimmedPhone.slice(callingCode.length).trim();
-  if (trimmedPhone.startsWith("+")) return trimmedPhone.replace(/^\+\d{1,4}\s*/, "");
-  return trimmedPhone;
-}
 
 export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFormValues> }) {
   const t = useTranslations("Checkout");

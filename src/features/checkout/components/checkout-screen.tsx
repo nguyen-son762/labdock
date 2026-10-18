@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft2 } from "iconsax-reactjs";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,7 @@ import { useCartQuery } from "../api/use-cart-query";
 import { useCreateCheckoutMutation } from "../api/use-create-checkout-mutation";
 import { calculateOrderTotals } from "../data/checkout-data";
 import { checkoutSchema, type CheckoutFormValues } from "../schemas/checkout.schema";
+import { getNationalPhone } from "../utils/national-phone";
 import { DeliveryAddressFields } from "./address-fields";
 import { BillingSection } from "./billing-section";
 import { CheckoutItems } from "./checkout-items";
@@ -35,12 +36,12 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      fullName: "Sarah Chen",
-      email: "sarah_chen@biogenix.com.sg",
-      phone: "+65 88009900",
-      companyName: "Biogenix Pte Ltd",
-      address: "745 Lor. 5 Toa Payoh, #03-03, The Lifeline Building",
-      postalCode: "319455",
+      fullName: "",
+      email: "",
+      phone: "",
+      companyName: "",
+      address: "",
+      postalCode: "",
       country: "SG",
       billingSameAsDelivery: true,
       billingAddress: "",
@@ -57,7 +58,7 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
     const country = resolveCountryCode(user.country) ?? "SG";
     const callingCode = getCountryCallingCode(country);
     const phone = user.phone.trim();
-    const nationalPhone = callingCode && phone.startsWith(callingCode) ? phone.slice(callingCode.length).trim() : phone;
+    const nationalPhone = getNationalPhone(phone, callingCode);
 
     form.reset({
       fullName: user.fullName,

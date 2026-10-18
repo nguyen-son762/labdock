@@ -9,7 +9,10 @@ import { PaymentScreen } from "./payment-screen";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+vi.mock("@/i18n/navigation", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/i18n/navigation")>()),
+  useRouter: () => navigation,
+}));
 
 describe("PaymentScreen", () => {
   it("opens the order returned by the payment API", async () => {

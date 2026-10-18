@@ -10,8 +10,8 @@ export function useLoginMutation() {
 
   return useMutation({
     mutationFn: async (input: Parameters<typeof authService.login>[0]) => {
-      queryClient.removeQueries({ queryKey: ["session"] });
       const session = await authService.login(input);
+      queryClient.clear();
       void queryClient.prefetchQuery(currentUserQueryOptions());
       return session;
     },

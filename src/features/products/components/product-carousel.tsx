@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperInstance } from "swiper";
 
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
+import { useCarouselAutoplay } from "@/components/ui/use-carousel-autoplay";
 
 import type { Product } from "../products.types";
 import { ProductCard } from "./product-card";
@@ -28,9 +29,10 @@ export function ProductCarousel({
   compact = false,
 }: ProductCarouselProps) {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
-  const [edgeState, setEdgeState] = useState({ beginning: true, end: false });
+  useCarouselAutoplay(swiper);
+  const [edgeState, setEdgeState] = useState({ beginning: true, end: false, locked: false });
   const updateEdges = (instance: SwiperInstance) => {
-    setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd });
+    setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd, locked: instance.isLocked });
   };
 
   return (
@@ -40,8 +42,7 @@ export function ProductCarousel({
         slidesPerView={2}
         spaceBetween={12}
         watchOverflow
-        loop
-        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         a11y={{ containerMessage: `${label} carousel` }}
         breakpoints={
           compact
@@ -52,6 +53,8 @@ export function ProductCarousel({
           setSwiper(instance);
           updateEdges(instance);
         }}
+        onLock={updateEdges}
+        onUnlock={updateEdges}
         onSlideChange={updateEdges}
         onBreakpoint={updateEdges}
         onResize={updateEdges}
@@ -63,6 +66,7 @@ export function ProductCarousel({
         ))}
       </Swiper>
       <SwiperNavigation
+        isLocked={edgeState.locked}
         label={label}
         tone={tone}
         className="mt-6"

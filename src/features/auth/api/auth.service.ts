@@ -1,3 +1,5 @@
+import { CanceledError } from "axios";
+
 import { httpClient } from "@/lib/http-client";
 import { authTokenStore } from "@/lib/auth-token-store";
 
@@ -46,7 +48,9 @@ export const authService = {
 
   async login(input: LoginValues): Promise<AuthSession> {
     const { email, password } = loginSchema.parse(input);
+    const version = authTokenStore.getSessionVersion();
     const response = await httpClient.post<unknown>("/auth/login", { email, password });
+    if (version !== authTokenStore.getSessionVersion()) throw new CanceledError("The account session changed.");
     authTokenStore.set(response.data);
     return getCurrentSession();
   },

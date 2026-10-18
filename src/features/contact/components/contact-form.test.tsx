@@ -47,4 +47,21 @@ describe("ContactForm", () => {
     expect(screen.queryByRole("heading", { name: "Product(s) of interest" })).not.toBeInTheDocument();
     expect(screen.getByLabelText("Subject")).toBeInTheDocument();
   });
+  it("CON-015 shows an accessible error after removing the last quote product", async () => {
+    const interaction = userEvent.setup();
+    renderWithProviders(<ContactForm initialType="quote" />);
+    await interaction.type(screen.getByLabelText(/full name/i), "QA Tester");
+    await interaction.type(screen.getByLabelText(/email address/i), "qa@example.test");
+    await interaction.type(screen.getByLabelText(/phone no/i), "88009900");
+    await interaction.click(screen.getByRole("button", { name: "Remove product 1" }));
+    await interaction.click(screen.getByRole("button", { name: "Submit" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("Add at least one product.");
+  });
+
+  it("CON-018 validates a product name when Confirm is clicked", async () => {
+    const interaction = userEvent.setup();
+    renderWithProviders(<ContactForm initialType="quote" />);
+    await interaction.click(screen.getByRole("button", { name: "Confirm product 1" }));
+    expect(await screen.findByText("Enter a product name.")).toBeInTheDocument();
+  });
 });

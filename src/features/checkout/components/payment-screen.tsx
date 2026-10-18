@@ -2,8 +2,8 @@
 
 import { ArrowLeft2, ArrowRight, Bank, ShieldTick } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";

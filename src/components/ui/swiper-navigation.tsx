@@ -11,6 +11,7 @@ type SwiperNavigationProps = {
   onNext: () => void;
   previousDisabled?: boolean;
   nextDisabled?: boolean;
+  isLocked?: boolean;
   tone?: "light" | "dark" | "orange";
   className?: string;
 };
@@ -21,10 +22,14 @@ export function SwiperNavigation({
   onNext,
   previousDisabled,
   nextDisabled,
+  isLocked,
   className,
 }: SwiperNavigationProps) {
   return (
-    <div className={cn("flex items-center justify-center gap-2", className)} aria-label={`${label} carousel controls`}>
+    <div
+      className={cn("flex items-center justify-center gap-2", isLocked && "lg:hidden", className)}
+      aria-label={`${label} carousel controls`}
+    >
       <Button
         type="button"
         variant="brand"

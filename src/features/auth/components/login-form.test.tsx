@@ -10,7 +10,8 @@ import { LoginForm } from "./login-form";
 
 const { replaceMock } = vi.hoisted(() => ({ replaceMock: vi.fn() }));
 
-vi.mock("next/navigation", () => ({
+vi.mock("@/i18n/navigation", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/i18n/navigation")>()),
   useRouter: () => ({ replace: replaceMock }),
 }));
 

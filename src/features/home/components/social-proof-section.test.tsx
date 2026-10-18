@@ -13,8 +13,6 @@ vi.mock("./testimonial-carousel", () => ({
 const messages = {
   Home: {
     trusted: "Trusted by 500+ Research Leaders",
-    pauseCarousel: "Pause autoplay",
-    resumeCarousel: "Resume autoplay",
   },
 };
 

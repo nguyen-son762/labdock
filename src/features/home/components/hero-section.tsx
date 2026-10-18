@@ -82,16 +82,20 @@ function PromoCard({ event = false }: { event?: boolean }) {
 }
 
 function BannerAction({ href, children, className }: { href: string; children: ReactNode; className: string }) {
-  if (/^https?:\/\//i.test(href)) {
+  const destination = href.trim();
+  if (/[\u0000-\u0020\\]/.test(destination)) return null;
+  const isExternal = /^https?:\/\//i.test(destination);
+  if (!isExternal && !/^\/(?!\/)|^#/.test(destination)) return null;
+  if (isExternal) {
     return (
-      <a href={href} target="_blank" rel="noreferrer" className={className}>
+      <a href={destination} target="_blank" rel="noreferrer" className={className}>
         {children}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={className}>
+    <Link href={destination} className={className}>
       {children}
     </Link>
   );

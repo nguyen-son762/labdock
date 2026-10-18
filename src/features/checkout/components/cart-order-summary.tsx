@@ -1,6 +1,6 @@
 import { ArrowRight, ShieldTick } from "iconsax-reactjs";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";

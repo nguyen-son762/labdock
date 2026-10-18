@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
@@ -24,11 +24,11 @@ export function QuoteContactForm({ onSubmit, pending, error }: QuoteContactFormP
   const form = useForm<QuoteContactValues>({
     resolver: zodResolver(quoteContactSchema),
     defaultValues: {
-      fullName: "Sarah Chen",
+      fullName: "",
       phoneCountry: "65",
-      phone: "88009900",
-      email: "sarah_chen@biogenix.com.sg",
-      companyName: "Biogenix Pte Ltd",
+      phone: "",
+      email: "",
+      companyName: "",
       region: "Singapore",
     },
   });

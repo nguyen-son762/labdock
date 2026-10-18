@@ -58,4 +58,16 @@ describe("HeroSection homepage banners", () => {
       "/products",
     );
   });
+  it.each([
+    "javascript:alert(1)",
+    "data:text/html,bad",
+    "//untrusted.example",
+    "/\\untrusted.example",
+    "java\nscript:alert(1)",
+  ])("HOME-005 rejects unsafe banner destination %s", (linkUrl) => {
+    const banner = banners[0];
+    if (!banner) throw new Error("Missing banner fixture");
+    renderWithProviders(<HeroSection banners={[{ ...banner, linkUrl, buttonLabel: "Unsafe action" }]} />);
+    expect(screen.queryByRole("link", { name: /Unsafe action/ })).not.toBeInTheDocument();
+  });
 });

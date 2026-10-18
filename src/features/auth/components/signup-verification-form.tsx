@@ -62,9 +62,17 @@ export function SignupVerificationForm({
   const otpInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
-    const interval = window.setInterval(() => setResendSeconds((seconds) => Math.max(0, seconds - 1)), 1000);
-    return () => window.clearInterval(interval);
-  }, []);
+    const updateCountdown = () => setResendSeconds(getRemainingSeconds(expiresAt));
+    updateCountdown();
+    const interval = window.setInterval(updateCountdown, 1000);
+    document.addEventListener("visibilitychange", updateCountdown);
+    window.addEventListener("focus", updateCountdown);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", updateCountdown);
+      window.removeEventListener("focus", updateCountdown);
+    };
+  }, [expiresAt]);
 
   function resetVerificationState() {
     verifyMutation.reset();
@@ -92,7 +100,7 @@ export function SignupVerificationForm({
         digits[index + offset] = digit;
       });
     const nextIndex = Math.min(index + incoming.length, 5);
-    setOtpValue(digits.join("").replaceAll(" ", ""), nextIndex);
+    setOtpValue(digits.join("").trimEnd(), nextIndex);
   }
 
   function pasteOtp(event: ClipboardEvent<HTMLInputElement>, index: number) {
@@ -103,9 +111,9 @@ export function SignupVerificationForm({
   function handleOtpKeyDown(event: KeyboardEvent<HTMLInputElement>, index: number, digit: string) {
     if (event.key === "Backspace" && !digit && index > 0) {
       event.preventDefault();
-      const digits = form.getValues("code").split("");
-      digits.splice(index - 1, 1);
-      setOtpValue(digits.join(""), index - 1);
+      const digits = form.getValues("code").padEnd(6, " ").split("");
+      digits[index - 1] = " ";
+      setOtpValue(digits.join("").trimEnd(), index - 1);
     }
     if (event.key === "ArrowLeft" && index > 0) otpInputRefs.current[index - 1]?.focus();
     if (event.key === "ArrowRight" && index < 5) otpInputRefs.current[index + 1]?.focus();
@@ -142,7 +150,7 @@ export function SignupVerificationForm({
             control={form.control}
             name="code"
             render={({ field }) => {
-              const digits = Array.from({ length: 6 }, (_, index) => field.value[index] ?? "");
+              const digits = Array.from({ length: 6 }, (_, index) => field.value[index]?.trim() ?? "");
               return (
                 <FormItem>
                   <FormLabel>{t("secureCode")}</FormLabel>
@@ -226,7 +234,9 @@ export function SignupVerificationForm({
             variant="brand"
             size="auth"
             type="submit"
-            disabled={code.length !== 6 || verifyMutation.isPending || isKnownCodeError || isExpired}
+            disabled={
+              !/^\d{6}$/.test(code) || verifyMutation.isPending || resendPending || isKnownCodeError || isExpired
+            }
             className="w-[110px] disabled:bg-none disabled:bg-[#fdefca] disabled:opacity-100 disabled:shadow-none"
           >
             {verifyMutation.isPending ? <Refresh className="size-4 animate-spin" aria-hidden="true" /> : null}
@@ -239,6 +249,7 @@ export function SignupVerificationForm({
         variant="ghost"
         className="mt-5 h-auto self-start p-0 text-sm font-medium text-[#164990] hover:bg-transparent hover:underline"
         onClick={onBack}
+        disabled={verifyMutation.isPending || resendPending}
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
         {backLabel ?? t("backToAccount")}

@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
+import { useCarouselAutoplay } from "@/components/ui/use-carousel-autoplay";
 
 import "swiper/css";
 
@@ -31,10 +32,11 @@ const promos = [
 
 export function EditorialSection() {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
-  const [edgeState, setEdgeState] = useState({ beginning: true, end: false });
+  useCarouselAutoplay(swiper);
+  const [edgeState, setEdgeState] = useState({ beginning: true, end: false, locked: false });
 
   const updateEdges = (instance: SwiperInstance) => {
-    setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd });
+    setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd, locked: instance.isLocked });
   };
 
   return (
@@ -45,14 +47,15 @@ export function EditorialSection() {
           slidesPerView={1.05}
           spaceBetween={12}
           watchOverflow
-          loop
-          autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
           a11y={{ containerMessage: "Featured laboratory collections" }}
           breakpoints={{ 1024: { slidesPerView: 3, spaceBetween: 20 } }}
           onSwiper={(instance) => {
             setSwiper(instance);
             updateEdges(instance);
           }}
+          onLock={updateEdges}
+          onUnlock={updateEdges}
           onSlideChange={updateEdges}
           onBreakpoint={updateEdges}
           onResize={updateEdges}
@@ -64,8 +67,9 @@ export function EditorialSection() {
           ))}
         </Swiper>
         <SwiperNavigation
+          isLocked={edgeState.locked}
           label="featured laboratory collections"
-          className="mt-5 lg:hidden"
+          className="mt-5"
           previousDisabled={!swiper || edgeState.beginning}
           nextDisabled={!swiper || edgeState.end}
           onPrevious={() => swiper?.slidePrev()}

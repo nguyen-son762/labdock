@@ -9,6 +9,7 @@ import { A11y, Autoplay, Grid } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
+import { useCarouselAutoplay } from "@/components/ui/use-carousel-autoplay";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/class-names";
 
@@ -32,9 +33,10 @@ export function CategoryStrip({
   const t = useTranslations("Catalog");
   const searchParams = useSearchParams();
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
-  const [edgeState, setEdgeState] = useState({ beginning: true, end: false });
+  useCarouselAutoplay(swiper);
+  const [edgeState, setEdgeState] = useState({ beginning: true, end: false, locked: false });
   const updateEdges = (instance: SwiperInstance) => {
-    setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd });
+    setEdgeState({ beginning: instance.isBeginning, end: instance.isEnd, locked: instance.isLocked });
   };
 
   if (categories.length === 0) return null;
@@ -47,6 +49,7 @@ export function CategoryStrip({
           {title}
         </Heading>
         <SwiperNavigation
+          isLocked={edgeState.locked}
           label={t("categoryCarousel")}
           tone="orange"
           previousDisabled={!swiper || edgeState.beginning}
@@ -61,8 +64,7 @@ export function CategoryStrip({
         spaceBetween={8}
         grid={{ rows: 2, fill: "row" }}
         watchOverflow
-        loop
-        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         a11y={{ containerMessage: t("categoryCarousel") }}
         breakpoints={{
           640: { slidesPerView: 3, grid: { rows: 2, fill: "row" } },
@@ -72,6 +74,8 @@ export function CategoryStrip({
           setSwiper(instance);
           updateEdges(instance);
         }}
+        onLock={updateEdges}
+        onUnlock={updateEdges}
         onSlideChange={updateEdges}
         onBreakpoint={updateEdges}
         onResize={updateEdges}
@@ -101,7 +105,9 @@ export function CategoryStrip({
                   <Image src={thumbnail} alt="" fill unoptimized sizes="32px" className="object-contain p-0.5" />
                 </span>
                 <span className="min-w-0">
-                  <strong className="line-clamp-2 text-[13px] font-medium leading-4 text-[#092661]">{category.name}</strong>
+                  <strong className="line-clamp-2 text-[13px] font-medium leading-4 text-[#092661]">
+                    {category.name}
+                  </strong>
                   <span className="block text-xs leading-[18px] text-[#73798f]">
                     {category.productCount === undefined
                       ? t("categoryCountUnavailable")

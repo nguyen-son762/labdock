@@ -7,6 +7,7 @@ import { A11y, Autoplay, Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { SwiperNavigation } from "@/components/ui/swiper-navigation";
+import { useCarouselAutoplay } from "@/components/ui/use-carousel-autoplay";
 
 import { researchLeaders } from "../research-leaders";
 
@@ -14,6 +15,7 @@ import "swiper/css";
 
 export function ResearchLeadersCarousel({ label }: { label: string }) {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
+  useCarouselAutoplay(swiper);
   const [edges, setEdges] = useState({ beginning: true, end: false });
   const updateEdges = (instance: SwiperInstance) => {
     setEdges({ beginning: instance.isBeginning, end: instance.isEnd });
@@ -23,7 +25,7 @@ export function ResearchLeadersCarousel({ label }: { label: string }) {
     <div className="mt-8">
       <Swiper
         modules={[A11y, Autoplay, Keyboard]}
-        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         slidesPerView="auto"
         spaceBetween={16}
         watchOverflow
@@ -36,17 +38,12 @@ export function ResearchLeadersCarousel({ label }: { label: string }) {
         onSwiper={(instance) => {
           setSwiper(instance);
           updateEdges(instance);
-          if (!instance.enabled) instance.autoplay.stop();
         }}
         onSlideChange={updateEdges}
         onReachBeginning={updateEdges}
         onReachEnd={updateEdges}
         onFromEdge={updateEdges}
-        onBreakpoint={(instance, params) => {
-          updateEdges(instance);
-          if (params.enabled === false) instance.autoplay.stop();
-          else instance.autoplay.start();
-        }}
+        onBreakpoint={updateEdges}
         onResize={updateEdges}
       >
         {researchLeaders.map((leader) => (

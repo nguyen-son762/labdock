@@ -175,6 +175,7 @@ describe("getHomePageData", () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("Unavailable")));
 
     await expect(getHomePageData()).resolves.toEqual({
+      loadFailed: true,
       banners: [],
       topCategories: [],
       outstandingProducts: [],

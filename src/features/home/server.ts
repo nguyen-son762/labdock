@@ -7,6 +7,7 @@ import type { HomeBanner, HomeCategory, Testimonial } from "./home.types";
 import { publicHomepageSchema, type PublicHomepage } from "./schemas/homepage.schema";
 
 export type HomePageData = {
+  loadFailed: boolean;
   banners: HomeBanner[];
   topCategories: HomeCategory[];
   outstandingProducts: Product[];
@@ -16,6 +17,7 @@ export type HomePageData = {
 };
 
 const emptyHomePageData: HomePageData = {
+  loadFailed: true,
   banners: [],
   topCategories: [],
   outstandingProducts: [],
@@ -45,6 +47,7 @@ function mapHomepageData(homepage: PublicHomepage): HomePageData {
     ? homepage.newestProducts.filter((product) => product.isOutstanding).map(mapPublicProduct)
     : newestProducts;
   return {
+    loadFailed: false,
     banners: sortByOrder(homepage.banners).map((banner) => ({
       id: banner.id,
       type: banner.type,

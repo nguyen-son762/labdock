@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { ProductDetailScreen } from "@/features/products";
 import { getPublicProductBySlug, ProductNotFoundError } from "@/features/products/server";
-import { getDefaultProductVariant, getPrimaryProductImage } from "@/features/products/utils/product-display";
+import {
+  getDefaultProductVariant,
+  getPrimaryProductImage,
+  getPromotionalPrice,
+} from "@/features/products/utils/product-display";
 import { getLocalizedAlternates, getLocalizedPath, isAppLocale } from "@/i18n/locale";
 
 type ProductPageProps = {
@@ -47,7 +51,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = await loadProduct(slug);
   const variant = getDefaultProductVariant(product);
   const image = getPrimaryProductImage(product);
-  const canShowOffer = product.priceVisible && variant?.priceVisible;
+  const canShowOffer = product.priceVisible && variant?.priceVisible && variant.unitPrice !== null;
 
   const productJsonLd = {
     "@context": "https://schema.org",
@@ -62,7 +66,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           offers: {
             "@type": "Offer",
             priceCurrency: variant.currency,
-            price: variant.unitPrice,
+            price: getPromotionalPrice(variant),
             url: `${siteConfig.url}${getLocalizedPath(`/products/${product.slug}`, locale)}`,
             availability:
               variant.isActive && variant.stockQty > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",

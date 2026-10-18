@@ -4,10 +4,11 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
-import { A11y, Thumbs } from "swiper/modules";
+import { A11y, Autoplay, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button } from "@/components/ui/button";
+import { useCarouselAutoplay } from "@/components/ui/use-carousel-autoplay";
 import { cn } from "@/lib/class-names";
 
 import "swiper/css";
@@ -18,6 +19,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
   const [mainSwiper, setMainSwiper] = useState<SwiperInstance | null>(null);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperInstance | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  useCarouselAutoplay(mainSwiper);
 
   return (
     <section aria-label={t("gallery", { name: productName })} className="grid gap-4 sm:grid-cols-[100px_minmax(0,1fr)]">
@@ -52,7 +54,9 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
       </Swiper>
 
       <Swiper
-        modules={[A11y, Thumbs]}
+        modules={[A11y, Autoplay, Thumbs]}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        watchOverflow
         slidesPerView={1}
         spaceBetween={12}
         thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}

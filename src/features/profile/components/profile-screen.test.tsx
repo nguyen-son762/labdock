@@ -126,4 +126,56 @@ describe("ProfileScreen", () => {
     await waitFor(() => expect(updateAvatar).toHaveBeenCalledWith(file, user));
     expect(screen.queryByText("avatar.png")).not.toBeInTheDocument();
   });
+
+  it("PRO-049 clears the old selection when a replacement file is invalid", async () => {
+    vi.spyOn(profileService, "getCurrent").mockResolvedValue(user);
+    const updateAvatar = vi.spyOn(profileService, "updateAvatar").mockResolvedValue(user);
+    const interaction = userEvent.setup({ applyAccept: false });
+    render(
+      <ProfileTestProviders>
+        <ProfileScreen />
+      </ProfileTestProviders>,
+    );
+    await screen.findByRole("heading", { name: "Sarah Chen" });
+    await interaction.click(screen.getByRole("button", { name: "Change profile picture" }));
+    const input = screen.getByLabelText("Choose profile picture");
+    await interaction.upload(input, new File(["image"], "valid.png", { type: "image/png" }));
+    await interaction.upload(input, new File(["gif"], "invalid.gif", { type: "image/gif" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("PNG or JPG");
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    expect(screen.queryByText("valid.png")).not.toBeInTheDocument();
+    expect(updateAvatar).not.toHaveBeenCalled();
+  });
+
+  it("PRO-051 resets a saved file before the dialog is reopened", async () => {
+    vi.spyOn(profileService, "getCurrent").mockResolvedValue(user);
+    vi.spyOn(profileService, "updateAvatar").mockResolvedValue(user);
+    const interaction = userEvent.setup();
+    render(
+      <ProfileTestProviders>
+        <ProfileScreen />
+      </ProfileTestProviders>,
+    );
+    await screen.findByRole("heading", { name: "Sarah Chen" });
+    const trigger = screen.getByRole("button", { name: "Change profile picture" });
+    await interaction.click(trigger);
+    await interaction.upload(
+      screen.getByLabelText("Choose profile picture"),
+      new File(["image"], "saved.png", { type: "image/png" }),
+    );
+    await interaction.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await interaction.click(trigger);
+    expect(screen.queryByText("saved.png")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+  });
+  it("PRO-042 displays the password change date returned by the API", async () => {
+    vi.spyOn(profileService, "getCurrent").mockResolvedValue(user);
+    render(
+      <ProfileTestProviders>
+        <ProfileScreen />
+      </ProfileTestProviders>,
+    );
+    expect(await screen.findByText(/Last changed:/)).toHaveTextContent("Aug 21, 2026");
+  });
 });

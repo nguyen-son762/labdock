@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+
+import { renderWithProviders } from "@/test/render-with-providers";
 
 import type { RfqSummary } from "../schemas/rfq.schema";
 import { RfqsTable } from "./rfqs-table";
@@ -19,7 +21,7 @@ const rfqs: RfqSummary[] = [
 
 describe("RfqsTable", () => {
   it("shows API RFQ data and links to detail by id", () => {
-    render(<RfqsTable rfqs={rfqs} total={1} page={1} pageSize={10} onPageChange={vi.fn()} />);
+    renderWithProviders(<RfqsTable rfqs={rfqs} total={1} page={1} pageSize={10} onPageChange={vi.fn()} />);
 
     expect(screen.getAllByRole("link", { name: "#RFQ-2026-001" })[0]).toHaveAttribute(
       "href",
@@ -34,7 +36,7 @@ describe("RfqsTable", () => {
   it("requests the next page when more RFQs are available", async () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
-    render(<RfqsTable rfqs={rfqs} total={11} page={1} pageSize={10} onPageChange={onPageChange} />);
+    renderWithProviders(<RfqsTable rfqs={rfqs} total={11} page={1} pageSize={10} onPageChange={onPageChange} />);
 
     expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled();
     await user.click(screen.getByRole("button", { name: "Next" }));

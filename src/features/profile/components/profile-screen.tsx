@@ -55,6 +55,7 @@ export function ProfileScreen() {
               <ProfileInfoPanel user={currentUserQuery.data} onEdit={() => setEditingProfile(true)} />
             )}
             <ProfileSecurityCard
+              passwordChangedAt={currentUserQuery.data.passwordChangedAt}
               editing={editingPassword}
               onEdit={() => setEditingPassword(true)}
               onCancel={() => setEditingPassword(false)}

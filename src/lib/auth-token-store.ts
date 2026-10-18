@@ -12,6 +12,7 @@ export const authTokensSchema = z.object({
 export type AuthTokens = z.infer<typeof authTokensSchema>;
 
 let tokens: AuthTokens | null = null;
+let sessionVersion = 0;
 const clearListeners = new Set<() => void>();
 
 function readCookie(name: string): string | null {
@@ -84,8 +85,9 @@ function restoreTokens(): AuthTokens | null {
 }
 
 export const authTokenStore = {
-  set(input: unknown): AuthTokens {
+  set(input: unknown, options: { preserveSession?: boolean } = {}): AuthTokens {
     tokens = authTokensSchema.parse(input);
+    if (!options.preserveSession) sessionVersion += 1;
     persistTokens(tokens);
     return tokens;
   },
@@ -93,12 +95,17 @@ export const authTokenStore = {
   clear(): void {
     const hadTokens = tokens !== null || Object.values(AUTH_COOKIE_NAMES).some((name) => readCookie(name) !== null);
     tokens = null;
+    sessionVersion += 1;
     clearPersistedTokens();
     if (hadTokens) clearListeners.forEach((listener) => listener());
   },
 
   getAccessToken(): string | null {
     return restoreTokens()?.accessToken ?? null;
+  },
+
+  getSessionVersion(): number {
+    return sessionVersion;
   },
 
   getRefreshToken(): string | null {

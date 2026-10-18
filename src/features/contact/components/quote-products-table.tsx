@@ -51,6 +51,7 @@ export function QuoteProductsTable() {
                         <FormItem className="min-w-0 flex-1">
                           <FormControl>
                             <Input
+                              aria-label={`${t("productName")} ${index + 1}`}
                               placeholder={t("productPlaceholder")}
                               className="h-[30px] border-[#7aa7e4] bg-white px-2 text-xs"
                               {...field}
@@ -66,7 +67,7 @@ export function QuoteProductsTable() {
                       size="icon"
                       aria-label={t("confirmProduct", { index: index + 1 })}
                       className="size-[30px] text-[#12b76a] hover:bg-[#ecfdf3] hover:text-[#12b76a]"
-                      onClick={() => form.clearErrors(`products.${index}.productName`)}
+                      onClick={() => void form.trigger(`products.${index}.productName`)}
                     >
                       <TickCircle className="size-4" aria-hidden="true" />
                     </Button>
@@ -118,6 +119,7 @@ export function QuoteProductsTable() {
                       <FormItem>
                         <FormControl>
                           <NumberInput
+                            aria-label={`${t("quantity")} ${index + 1}`}
                             value={field.value}
                             valueIsNumericString
                             decimalScale={0}
@@ -142,6 +144,7 @@ export function QuoteProductsTable() {
                       <FormItem>
                         <FormControl>
                           <Input
+                            aria-label={`${t("budgetRange")} ${index + 1}`}
                             placeholder={t("budgetPlaceholder")}
                             className="h-[30px] border-[#7aa7e4] bg-white px-2 text-xs"
                             {...field}
