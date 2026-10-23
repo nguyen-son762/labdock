@@ -247,6 +247,12 @@ Request dùng native `fetch` phía Server. Nếu không có access token, Next D
 
 Response được validate bằng `cartResponseSchema` trước khi map các field transport (`productName`, `sku`, `variantId`, `productId`, `currency`, `lineTotal`, `stockQty`) sang model mà Cart, Checkout và header đang dùng. Cart UI giới hạn quantity theo `stockQty` và format theo currency của item. Hiện chỉ `GET /cart` dùng backend; add, update và remove vẫn dùng implementation local hiện có cho đến khi có contract endpoint tương ứng.
 
+### Checkout sessions
+
+`checkoutService.create` dùng Axios để gửi `POST /checkout/sessions` với `cartItemIds` của các dòng được chọn, `recipientName` từ tên người nhận, `phone` dạng quốc tế không chứa khoảng trắng/dấu gạch, `addressLine1`, `city`, `country` dạng ISO alpha-2 và `notes` (chuỗi rỗng nếu không nhập). Form có thêm City bắt buộc và Notes tùy chọn. Email, company, postal code, billing và phương thức thanh toán trên form không nằm trong request này. Postal code giao hàng là tùy chọn, không còn giới hạn 6 chữ số.
+
+Response được validate bằng `checkoutSessionSchema`, gồm `orderId`, `orderNumber`, `checkoutUrl`. Khi thành công, trình duyệt chuyển đến URL HTTP/HTTPS do backend trả về; không tạo payment reference hoặc tính amount giả lập. Mutation không tự retry và nút submit bị khóa khi pending. Trang `/payment` cũ và thao tác `completePayment` vẫn là mock local; chúng không được dùng trong luồng tạo checkout mới.
+
 ## Cache và session
 
 - Public content không dùng React Query.

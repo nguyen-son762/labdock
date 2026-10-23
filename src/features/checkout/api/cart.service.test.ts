@@ -29,6 +29,7 @@ const cartResponse = {
           unitPrice: 99.5,
           currency: "SGD",
           stockQty: 10,
+          displayName: "Size: 1 L",
           selections: [
             {
               attributeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",

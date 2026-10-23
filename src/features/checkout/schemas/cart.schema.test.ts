@@ -25,6 +25,7 @@ const response = {
           unitPrice: 99.5,
           currency: "SGD",
           stockQty: 10,
+          displayName: "Size: 1 L",
           selections: [
             {
               attributeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
@@ -57,12 +58,25 @@ describe("cartResponseSchema", () => {
       }),
     ).toThrow();
   });
+
+  it("accepts variants without an option display name", () => {
+    const payload = {
+      ...response,
+      items: [
+        { ...response.items[0], variants: [{ ...response.items[0]?.variants[0], displayName: "", selections: [] }] },
+      ],
+    };
+
+    expect(cartResponseSchema.parse(payload)).toEqual(payload);
+  });
 });
 
 describe("cart response item metadata", () => {
   it.each([
     { productStatus: "" },
     { isDeleted: "false" },
+    { variants: [{ ...response.items[0]?.variants[0], displayName: undefined }] },
+    { variants: [{ ...response.items[0]?.variants[0], displayName: 123 }] },
     { variants: [{ ...response.items[0]?.variants[0], stockQty: -1 }] },
     { variants: [{ ...response.items[0]?.variants[0], selections: [{ attributeCode: "size" }] }] },
   ])("rejects invalid status, deletion flags, variants or selections: %o", (fields) => {

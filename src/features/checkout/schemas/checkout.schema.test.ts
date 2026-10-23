@@ -8,6 +8,7 @@ const validCheckout = {
   phone: "+65 88009900",
   companyName: "Biogenix Pte Ltd",
   address: "745 Lor. 5 Toa Payoh, Singapore",
+  city: "Singapore",
   postalCode: "319455",
   country: "Singapore",
   billingSameAsDelivery: true,

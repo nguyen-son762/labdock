@@ -5,6 +5,7 @@ import { CountrySelect } from "@/components/shared/country-select";
 import { getCountryCallingCode } from "@/constants/country-options";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 import { getNationalPhone } from "../utils/national-phone";
 import type { CheckoutFormValues } from "../schemas/checkout.schema";
@@ -120,14 +121,25 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
         />
         <FormField
           control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem className="sm:col-span-2">
+              <FormLabel>{t("city")} *</FormLabel>
+              <FormControl>
+                <Input autoComplete="address-level2" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="postalCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                {t("postalCode")} <span className="text-destructive">*</span>
-              </FormLabel>
+              <FormLabel>{t("postalCode")}</FormLabel>
               <FormControl>
-                <Input inputMode="numeric" autoComplete="postal-code" {...field} />
+                <Input autoComplete="postal-code" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -143,6 +155,19 @@ export function DeliveryAddressFields({ form }: { form: UseFormReturn<CheckoutFo
               </FormLabel>
               <FormControl>
                 <CountrySelect {...field} onValueChange={changeCountry} placeholder={t("selectCountry")} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="notes"
+          render={({ field }) => (
+            <FormItem className="sm:col-span-2">
+              <FormLabel>{t("notes")}</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

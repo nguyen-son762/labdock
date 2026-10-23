@@ -18,6 +18,7 @@ const item = {
       unitPrice: 35,
       currency: "SGD",
       stockQty: 25,
+      displayName: "Size: 1 L",
       selections: [
         {
           attributeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
@@ -50,7 +51,7 @@ describe("CartItemsTable", () => {
 
     expect(screen.getByText(item.productName)).toBeInTheDocument();
     expect(screen.getByText(/9000000001/)).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: /option for beakers/i })).toHaveTextContent("1 L");
+    expect(screen.getByRole("combobox", { name: /option for beakers/i })).toHaveTextContent("Size: 1 L");
     const quantity = screen.getByRole("textbox", { name: /quantity for beakers/i });
     await user.click(quantity);
     await user.clear(quantity);
@@ -65,23 +66,35 @@ describe("CartItemsTable", () => {
   });
 });
 
-it("lists variants using every selection value and notifies when the option changes", async () => {
+it("uses variant displayName for the selected option and dropdown labels and notifies when the option changes", async () => {
   const user = userEvent.setup();
   const onVariantChange = vi.fn();
   const variant = item.variants[0]!;
   const alternative = {
     ...variant,
     id: "33333333-3333-3333-3333-333333333333",
+    displayName: "Size: 2 L, Color: Blue",
     selections: [
       { ...variant.selections[0]!, value: "2 L" },
       { ...variant.selections[0]!, attributeCode: "color", value: "Blue" },
     ],
   };
-  const skuOnly = { ...variant, id: "44444444-4444-4444-4444-444444444444", sku: "BEAKER-PLAIN", selections: [] };
+  const withoutSelections = {
+    ...variant,
+    id: "44444444-4444-4444-4444-444444444444",
+    sku: "BEAKER-PLAIN",
+    displayName: "Standard beaker",
+    selections: [],
+  };
+  const withoutDisplayName = {
+    ...withoutSelections,
+    id: "55555555-5555-5555-5555-555555555555",
+    displayName: "",
+  };
 
   renderWithProviders(
     <CartItemsTable
-      items={[{ ...item, variants: [variant, alternative, skuOnly] }]}
+      items={[{ ...item, variants: [alternative, variant, withoutSelections, withoutDisplayName] }]}
       selectedIds={[item.id]}
       onSelectedIdsChange={vi.fn()}
       onQuantityChange={vi.fn()}
@@ -92,10 +105,12 @@ it("lists variants using every selection value and notifies when the option chan
 
   expect(screen.getAllByText("Option")).toHaveLength(2);
   const select = screen.getByRole("combobox", { name: /option for beakers/i });
+  expect(select).toHaveTextContent("Size: 1 L");
   await user.click(select);
-  expect(screen.getByRole("option", { name: "1 L" })).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("option", { name: "Size: 1 L" })).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("option", { name: "Standard beaker" })).toBeInTheDocument();
   expect(screen.getByRole("option", { name: "BEAKER-PLAIN" })).toBeInTheDocument();
-  await user.click(screen.getByRole("option", { name: "2 L / Blue" }));
+  await user.click(screen.getByRole("option", { name: "Size: 2 L, Color: Blue" }));
 
   expect(onVariantChange).toHaveBeenCalledExactlyOnceWith(item.id, alternative.id, item.quantity);
 });

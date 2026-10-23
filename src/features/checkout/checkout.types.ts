@@ -10,10 +10,7 @@ export type OrderTotals = {
   total: number;
 };
 
-export type CheckoutSession = {
-  paymentReference: string;
-  amount: number;
-};
+export type { CheckoutSession } from "./schemas/checkout.schema";
 
 export type PaymentResult = {
   orderId: string;

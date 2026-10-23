@@ -4,6 +4,8 @@
 
 Tài liệu dành cho người dẫn demo, QA và PO. Mục tiêu là trình diễn hành trình khách hàng và ghi nhận kết quả nghiệp vụ quan sát được. Bộ case trong Excel là checklist thực thi, chưa phải báo cáo UAT đã pass.
 
+**Cập nhật checkout 23/10/2026:** Luồng `/checkout` đã gọi `POST /checkout/sessions` với các dòng cart được chọn và thông tin người nhận, sau đó chuyển đến `checkoutUrl` do backend trả về. Form thêm City bắt buộc và Notes tùy chọn. Các mô tả checkout/payment mock trong kịch bản gốc bên dưới chỉ còn áp dụng cho trang `/payment` cũ khi mở trực tiếp; luồng mới cần kiểm chứng UAT trên gateway test và đối chiếu `orderId`/`orderNumber` thực tế. Không dùng bước xác nhận payment mock để kết luận trạng thái thanh toán của session mới. Contract hiện hành được ghi tại [README — Checkout sessions](../README.md#checkout-sessions).
+
 ## 1. Phạm vi và mức độ sẵn sàng
 
 Đã rà soát 13 nhóm feature, các route/layout, service, hook, schema validation, component tương tác, đa ngôn ngữ, cấu hình phiên/cache và bộ test liên quan. Repository chỉ chứa frontend user portal. Không suy ra hành vi backend chưa được kiểm chứng từ một màn hình thành công.

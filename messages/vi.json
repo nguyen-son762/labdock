@@ -427,6 +427,8 @@
     "continueShopping": "Tiếp tục mua sắm",
     "paymentMethod": "Phương thức thanh toán",
     "deliveryAddress": "Địa chỉ giao hàng",
+    "city": "Thành phố",
+    "notes": "Ghi chú",
     "fullName": "Họ và tên",
     "emailAddress": "Địa chỉ email",
     "phoneNumber": "Số điện thoại",

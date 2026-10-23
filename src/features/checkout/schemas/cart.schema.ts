@@ -17,6 +17,7 @@ const cartVariantSchema = z.object({
   unitPrice: z.number().nonnegative(),
   currency: z.string().length(3),
   stockQty: z.number().int().nonnegative(),
+  displayName: z.string(),
   selections: z.array(cartVariantSelectionSchema),
 });
 

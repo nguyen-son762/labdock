@@ -15,10 +15,10 @@ const cases: [string, string, string, boolean][] = [
   ["CHK-007", "fullName", "AA", true],
   ["CHK-008", "address", "AAAAAAA", false],
   ["CHK-009", "address", "AAAAAAAA", true],
-  ["CHK-010", "postalCode", "01111", false],
-  ["CHK-011", "postalCode", "011111", true],
-  ["CHK-012", "postalCode", "0111111", false],
+  ["Checkout postal code optional", "postalCode", "", true],
+  ["Checkout international postal code", "postalCode", "1234", true],
   ["CHK-013", "companyName", "", true],
+  ["Checkout city required", "city", "", false],
   [
     "CHK-014",
     "companyName",
@@ -35,16 +35,15 @@ const cases: [string, string, string, boolean][] = [
 const labels: Record<string, string> = {
   fullName: "Full name *",
   address: "Address *",
-  postalCode: "Postal code *",
+  postalCode: "Postal code",
   companyName: "Company name",
+  city: "City *",
 };
 describe("Checkout boundaries from the QA catalogue", () => {
   it.each(cases)("%s validates %s before preparing payment", async (_id, field, value, valid) => {
     vi.spyOn(cartService, "get").mockResolvedValue(checkoutItems);
     vi.spyOn(profileService, "getCurrent").mockRejectedValue(new Error("No profile fixture"));
-    const create = vi
-      .spyOn(checkoutService, "create")
-      .mockResolvedValue({ paymentReference: "PAY-QATEST01", amount: 4905 });
+    const create = vi.spyOn(checkoutService, "create").mockRejectedValue(new Error("Checkout unavailable"));
     renderWithProviders(<CheckoutScreen />);
     await screen.findByRole("button", { name: "Make payment" });
     for (const [name, initialValue] of [
@@ -52,7 +51,8 @@ describe("Checkout boundaries from the QA catalogue", () => {
       ["Email address *", "qa@example.test"],
       ["Phone no. *", "88009900"],
       ["Address *", "123 Test Street"],
-      ["Postal code *", "012345"],
+      ["City *", "Singapore"],
+      ["Postal code", "012345"],
     ]) {
       fireEvent.change(screen.getByRole("textbox", { name }), { target: { value: initialValue } });
     }
@@ -64,6 +64,8 @@ describe("Checkout boundaries from the QA catalogue", () => {
     if (valid) {
       await waitFor(() => expect(create).toHaveBeenCalledOnce());
       expect(create.mock.calls[0]?.[0].checkout).toMatchObject({ [field]: value.trim() });
+      expect(await screen.findByRole("alert")).toHaveTextContent("We could not prepare your payment.");
+      expect(screen.getByRole("button", { name: "Make payment" })).toBeEnabled();
     } else {
       await waitFor(() => expect(input).toHaveAttribute("aria-invalid", "true"));
       expect(create).not.toHaveBeenCalled();

@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft2 } from "iconsax-reactjs";
 import { Link } from "@/i18n/navigation";
-import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -29,7 +28,6 @@ import { EmptyCartScreen } from "./empty-cart-screen";
 
 export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }) {
   const t = useTranslations("Checkout");
-  const router = useRouter();
   const cartQuery = useCartQuery();
   const profileQuery = useCurrentUserQuery();
   const checkoutMutation = useCreateCheckoutMutation();
@@ -41,6 +39,8 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
       phone: "",
       companyName: "",
       address: "",
+      city: "",
+      notes: "",
       postalCode: "",
       country: "SG",
       billingSameAsDelivery: true,
@@ -66,6 +66,8 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
       phone: [callingCode, nationalPhone].filter(Boolean).join(" "),
       companyName: user.companyName,
       address: user.deliveryAddress,
+      city: "",
+      notes: "",
       postalCode: user.postalCode,
       country,
       billingSameAsDelivery: user.billingSameAsDelivery,
@@ -81,15 +83,10 @@ export function CheckoutScreen({ initialItemIds }: { initialItemIds?: string[] }
   function handleCheckout(values: CheckoutFormValues): void {
     if (checkoutMutation.isPending) return;
     checkoutMutation.mutate(
-      { checkout: values, items, idempotencyKey: crypto.randomUUID() },
+      { checkout: values, items },
       {
         onSuccess: (session) => {
-          const query = new URLSearchParams({
-            method: values.paymentMethod,
-            reference: session.paymentReference,
-            amount: String(session.amount),
-          });
-          router.push(`/payment?${query.toString()}`);
+          window.location.assign(session.checkoutUrl);
         },
       },
     );

@@ -15,6 +15,7 @@ const variants = [
     unitPrice: 35,
     currency: "SGD",
     stockQty: 25,
+    displayName: "Size: 1 L",
     selections: [],
   },
   {
@@ -23,6 +24,7 @@ const variants = [
     unitPrice: 50,
     currency: "SGD",
     stockQty: 20,
+    displayName: "Size: 2 L",
     selections: [],
   },
 ];
@@ -44,12 +46,12 @@ it("updates the selected variant through the API and renders the returned cart",
 
   const select = await screen.findByRole("combobox", { name: /option for beakers/i });
   await user.click(select);
-  await user.click(screen.getByRole("option", { name: "BEAKER-2L" }));
+  await user.click(screen.getByRole("option", { name: "Size: 2 L" }));
 
   await waitFor(() =>
     expect(update).toHaveBeenCalledWith({ itemId: item.id, variantId: variant.id, quantity: 2 }, expect.anything()),
   );
-  await waitFor(() => expect(select).toHaveTextContent("BEAKER-2L"));
+  await waitFor(() => expect(select).toHaveTextContent("Size: 2 L"));
   expect(screen.getByText("$50.00")).toBeInTheDocument();
   expect(screen.getByText(/Product no: BEAKER-2L/)).toBeInTheDocument();
 });
@@ -61,10 +63,10 @@ it("keeps the previous option and displays an error when the API rejects the cha
 
   const select = await screen.findByRole("combobox", { name: /option for beakers/i });
   await user.click(select);
-  await user.click(screen.getByRole("option", { name: "BEAKER-2L" }));
+  await user.click(screen.getByRole("option", { name: "Size: 2 L" }));
 
   expect(await screen.findByRole("alert")).toHaveTextContent("We could not update this item. Please try again.");
-  expect(select).toHaveTextContent("BEAKER-1L");
+  expect(select).toHaveTextContent("Size: 1 L");
 });
 
 it("CART-002 shows the empty cart after loading an empty response", async () => {

@@ -427,6 +427,8 @@
     "continueShopping": "Continue shopping",
     "paymentMethod": "Payment method",
     "deliveryAddress": "Delivery address",
+    "city": "City",
+    "notes": "Notes",
     "fullName": "Full name",
     "emailAddress": "Email address",
     "phoneNumber": "Phone no.",
